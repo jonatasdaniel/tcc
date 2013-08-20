@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+    <TextView style="@style/text_view" android:id="@+dicom_file/name" android:paddingTop="15dip" android:paddingBottom="15dip"
+        android:paddingLeft="15dip"/>
+    
+
+</LinearLayout>

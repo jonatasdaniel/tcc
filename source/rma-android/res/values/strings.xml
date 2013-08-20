@@ -2,7 +2,6 @@
 <resources>
 
     <string name="app_name">RMA</string>
-    <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_dicom_files">Selecione um arquivo</string>
 
 </resources>
