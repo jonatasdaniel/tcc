@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">DicomReader</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    
+    
+    <string name="um">Um</string>
+    <string name="dois">Dois</string>
+    <string name="tres">Tres</string>
+    <string name="quatro">Quatro</string>
+
+</resources>

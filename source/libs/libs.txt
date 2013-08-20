@@ -1,0 +1,5 @@
+http://imglib2.net/
+
+http://dicom4j.sourceforge.net/index.html
+
+https://code.google.com/p/dicom-droid/
