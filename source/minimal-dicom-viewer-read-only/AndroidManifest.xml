@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+  copyright (C) 2011 Robert Schmidt
+ 
+  This file <AndroidManifest.xml> is part of Minimal Dicom Viewer.
+ 
+  Minimal Dicom Viewer is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+ 
+  Minimal Dicom Viewer is distributed as Open Source Software ( OSS )
+  and comes WITHOUT ANY WARRANTY and even with no IMPLIED WARRANTIES OF MERCHANTABILITY,
+  OF SATISFACTORY QUALITY, AND OF FITNESS FOR A PARTICULAR PURPOSE.
+  See the GNU General Public License ( GPLv3 ) for more details.
+
+ 
+  You should have received a copy of the GNU General Public License
+  along with Minimal Dicom Viewer. If not, see <http://www.gnu.org/licenses/>.
+ 
+  Released date: 13-11-2011
+ 
+  Version: 1.0
+ -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      package="de.mdv"
+      android:versionCode="3"
+      android:versionName="1.1">
+
+
+    <application android:icon="@drawable/icon" android:label="@string/app_name">
+        <activity android:name=".MinimalDicomViewer"
+                  android:configChanges="keyboardHidden|orientation" android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+            
+        </activity>
+    <activity android:name=".MDVFileChooser"
+    		  android:label="@string/app_name">
+    	<intent-filter>
+        	<action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+    </activity>
+    
+    <activity android:name=".FileDialog">
+    </activity>
+    
+    <activity android:name=".MyListActivity">
+    </activity>
+
+    </application>
+    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="8" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+</manifest>

@@ -1,0 +1,125 @@
+
+<html>
+<head>
+<title>ViewForum 5.1.1.1 patient data - Hospital</title>
+<meta http-equiv= "Content-Type" content= "text/html; charset=ISO-8859-1">
+<meta http-equiv= "Pragma" content= "nocache">
+<link rel= "stylesheet" type= "text/css" href= "Style.css">
+<script language= "JavaScript">
+
+try
+{
+    var ws = new ActiveXObject("WScript.Shell");
+    var fso = new ActiveXObject("Scripting.FileSystemObject");
+}
+catch(e)
+{
+}
+
+try
+{
+    var mediaRootDir = new String (fso.GetParentFolderName(document.location.pathname));
+    mediaRootDir  = mediaRootDir .substr(mediaRootDir .indexOf(":") - 1);
+}
+catch(e)
+{
+}
+
+function removeWaitMessage()
+{
+    theBody.style.cursor = "default";
+    launching_information.innerHTML = "";
+    click.innerHTML = "Click ";
+    dicomviewer.innerHTML = "here ";
+    aTag.innerHTML = "to view patient data using Philips DICOM Viewer R1.1.";
+}
+
+function createDicomViewerLaunchingLink()
+{
+    click.innerHTML = "Click ";
+    launching_information.innerHTML = "";
+    dicomviewer.innerHTML = "here ";
+    dicomviewer.href = "JavaScript:executeDICOMViewer()";
+    aTag.innerHTML = "to view patient data using Philips DICOM Viewer R1.1.";
+}
+
+function executeDICOMViewer()
+{
+    click.innerHTML = "";
+    dicomviewer.innerHTML = "";
+    aTag.innerHTML = "";
+    ws.CurrentDirectory = mediaRootDir + "\\DICOMVWR";
+    launching_information.innerHTML = "Launching Philips DICOM Viewer R1.1...(may take a few seconds)";
+    ws.Exec(ws.CurrentDirectory +"\\PmsDView.exe");
+    theBody.style.cursor = "wait"; 
+    window.setTimeout(removeWaitMessage, 12000);
+}
+
+function checkForActiveXObjects()
+{
+    if ((ws != undefined) && (fso != undefined)) {
+        createDicomViewerLaunchingLink();
+    } else {
+        dicomviewer.innerHTML = "";
+        aTag.innerHTML = "";
+        click.innerHTML = "<br>Philips DICOM Viewer R1.1 <b>cannot be launched </b>without the use of the ActiveX objects. <br> Please refresh this page and allow the usage of the ActiveX objects.";
+    }
+}
+
+</script>
+</head>
+<body id = theBody background = "MidYel.bmp" topmargin = "0" leftmargin = "0" marginwidth = "0" marginwidth = "0" onLoad = "checkForActiveXObjects();">
+<table background = "DarkBlu.bmp" border = 0 width = 100% cellpadding = 45 cellspacing = 0>
+<tr><td align = left><img width = 118 height = 28 border = 0 src = Philips.bmp></td></tr>
+</table>
+<br>
+<br>
+<br>
+<br>
+<table border=0 width=100% cellpadding=8 cellspacing=0>
+<tr>
+<td align = center>
+<P><font size = "5">ViewForum 5.1.1.1 exported patient image data</font></P>
+<br>
+<P><font size = "5">
+<b>Hospital</b>
+</font></P>
+</td>
+</tr>
+<tr>
+<td align = center>
+<font size = "3">
+<br>
+<br>
+<br>
+<br>
+<P>Click <a href= "README.TXT" onclick= "window.open('README.TXT', 'window_name', 'toolbar=no, location=no, status=no, menubar=no, scrollbars=yes, resizable=no, width=xxx, height=xxx'); return false">here</a>
+to view information and usage of this medium.</P>
+<P><font id = click></font><a id = dicomviewer></a> <font id = aTag></font></P>
+<font id = launching_information> </font>
+<br>
+<br>
+</td>
+</tr>
+</table>
+<br>
+<br>
+<br>
+<br>
+<table border=0 width=100% cellpadding=8 cellspacing=0  style.posBottom = 0>
+<tr>
+<td align = center>
+<font SIZE = 1px  >
+© Koninklijke Philips Electronics N.V. 2005
+<br>
+All rights are reserved. Reproduction or transmission in whole or in
+<br>
+part, in any form or by any means, electronic, mechanical or otherwise,
+<br>
+is prohibited without the prior written consent of the copyright owner.
+</font>
+</tr>
+</td>
+</table>
+</BODY>
+</html>

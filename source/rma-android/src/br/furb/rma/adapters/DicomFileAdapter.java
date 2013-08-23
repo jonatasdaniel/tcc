@@ -1,7 +1,5 @@
 package br.furb.rma.adapters;
 
-import java.util.List;
-
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +10,8 @@ import br.furb.rma.models.DicomFile;
 
 public class DicomFileAdapter extends BaseListAdapter<DicomFile> {
 
-	public DicomFileAdapter(Context context, List<DicomFile> itens) {
-		super(context, itens);
+	public DicomFileAdapter(Context context) {
+		super(context);
 	}
 
 	@Override

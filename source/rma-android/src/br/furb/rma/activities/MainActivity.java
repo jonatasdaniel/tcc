@@ -12,7 +12,7 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		startActivity(new Intent(this, DicomFilesActivity.class));
+		//startActivity(new Intent(this, DicomFilesActivity.class));
 	}
 
 }

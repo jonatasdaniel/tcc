@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+  copyright (C) 2011 Robert Schmidt
+ 
+  This file <file_dialog_main.xml> is part of Minimal Dicom Viewer.
+ 
+  Minimal Dicom Viewer is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+ 
+  Minimal Dicom Viewer is distributed as Open Source Software ( OSS )
+  and comes WITHOUT ANY WARRANTY and even with no IMPLIED WARRANTIES OF MERCHANTABILITY,
+  OF SATISFACTORY QUALITY, AND OF FITNESS FOR A PARTICULAR PURPOSE.
+  See the GNU General Public License ( GPLv3 ) for more details.
+
+ 
+  You should have received a copy of the GNU General Public License
+  along with Minimal Dicom Viewer. If not, see <http://www.gnu.org/licenses/>.
+ 
+  Released date: 02-12-2011
+ 
+  Version: 1.0
+ -->
+<RelativeLayout android:id="@+id/relativeLayout01"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+
+	<LinearLayout android:id="@+id/fdLinearLayoutList"
+		android:orientation="vertical" android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:layout_alignParentBottom="true">
+
+		<LinearLayout android:id="@+id/fdLinearLayoutSelect"
+			android:orientation="vertical" android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_alignParentBottom="true" android:paddingLeft="10dp"
+			android:paddingRight="10dp" android:paddingBottom="5dp">
+
+			<LinearLayout android:orientation="horizontal"
+				android:layout_width="fill_parent" android:layout_height="fill_parent">
+				<Button android:id="@+id/fdButtonNew" android:layout_height="wrap_content"
+					android:layout_width="0dip" android:layout_weight=".3"
+					android:text="@string/nnew"></Button>
+				<Button android:id="@+id/fdButtonSelect" android:layout_height="wrap_content"
+					android:layout_width="0dip" android:layout_weight=".7"
+					android:text="@string/select"></Button>
+			</LinearLayout>
+		</LinearLayout>
+
+		<LinearLayout android:id="@+id/fdLinearLayoutCreate"
+			android:orientation="vertical" android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_alignParentBottom="true" android:paddingLeft="10dp"
+			android:paddingRight="10dp" android:paddingBottom="5dp">
+			<TextView android:id="@+id/textViewFilename" android:text="@string/file_name"
+				android:layout_width="fill_parent" android:layout_height="wrap_content" />
+			<EditText android:text="" android:id="@+id/fdEditTextFile"
+				android:layout_width="fill_parent" android:layout_height="wrap_content"></EditText>
+
+			<LinearLayout android:orientation="horizontal"
+				android:layout_width="fill_parent" android:layout_height="fill_parent">
+				<Button android:id="@+id/fdButtonCancel" android:layout_height="wrap_content"
+					android:layout_width="0dip" android:layout_weight=".3"
+					android:text="@string/cancel"></Button>
+				<Button android:id="@+id/fdButtonCreate" android:layout_height="wrap_content"
+					android:layout_width="0dip" android:layout_weight=".7"
+					android:text="@string/create"></Button>
+			</LinearLayout>
+		</LinearLayout>
+
+	</LinearLayout>
+
+	<LinearLayout android:orientation="vertical"
+		android:layout_width="fill_parent" android:layout_height="fill_parent"
+		android:layout_above="@+id/fdLinearLayoutList">
+		<TextView android:id="@+id/path" android:layout_width="fill_parent"
+			android:layout_height="wrap_content" />
+		<ListView android:id="@android:id/list" 
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent" 
+			android:padding="1dp"/>
+		<TextView android:id="@android:id/empty"
+			android:layout_width="fill_parent" android:layout_height="fill_parent"
+			android:text="@string/no_data" />
+	</LinearLayout>
+
+
+
+
+</RelativeLayout>

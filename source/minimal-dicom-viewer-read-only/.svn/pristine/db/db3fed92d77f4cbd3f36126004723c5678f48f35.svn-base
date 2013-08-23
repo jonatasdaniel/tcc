@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+  copyright (C) 2011 Robert Schmidt
+ 
+  This file <file_dialog_row.xml> is part of Minimal Dicom Viewer.
+ 
+  Minimal Dicom Viewer is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+ 
+  Minimal Dicom Viewer is distributed as Open Source Software ( OSS )
+  and comes WITHOUT ANY WARRANTY and even with no IMPLIED WARRANTIES OF MERCHANTABILITY,
+  OF SATISFACTORY QUALITY, AND OF FITNESS FOR A PARTICULAR PURPOSE.
+  See the GNU General Public License ( GPLv3 ) for more details.
+
+ 
+  You should have received a copy of the GNU General Public License
+  along with Minimal Dicom Viewer. If not, see <http://www.gnu.org/licenses/>.
+ 
+  Released date: 02-12-2011
+ 
+  Version: 1.0
+ -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent" 
+	android:layout_height="fill_parent">
+
+	<ImageView android:layout_alignParentLeft="true" 
+		android:id="@+id/fdrowimage"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content" 
+		android:paddingRight="1dp" 
+		android:paddingLeft="1dp">
+	</ImageView>
+	<TextView android:text="@+id/fdrowtext" 
+		android:layout_width="wrap_content"
+		android:id="@+id/fdrowtext" 
+		android:layout_toRightOf="@+id/fdrowimage"
+		android:layout_alignTop="@+id/fdrowimage" 
+		android:layout_alignBottom="@+id/fdrowimage"
+		android:gravity="center_vertical" 
+		android:layout_height="wrap_content">
+	</TextView> 
+
+</RelativeLayout>

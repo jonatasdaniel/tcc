@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+  copyright (C) 2011 Robert Schmidt
+ 
+  This file <main.xml> is part of Minimal Dicom Viewer.
+ 
+  Minimal Dicom Viewer is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+ 
+  Minimal Dicom Viewer is distributed as Open Source Software ( OSS )
+  and comes WITHOUT ANY WARRANTY and even with no IMPLIED WARRANTIES OF MERCHANTABILITY,
+  OF SATISFACTORY QUALITY, AND OF FITNESS FOR A PARTICULAR PURPOSE.
+  See the GNU General Public License ( GPLv3 ) for more details.
+
+ 
+  You should have received a copy of the GNU General Public License
+  along with Minimal Dicom Viewer. If not, see <http://www.gnu.org/licenses/>.
+ 
+  Released date: 13-11-2011
+ 
+  Version: 1.1
+ -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+<FrameLayout
+	   	android:layout_width="fill_parent" android:layout_height="fill_parent">
+
+		<de.mdv.DicomImageView android:id="@+id/imageView" 
+			android:layout_width="fill_parent" 
+			android:scaleType="matrix" android:layout_height="fill_parent">
+		</de.mdv.DicomImageView>
+</FrameLayout>
+<TableLayout android:id="@+id/tableLayout2" 
+	android:paddingBottom="0dp" 
+	android:layout_width="fill_parent" 
+	android:layout_height="wrap_content" 
+	android:layout_alignParentBottom="true">
+	
+<TableRow android:id="@+id/tableRow5" 
+	android:layout_width="fill_parent" 
+	android:layout_height="wrap_content" 
+	android:gravity="center_vertical">
+	
+<Button android:layout_width="wrap_content" 
+	android:id="@+id/prevButton" 
+	android:background="@android:drawable/ic_media_rew" 
+	android:layout_marginRight="8dp" 
+	android:layout_marginLeft="3dp" 
+	android:layout_marginTop="8dp" 
+	android:layout_marginBottom="8dp" 
+	android:onClick="prevImage" 
+	android:layout_height="fill_parent">
+</Button>
+
+<TableLayout android:layout_width="fill_parent" android:layout_weight="1">
+<TableRow android:id="@+id/tableRow5" 
+	android:layout_width="fill_parent" 
+	android:layout_height="wrap_content" 
+	android:gravity="center_vertical">
+	<TextView android:text="@string/brightness" 
+	android:id="@+id/brightnessLabel" 
+	android:layout_width="wrap_content" 
+	android:layout_marginRight="3dp" 
+	android:layout_height="wrap_content"></TextView>
+    <SeekBar android:layout_height="wrap_content" 
+    android:id="@+id/brightnessSeekBar" 
+    android:layout_width="wrap_content" 
+    android:paddingBottom="10dp" 
+    android:layout_weight="1"
+    android:paddingTop="10dp"></SeekBar>
+    <TextView android:layout_height="wrap_content" 
+    android:text="@string/brightnessvalue" 
+    android:id="@+id/brightnessValue" 
+    android:layout_marginLeft="3dp" 
+    android:layout_width="wrap_content"></TextView>
+</TableRow>
+
+<TableRow android:id="@+id/tableRow6" 
+	android:layout_width="fill_parent" 
+	android:layout_height="wrap_content" 
+	android:gravity="center_vertical">
+	<TextView android:layout_width="wrap_content" 
+	android:text="@string/contrast" 
+	android:layout_height="wrap_content" 
+	android:layout_marginRight="3dp" 
+	android:id="@+id/contrastLabel"></TextView>
+    <SeekBar android:layout_height="wrap_content"
+	android:id="@+id/contrastSeekBar"
+	android:layout_width="wrap_content" 
+    android:paddingBottom="10dp" 
+    android:layout_weight="1"
+    android:paddingTop="10dp"></SeekBar>
+	<TextView android:layout_height="wrap_content" 
+	android:layout_width="wrap_content" 
+	android:layout_marginLeft="3dp" 
+	android:id="@+id/contrastValue" 
+	android:text="@string/contrastvalue"></TextView>
+</TableRow>
+
+
+</TableLayout>
+
+<Button android:layout_width="wrap_content" 
+	android:id="@+id/nextButton" 
+	android:background="@android:drawable/ic_media_ff" 
+	android:layout_marginRight="3dp" 
+	android:layout_marginLeft="8dp" 
+	android:layout_marginTop="8dp" 
+	android:layout_marginBottom="8dp" 
+	android:onClick="nextImage" 
+	android:layout_height="fill_parent"></Button>
+</TableRow>
+</TableLayout>
+
+<TableLayout android:id="@+id/tableLayout1" android:layout_width="wrap_content" android:layout_height="wrap_content">
+    <TableRow android:id="@+id/tableRow1" android:layout_width="wrap_content" android:layout_height="wrap_content">
+        <TextView android:layout_width="wrap_content" android:id="@+id/currentFileLabel" android:layout_height="wrap_content"></TextView>
+    </TableRow>
+<TableRow android:id="@+id/tableRow1" android:layout_width="wrap_content" android:layout_height="wrap_content">
+<TableLayout android:id="@+id/tableLayout2" android:layout_width="wrap_content" android:layout_height="wrap_content">
+    <TableRow android:id="@+id/tableRow2" android:layout_width="wrap_content" android:layout_height="wrap_content">
+        <TextView android:id="@+id/PatientNameLabel" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="8dp" ></TextView>
+        <TextView android:id="@+id/PatientNameValue" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+    </TableRow>
+    <TableRow android:id="@+id/tableRow3" android:layout_width="wrap_content" android:layout_height="wrap_content">
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/PatientPrenameLabel" android:layout_marginRight="8dp" ></TextView>
+        <TextView android:id="@+id/PatientPrenameValue" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+    </TableRow>
+    <TableRow android:id="@+id/tableRow4" android:layout_width="wrap_content" android:layout_height="wrap_content">
+        <TextView android:id="@+id/PatientBirthLabel" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="8dp" ></TextView>
+        <TextView android:id="@+id/PatientBirthValue" android:layout_width="wrap_content" android:layout_height="wrap_content"></TextView>
+    </TableRow>
+</TableLayout>
+</TableRow>
+</TableLayout>
+
+</RelativeLayout>

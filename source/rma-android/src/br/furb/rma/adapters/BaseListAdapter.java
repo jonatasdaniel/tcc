@@ -30,6 +30,7 @@ public abstract class BaseListAdapter<T> extends BaseAdapter {
 		}
 		
 		itens.add(item);
+		notifyDataSetChanged();
 	}
 	
 	public Context getContext() {

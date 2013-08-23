@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+  copyright (C) 2011 Robert Schmidt
+ 
+  This file <dialog_about.xml> is part of Minimal Dicom Viewer.
+ 
+  Minimal Dicom Viewer is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+ 
+  Minimal Dicom Viewer is distributed as Open Source Software ( OSS )
+  and comes WITHOUT ANY WARRANTY and even with no IMPLIED WARRANTIES OF MERCHANTABILITY,
+  OF SATISFACTORY QUALITY, AND OF FITNESS FOR A PARTICULAR PURPOSE.
+  See the GNU General Public License ( GPLv3 ) for more details.
+
+ 
+  You should have received a copy of the GNU General Public License
+  along with Minimal Dicom Viewer. If not, see <http://www.gnu.org/licenses/>.
+ 
+  Released date: 13-11-2011
+ 
+  Version: 1.0
+ -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             android:id="@+id/layout_root"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:paddingLeft="10dp"
+             android:paddingRight="10dp"
+             android:paddingBottom="20dp">
+             
+    <View android:id="@+id/topbar"
+    	android:background="#FFFFFFFF"
+    	android:layout_width="700dp"
+    	android:layout_height="1dp"
+    	android:layout_alignParentTop="true"
+    	android:layout_centerHorizontal="true"
+    	android:layout_marginBottom="30dp" />
+              
+    <ImageView android:id="@+id/image"
+    		   android:src="@drawable/mdv"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_below="@id/topbar"
+               android:layout_marginRight="20dp" />
+               
+	<ScrollView
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_toRightOf="@id/image"
+	    android:layout_below="@id/topbar">
+               
+	    <LinearLayout
+	    	android:orientation="vertical"
+	    	android:layout_width="wrap_content"
+	    	android:layout_height="wrap_content">
+	    	
+	    	<TextView android:id="@+id/AboutText"
+	              android:layout_width="wrap_content"
+	              android:layout_height="wrap_content"
+	              android:text="no text set"
+	              android:textColor="#FFF"/>
+	    	
+	    </LinearLayout>
+              
+	</ScrollView>
+             
+</RelativeLayout>

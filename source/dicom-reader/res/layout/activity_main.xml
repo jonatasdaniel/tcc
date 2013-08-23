@@ -4,5 +4,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".MainActivity" >
+    
+    <ImageView android:layout_height="match_parent" android:layout_width="match_parent"
+        android:id="@+main/image"/>
 
 </LinearLayout>

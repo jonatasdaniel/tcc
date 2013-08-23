@@ -1,0 +1,4 @@
+[autorun]
+ShellExecute = INDEX.HTM
+icon = VFMedIco.ico
+label = ViewForum Patient Data - Hospital

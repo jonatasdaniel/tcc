@@ -1,0 +1,79 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<BODY>
+
+<h1>Tudor DICOM - Settings</h1>
+
+<p>This plugin offers the possibility to access images from different
+sources. If you do not use one of the methods, you can disable that
+method. Besides the file system, a interaction with DICOM enabled
+devices is also possible. Additionally a DICOMDIR support, for example
+to read CDs created in hospitals, is also available.</p>
+
+<p>The configuration dialog is - according to the differnet image
+acquisition methods separated into several categories:</p>
+
+<ul>
+	<li><b>FILE Input: </b>
+	<p>You can preselect here a hard disc folder in that your DICOM Files
+	are located. It will be preselected in the File Chooser.</p>
+	</li>
+	<li><b>DICOM Dir. / CD: </b>
+	<p>You can specify a DICOMDIR File location here. This file will be
+	examined to find information about the DICOM Files. It is maybe useful,
+	that you configure your CD ROM drive here. This will enable you to read
+	DICOM CDs created by robots often present in hospitals.</p>
+	</li>
+	<li><b>DICOM STORE (SCU): </b>
+	<p>If you enable this module a local DICOM STORE will be
+	started within this plugin. You are then able to receive images via DICOM SEND /
+	DICOM MOVE. To fully enable this you need to configure your DICOM Nodes
+	to be able to send images to this new DICOM node. Your DICOM / PACS
+	Administrator knows how to do it :-).The values to configure are:</p>
+	<ul>
+		<li><b>DICOM Store: </b>The location, where the PACS server should
+		save the images and the DICOM Information.</li>
+		<li><b>AET Name: </b>This is an indicator for the DICOM Node and
+		describes the node. This has to match the configuration in the other
+		DICOM Nodes to enable communication.</li>
+		<li><b>Port: </b>The port number on that the DICOM server should
+		listen. <b>Note: </b> you need Administrator rights to enable ports
+	</ul>
+	<p></p>
+	</li>
+	<li><b>DICOM QUERY (C-Find): </b>
+	<p>You can Query an external PACS via DICOM C-FIND and move the selected images to your local DICOM STORE via DICOM MOVE</p>
+	<ul>
+		<li><b>Address: </b>The IP Address of the queried DICOM Node. This
+		can be a DNS Name as well as a numerical IP address.</li>
+		<li><b>Port: </b>The port number of the queried DICOM Node.</li>
+		<li><b>Called AET: </b>The AET of the queried DICOM Node.</li>
+		<li><b>Move Dest.: </b>The AET of the DICOM STORE you want to move the images to. 
+        The AET must be configured with its address and port in the querried server.</li>
+	</ul>
+	<p></p>
+	</li>
+	<li><b>DICOM SEND (SCP): </b>
+	<p>The plugin provides also a way to send DICOM files from the local
+	PACS server to other DICOM Nodes (like a PACS).</p>
+	<ul>
+		<li><b>Calling AET: </b>The AET identification of the sending DICOM Node.</li>
+		<li><b>Address: </b>The IP Address of the receiving DICOM Node. This
+		can be a DNS Name as well as a numerical IP address.</li>
+		<li><b>Port: </b>The port number of the sending DICOM Node.</li>
+		<li><b>Called AET: </b>The AET of the receiving DICOM Node.</li>
+	</ul>
+	<p></p>
+	</li>
+	<li><b>Configure DICOM Header Preview: </b>
+	<p>You can change the DICOM Header fields shown in the DICOM Preview
+	Info Enter all the Header DICOM Tags (e.g. 0008,0060 for Modality) you
+	want to see in the preview. A complete list of all Tags can be found by
+	selecting an image and using the "show DICOM Header" button in the open
+	Dialog.</p>
+	</li>
+
+</ul>
+
+</BODY>
+</HTML>
