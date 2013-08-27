@@ -10,8 +10,15 @@ package br.furb.rma;
 public final class R {
     public static final class attr {
     }
+    public static final class dicom {
+        public static final int key=0x7f080000;
+        public static final int value=0x7f080001;
+    }
+    public static final class dicom_details {
+        public static final int list=0x7f070000;
+    }
     public static final class dicom_file {
-        public static final int name=0x7f070000;
+        public static final int name=0x7f090000;
     }
     public static final class dimen {
         /**  Default screen margins, per the Android Design guidelines. 
@@ -25,24 +32,39 @@ public final class R {
     }
     public static final class drawable {
         public static final int ic_launcher=0x7f020000;
+        public static final int ic_menu_info_details=0x7f020001;
     }
     public static final class files {
-        public static final int list=0x7f080000;
+        public static final int list=0x7f0a0000;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
-        public static final int dicom_file_item=0x7f030001;
-        public static final int dicom_files_activity=0x7f030002;
+        public static final int dicom_details_activity=0x7f030001;
+        public static final int dicom_details_item=0x7f030002;
+        public static final int dicom_file_item=0x7f030003;
+        public static final int dicom_files_activity=0x7f030004;
+        public static final int viewer_activity=0x7f030005;
     }
     public static final class string {
+        public static final int action_settings=0x7f050002;
+        public static final int activity_dicom_files_title=0x7f050001;
         public static final int app_name=0x7f050000;
-        public static final int title_activity_dicom_files=0x7f050001;
+        public static final int dicom_patient_gender=0x7f050005;
+        public static final int dicom_patient_name=0x7f050004;
+        public static final int dicom_details_title=0x7f050003;
     }
     public static final class style {
         public static final int AppBaseTheme=0x7f060000;
         public static final int AppTheme=0x7f060001;
-        public static final int list_view=0x7f060002;
-        public static final int list_view_fill=0x7f060003;
-        public static final int text_view=0x7f060004;
+        public static final int activity=0x7f060002;
+        public static final int button=0x7f060007;
+        public static final int image_button=0x7f060008;
+        public static final int item=0x7f060009;
+        public static final int item_horizontal=0x7f06000a;
+        public static final int item_vertical=0x7f06000b;
+        public static final int list_view=0x7f060003;
+        public static final int list_view_fill=0x7f060004;
+        public static final int text_view=0x7f060005;
+        public static final int text_view_bold=0x7f060006;
     }
 }

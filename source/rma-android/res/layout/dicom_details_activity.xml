@@ -1,0 +1,9 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/activity"
+    android:orientation="vertical"    
+    tools:context=".DicomDetailsActivity" >
+    
+    <ListView style="@style/list_view" android:id="@+dicom_details/list"/>
+
+</LinearLayout>

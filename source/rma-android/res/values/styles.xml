@@ -8,8 +8,14 @@
         
     </style>
     
+    <style name="activity">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+    
     <style name="list_view">
         <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
         <item name="android:background">#ffffff</item>
     </style>
     
@@ -20,6 +26,33 @@
     <style name="text_view">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
+    </style>
+    
+    <style name="text_view_bold" parent="text_view">
+        <item name="android:textStyle">bold</item>
+    </style>
+    
+    <style name="button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    
+    <style name="image_button" parent="button">
+        
+    </style>
+    
+    <style name="item">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">10dip</item>
+    </style>
+    
+    <style name="item_horizontal" parent="item">    
+        <item name="android:orientation">horizontal</item>
+    </style>
+    
+    <style name="item_vertical" parent="item">    
+        <item name="android:orientation">vertical</item>
     </style>
 
 </resources>
