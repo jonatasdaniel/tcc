@@ -22,6 +22,7 @@ public class DicomFileReader {
 
 	private final File file;
 	private List<DicomObject> images;
+	private List<File> imageFiles = new ArrayList<File>();
 	
 
 	public DicomFileReader(String dirName) {
@@ -52,8 +53,11 @@ public class DicomFileReader {
 			
 			File dicomDir = new File(file.getParentFile().getAbsolutePath() + "/DICOM");
 			File[] files = dicomDir.listFiles();
+			Arrays.sort(files);
+			
 			if(files != null) {
 				for (File file : files) {
+					imageFiles.add(file);
 					DicomInputStream inputStream = new DicomInputStream(file);
 					DicomObject dicomObj = inputStream.readDicomObject();
 					images.add(dicomObj);
@@ -66,12 +70,6 @@ public class DicomFileReader {
 	}
 	
 	public List<File> readImagesFiles() throws IOException {
-		List<File> imageFiles = new ArrayList<File>();
-			
-		File dicomDir = new File(file.getParentFile().getAbsolutePath() + "/DICOM");
-		File[] files = dicomDir.listFiles();
-		imageFiles.addAll(Arrays.asList(files));	
-		
 		return imageFiles;
 	}
 	

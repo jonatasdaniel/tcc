@@ -30,7 +30,9 @@ public final class R {
         public static final int activity_main=0x7f030000;
     }
     public static final class main {
-        public static final int image=0x7f080000;
+        public static final int image=0x7f080002;
+        public static final int image_name=0x7f080001;
+        public static final int seekr=0x7f080000;
     }
     public static final class menu {
         public static final int main=0x7f070000;

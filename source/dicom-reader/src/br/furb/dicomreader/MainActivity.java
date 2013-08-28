@@ -1,8 +1,11 @@
 package br.furb.dicomreader;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.dcm4che2.data.DicomObject;
 import org.dcm4che2.data.Tag;
@@ -10,10 +13,10 @@ import org.dcm4che2.data.Tag;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Bitmap.CompressFormat;
 import android.os.Bundle;
 import android.os.Environment;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import br.furb.dicomreader.reader.DicomFileReader;
@@ -21,9 +24,14 @@ import br.furb.dicomreader.reader.DicomFileReader;
 public class MainActivity extends Activity {
 
 	private ImageView imageView;
+	private SeekBar seekBar;
+	private TextView tvImageName;
 	private int min;
 	private int max;
 	private byte[] quadradoPreto;
+	
+	private List<byte[]> images = new ArrayList<byte[]>();
+	private List<File> imageFiles;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +39,29 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 
 		imageView = (ImageView) findViewById(R.main.image);
+		seekBar = (SeekBar) findViewById(R.main.seekr);
+		tvImageName = (TextView) findViewById(R.main.image_name);
+		seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+			
+			@Override
+			public void onStopTrackingTouch(SeekBar seekBar) {
+				int position = seekBar.getProgress();
+				byte[] image = images.get(position);
+				File file = imageFiles.get(position);
+				printImage(image, file);
+			}
+			
+			@Override
+			public void onStartTrackingTouch(SeekBar seekBar) {
+				
+			}
+			
+			@Override
+			public void onProgressChanged(SeekBar seekBar, int progress,
+					boolean fromUser) {
+				
+			}
+		});
 
 		String dirName = Environment.getExternalStorageDirectory()
 				.getAbsolutePath() + "/joelho_dalton/DICOMDIR";
@@ -38,31 +69,41 @@ public class MainActivity extends Activity {
 		try {
 			// reader.read();
 			reader.readDir();
+			
+			List<DicomObject> images = reader.readImages();
+			imageFiles = reader.readImagesFiles();
+			seekBar.setMax(images.size());
+			for (DicomObject dicomObject : images) {
+				byte[] pixels = reader.getPixelData(dicomObject);
+				short[] shorts = read16BitImage(pixels);
+				byte[] data = convertShortToByte(shorts, dicomObject);
+				this.images.add(data);
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
+		
+		
 		//createImage(reader);
 		createModafocaImage(reader);
 	}
 
-	public int[] invertPixels(int pixelData[]) {
-		if (pixelData == null)
-			return pixelData;
-		for (int i = 0; i < pixelData.length; i++) {
-			int pixelGrayLevel = pixelData[i] & 0xff;
-			pixelGrayLevel = 255 - pixelGrayLevel;
-			pixelData[i] = (0xFF << 24) | // alpha
-					(pixelGrayLevel << 16) | // red
-					(pixelGrayLevel << 8) | // green
-					pixelGrayLevel; // blue
-		}
-		return pixelData;
+	protected void printImage(byte[] image, File file) {
+		//BitmapFactory.Options opts = new BitmapFactory.Options();
+		//opts.inPreferredConfig = Bitmap.Config.RGB_565;
+		Bitmap bitmap = Bitmap.createBitmap(512, 512, Bitmap.Config.ALPHA_8);
+		bitmap.copyPixelsFromBuffer(ByteBuffer.wrap(image));
+		
+		imageView.setImageBitmap(bitmap);
+		
+		tvImageName.setText(file.getName());
 	}
-	
+
 	private void createModafocaImage(DicomFileReader reader) {
 		try {
 			DicomObject image = reader.readImages().get(0);
+			File file = reader.readImagesFiles().get(0);
 			int ba = image.getInt(Tag.BitsAllocated);
 			int pr = image.getInt(Tag.PixelRepresentation); // 1 - com sinal
 			int columns = image.getInt(Tag.Columns);
@@ -73,60 +114,8 @@ public class MainActivity extends Activity {
 			byte[] pixels = reader.getPixelData(image);
 			short[] shorts = read16BitImage(pixels);
 			byte[] novo = convertShortToByte(shorts, image);
-			//byte[] bah = convertShortToByte2(shorts);
 			
-			novo = quadradoPreto();
-			
-			BitmapFactory.Options opts = new BitmapFactory.Options();
-			opts.inPreferredConfig = Bitmap.Config.RGB_565;
-			Bitmap bitmap = BitmapFactory.decodeByteArray(novo, 0, novo.length, opts);
-			
-			imageView.setImageBitmap(bitmap);
-			
-			
-			bitmap = Bitmap.createBitmap(512, 512, Bitmap.Config.ALPHA_8);
-			ByteArrayOutputStream stream = new ByteArrayOutputStream();
-			stream.write(novo);
-			boolean yes = bitmap.compress(CompressFormat.JPEG, 100, stream);
-			yes = bitmap.compress(CompressFormat.PNG, 100, stream);
-			byte[] opa = stream.toByteArray();
-			boolean igual = novo.equals(opa);
-			
-			bitmap = BitmapFactory.decodeByteArray(opa, 0, opa.length);
-			
-			bitmap = Bitmap.createBitmap(512, 512, Bitmap.Config.ARGB_4444);
-			stream = new ByteArrayOutputStream();
-			stream.write(novo);
-			yes = bitmap.compress(CompressFormat.JPEG, 100, stream);
-			yes = bitmap.compress(CompressFormat.PNG, 100, stream);
-			opa = stream.toByteArray();
-			igual = novo.equals(opa);
-			
-			bitmap = BitmapFactory.decodeByteArray(opa, 0, opa.length);
-			
-			bitmap = Bitmap.createBitmap(512, 512, Bitmap.Config.ARGB_8888);
-			stream = new ByteArrayOutputStream();
-			stream.write(novo);
-			yes = bitmap.compress(CompressFormat.JPEG, 100, stream);
-			yes = bitmap.compress(CompressFormat.PNG, 100, stream);
-			opa = stream.toByteArray();
-			igual = novo.equals(opa);
-			
-			bitmap = BitmapFactory.decodeByteArray(opa, 0, opa.length);
-			
-			bitmap = Bitmap.createBitmap(512, 512, Bitmap.Config.RGB_565);
-			stream = new ByteArrayOutputStream();
-			stream.write(novo);
-			yes = bitmap.compress(CompressFormat.JPEG, 100, stream);
-			yes = bitmap.compress(CompressFormat.PNG, 100, stream);
-			opa = stream.toByteArray();
-			igual = novo.equals(opa);
-			
-			bitmap = BitmapFactory.decodeByteArray(opa, 0, opa.length);
-			
-			imageView.setImageBitmap(bitmap);
-			
-			Toast.makeText(this, "ok", Toast.LENGTH_SHORT).show();
+			printImage(novo, file);
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
