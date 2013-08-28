@@ -12,6 +12,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import br.furb.dicomreader.reader.DicomFileReader;
 
@@ -20,6 +21,7 @@ public class MainActivity extends Activity {
 	private ImageView imageView;
 	private int min;
 	private int max;
+	private byte[] quadradoPreto;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -63,19 +65,55 @@ public class MainActivity extends Activity {
 			int pr = image.getInt(Tag.PixelRepresentation); // 1 - com sinal
 			int columns = image.getInt(Tag.Columns);
 			int rows = image.getInt(Tag.Rows);
+			String imageType = image.getString(Tag.ImageType);
 			boolean big = image.bigEndian();
 
-			byte[] pixels = reader.getPixelData(image);
-			short[] shorts = read16BitImage(pixels);
-			byte[] novo = convertShortToByte(shorts, image);
+			//byte[] pixels = reader.getPixelData(image);
+			//short[] shorts = read16BitImage(pixels);
+			//byte[] novo = convertShortToByte(shorts, image);
 			//byte[] bah = convertShortToByte2(shorts);
 			
-			Bitmap bitmap = BitmapFactory.decodeByteArray(novo, 0, novo.length);
+			BitmapFactory.Options opts = new BitmapFactory.Options();
+			opts.inPreferredConfig = Bitmap.Config.RGB_565;
+			Bitmap bitmap = BitmapFactory.decodeByteArray(quadradoPreto(), 0, quadradoPreto().length, opts);
+			
 			imageView.setImageBitmap(bitmap);
-			Toast.makeText(this, "foi", Toast.LENGTH_SHORT).show();
+			
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	private byte[] quadradoPreto() {
+		if(quadradoPreto != null) {
+			return quadradoPreto;
+		}
+		quadradoPreto = new byte[512 * 512];
+		
+		int linha = 0;
+		int coluna = 0;
+		
+		for (int i = 0; i < quadradoPreto.length; i++) {
+			linha = i / 512;
+			coluna = i - linha * 512;
+			
+			quadradoPreto[i] = 1;
+			
+			if(linha > 150 && coluna > 150) {
+				quadradoPreto[i] = 0;
+			}
+			if(linha < 350 && coluna > 150) {
+				quadradoPreto[i] = 0;
+			}
+			if(linha > 150 && coluna < 350) {
+				quadradoPreto[i] = 0;
+			}
+			if(linha > 150 && linha < 350 && coluna > 150 && coluna < 350) {
+				quadradoPreto[i] = 0;
+			}
+		}
+		
+		return quadradoPreto;
 	}
 
 	private byte[] convertShortToByte2(short[] input) {
