@@ -1,20 +1,14 @@
 package br.furb.dicomreader;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.ByteBuffer;
 
-import org.dcm4che2.data.DicomElement;
 import org.dcm4che2.data.DicomObject;
 import org.dcm4che2.data.Tag;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.BitmapFactory.Options;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Environment;
 import android.widget.ImageView;
@@ -24,6 +18,8 @@ import br.furb.dicomreader.reader.DicomFileReader;
 public class MainActivity extends Activity {
 
 	private ImageView imageView;
+	private int min;
+	private int max;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -65,33 +61,17 @@ public class MainActivity extends Activity {
 			DicomObject image = reader.readImages().get(0);
 			int ba = image.getInt(Tag.BitsAllocated);
 			int pr = image.getInt(Tag.PixelRepresentation); // 1 - com sinal
+			int columns = image.getInt(Tag.Columns);
+			int rows = image.getInt(Tag.Rows);
 			boolean big = image.bigEndian();
 
 			byte[] pixels = reader.getPixelData(image);
 			short[] shorts = read16BitImage(pixels);
-			byte[] novo = convertShortToByte(shorts);
-			byte[] bah = convertShortToByte2(shorts);
-			boolean igual = novo.equals(bah);
+			byte[] novo = convertShortToByte(shorts, image);
+			//byte[] bah = convertShortToByte2(shorts);
 			
-			byte[][] arrays = new byte[][] {pixels, novo, bah};
-			
-			Bitmap bitmap = null;
-
-			for (int i = 0; i < arrays.length; i++) {
-				BitmapFactory.Options opts = new Options();
-				opts.inScaled = false;
-				bitmap = BitmapFactory.decodeByteArray(arrays[i], 0, arrays[i].length, opts);
-				imageView.setImageBitmap(bitmap);
-				bitmap = BitmapFactory.decodeStream(new ByteArrayInputStream(arrays[i]));
-				imageView.setImageBitmap(bitmap);
-				BitmapDrawable drawable = new BitmapDrawable(new ByteArrayInputStream(arrays[i]));
-				if(drawable != null) {
-					bitmap = drawable.getBitmap();
-					imageView.setImageBitmap(bitmap);
-					imageView.setImageDrawable(drawable);
-				}
-			}
-			
+			Bitmap bitmap = BitmapFactory.decodeByteArray(novo, 0, novo.length);
+			imageView.setImageBitmap(bitmap);
 			Toast.makeText(this, "foi", Toast.LENGTH_SHORT).show();
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -116,43 +96,51 @@ public class MainActivity extends Activity {
 
 		return buffer;
 	}
-	
-	private byte[] convertShortToByte(short[] input) {
-		int index;
-		int iterations = input.length;
 
-		ByteBuffer bb = ByteBuffer.allocate(input.length * 2);
-
-		for (index = 0; index != iterations; ++index) {
-			bb.putShort(input[index]);
-		}
-
-		return bb.array();
-		
-		/*int size = width*height;
-		short[] pixels16 = (short[])ip.getPixels();
+	private byte[] convertShortToByte(short[] input, DicomObject image) {
+		int width = image.getInt(Tag.Rows);
+		int height = image.getInt(Tag.Columns);
+		int size = width * height;
 		byte[] pixels8 = new byte[size];
-		boolean doScaling = false;
-		if (doScaling) {
-			int value, min=(int)ip.getMin(), max=(int)ip.getMax();
-			double scale = 256.0/(max-min+1);
-			for (int i=0; i<size; i++) {
-				value = (pixels16[i]&0xffff)-min;
-				if (value<0) value = 0;
-				value = (int)(value*scale+0.5);
-				if (value>255) value = 255;
-				pixels8[i] = (byte)value;
-			}
-			return new ByteProcessor(width, height, pixels8, ip.getCurrentColorModel());
-		} else {
-			int value;
-			for (int i=0; i < size; i++) {
-				value = pixels16[i]&0xffff;
-				if (value>255) value = 255;
-				pixels8[i] = (byte)value;
-			}
-			return new ByteProcessor(width, height, pixels8, ip.getColorModel());
-		}*/
+
+		//findMinAndMax(input, width, height);
+		
+		double minimum = image.getDouble(Tag.WindowCenter) - image.getDouble(Tag.WindowWidth) / 2;
+		double maximum = image.getDouble(Tag.WindowCenter) + image.getDouble(Tag.WindowWidth) / 2;
+		if (minimum<0.0)
+			minimum = 0.0;
+		if (maximum>65535.0)
+			maximum = 65535.0;
+		min = (int)minimum;
+		max = (int)maximum;
+		
+		int value;
+		double scale = 256.0 / (max - min + 1);
+		for (int i = 0; i < size; i++) {
+			value = (input[i] & 0xffff) - min;
+			if (value < 0)
+				value = 0;
+			value = (int) (value * scale + 0.5);
+			if (value > 255)
+				value = 255;
+			pixels8[i] = (byte) value;
+		}
+		
+		return pixels8;
+	}
+
+	public void findMinAndMax(short[] pixels, int width, int height) {
+		int size = width * height;
+		int value;
+		min = 65535;
+		max = 0;
+		for (int i = 0; i < size; i++) {
+			value = pixels[i] & 0xffff;
+			if (value < min)
+				min = value;
+			if (value > max)
+				max = value;
+		}
 	}
 
 	private void createImage(DicomFileReader reader) {
