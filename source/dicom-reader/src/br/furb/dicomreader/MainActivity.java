@@ -1,6 +1,7 @@
 package br.furb.dicomreader;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import org.dcm4che2.data.DicomObject;
@@ -9,6 +10,7 @@ import org.dcm4che2.data.Tag;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Bitmap.CompressFormat;
 import android.os.Bundle;
 import android.os.Environment;
 import android.widget.ImageView;
@@ -68,17 +70,63 @@ public class MainActivity extends Activity {
 			String imageType = image.getString(Tag.ImageType);
 			boolean big = image.bigEndian();
 
-			//byte[] pixels = reader.getPixelData(image);
-			//short[] shorts = read16BitImage(pixels);
-			//byte[] novo = convertShortToByte(shorts, image);
+			byte[] pixels = reader.getPixelData(image);
+			short[] shorts = read16BitImage(pixels);
+			byte[] novo = convertShortToByte(shorts, image);
 			//byte[] bah = convertShortToByte2(shorts);
+			
+			novo = quadradoPreto();
 			
 			BitmapFactory.Options opts = new BitmapFactory.Options();
 			opts.inPreferredConfig = Bitmap.Config.RGB_565;
-			Bitmap bitmap = BitmapFactory.decodeByteArray(quadradoPreto(), 0, quadradoPreto().length, opts);
+			Bitmap bitmap = BitmapFactory.decodeByteArray(novo, 0, novo.length, opts);
 			
 			imageView.setImageBitmap(bitmap);
 			
+			
+			bitmap = Bitmap.createBitmap(512, 512, Bitmap.Config.ALPHA_8);
+			ByteArrayOutputStream stream = new ByteArrayOutputStream();
+			stream.write(novo);
+			boolean yes = bitmap.compress(CompressFormat.JPEG, 100, stream);
+			yes = bitmap.compress(CompressFormat.PNG, 100, stream);
+			byte[] opa = stream.toByteArray();
+			boolean igual = novo.equals(opa);
+			
+			bitmap = BitmapFactory.decodeByteArray(opa, 0, opa.length);
+			
+			bitmap = Bitmap.createBitmap(512, 512, Bitmap.Config.ARGB_4444);
+			stream = new ByteArrayOutputStream();
+			stream.write(novo);
+			yes = bitmap.compress(CompressFormat.JPEG, 100, stream);
+			yes = bitmap.compress(CompressFormat.PNG, 100, stream);
+			opa = stream.toByteArray();
+			igual = novo.equals(opa);
+			
+			bitmap = BitmapFactory.decodeByteArray(opa, 0, opa.length);
+			
+			bitmap = Bitmap.createBitmap(512, 512, Bitmap.Config.ARGB_8888);
+			stream = new ByteArrayOutputStream();
+			stream.write(novo);
+			yes = bitmap.compress(CompressFormat.JPEG, 100, stream);
+			yes = bitmap.compress(CompressFormat.PNG, 100, stream);
+			opa = stream.toByteArray();
+			igual = novo.equals(opa);
+			
+			bitmap = BitmapFactory.decodeByteArray(opa, 0, opa.length);
+			
+			bitmap = Bitmap.createBitmap(512, 512, Bitmap.Config.RGB_565);
+			stream = new ByteArrayOutputStream();
+			stream.write(novo);
+			yes = bitmap.compress(CompressFormat.JPEG, 100, stream);
+			yes = bitmap.compress(CompressFormat.PNG, 100, stream);
+			opa = stream.toByteArray();
+			igual = novo.equals(opa);
+			
+			bitmap = BitmapFactory.decodeByteArray(opa, 0, opa.length);
+			
+			imageView.setImageBitmap(bitmap);
+			
+			Toast.makeText(this, "ok", Toast.LENGTH_SHORT).show();
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
