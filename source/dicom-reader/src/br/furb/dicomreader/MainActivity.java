@@ -91,15 +91,8 @@ public class MainActivity extends Activity {
 					imageView.setImageDrawable(drawable);
 				}
 			}
-			Toast.makeText(this, "foi", Toast.LENGTH_SHORT).show();
-			BitmapDrawable drawable = new BitmapDrawable(new ByteArrayInputStream(bah));
-			imageView.setImageDrawable(drawable);
-			BitmapFactory.Options opts = new Options();
-			opts.inScaled = false;
-			opts.outMimeType = "BMP";
-			bitmap = BitmapFactory.decodeByteArray(bah, 0, bah.length, opts);
-			imageView.setImageBitmap(bitmap);
 			
+			Toast.makeText(this, "foi", Toast.LENGTH_SHORT).show();
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
