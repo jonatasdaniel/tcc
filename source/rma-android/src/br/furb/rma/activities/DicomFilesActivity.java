@@ -13,7 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import br.furb.rma.R;
 import br.furb.rma.adapters.DicomFileAdapter;
-import br.furb.rma.models.DicomFile;
+import br.furb.rma.models.Dicom;
 
 public class DicomFilesActivity extends Activity {
 
@@ -43,7 +43,7 @@ public class DicomFilesActivity extends Activity {
 				super.handleMessage(msg);
 				
 				if(msg.what == ADD_ITEM) {
-					adapter.addItem((DicomFile) msg.obj);
+					adapter.addItem((Dicom) msg.obj);
 				}
 			}
 		};
@@ -91,11 +91,11 @@ public class DicomFilesActivity extends Activity {
 					if(!loadFiles) {
 						break;
 					}
-					DicomFile dicomFile = new DicomFile(f.getName(), f);
+					/*Dicom dicomFile = new Dicom(f.getName(), f);
 					Message msg = new Message();
 					msg.what = ADD_ITEM;
 					msg.obj = dicomFile;
-					handler.sendMessage(msg);
+					handler.sendMessage(msg);*/
 				}
 				
 				loadFiles = false;

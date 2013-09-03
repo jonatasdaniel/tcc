@@ -4,5 +4,9 @@
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
 	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
+	<classpathentry exported="true" kind="lib" path="libs/dcm4che-core-2.0.27.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/log4j-1.2.16.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/slf4j-api-1.6.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/slf4j-log4j12-1.6.1.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
