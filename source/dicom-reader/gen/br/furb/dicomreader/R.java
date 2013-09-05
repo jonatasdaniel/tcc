@@ -28,10 +28,8 @@ public final class R {
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
-        public static final int activity_open_gl=0x7f030001;
     }
     public static final class main {
-        public static final int gl=0x7f080003;
         public static final int image=0x7f080002;
         public static final int image_name=0x7f080001;
         public static final int seekr=0x7f080000;

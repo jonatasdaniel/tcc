@@ -11,7 +11,6 @@ import org.dcm4che2.data.DicomObject;
 import org.dcm4che2.data.Tag;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -87,8 +86,6 @@ public class MainActivity extends Activity {
 		
 		//createImage(reader);
 		createModafocaImage(reader);
-		
-		startActivity(new Intent(this, OpenGLActivity.class));
 	}
 
 	protected void printImage(byte[] image, File file) {

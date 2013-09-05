@@ -24,10 +24,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="br.furb.dicomreader.OpenGLActivity"
-            android:label="@string/title_activity_open_gl" >
-        </activity>
+        
     </application>
 
 </manifest>

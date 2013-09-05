@@ -1,0 +1,62 @@
+package br.furb.rma.models;
+
+import java.io.File;
+import java.util.List;
+
+public class Dicom {
+
+	private String name;
+	private File file;
+
+	private DicomPatient patient;
+	private DicomStudy study;
+
+	private List<DicomImage> images;
+
+	public Dicom(File file) {
+		super();
+		this.name = file.getName();
+		this.file = file;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public File getFile() {
+		return file;
+	}
+
+	public void setFile(File file) {
+		this.file = file;
+	}
+
+	public DicomPatient getPatient() {
+		return patient;
+	}
+
+	public void setPatient(DicomPatient patient) {
+		this.patient = patient;
+	}
+
+	public DicomStudy getStudy() {
+		return study;
+	}
+
+	public void setStudy(DicomStudy study) {
+		this.study = study;
+	}
+
+	public List<DicomImage> getImages() {
+		return images;
+	}
+
+	public void setImages(List<DicomImage> images) {
+		this.images = images;
+	}
+
+}
