@@ -91,6 +91,8 @@ public class Square {
 		
 		// Use Android GLUtils to specify a two-dimensional texture image from our bitmap 
 		GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, bitmap, 0);
+		int ha = GLUtils.getType(bitmap);
+		System.out.println(ha);
 		
 		// Clean up
 		bitmap.recycle();

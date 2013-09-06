@@ -5,7 +5,6 @@ import javax.microedition.khronos.opengles.GL10;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.opengl.GLSurfaceView.Renderer;
 import android.opengl.GLU;
 
@@ -54,7 +53,10 @@ public class GLRenderer implements Renderer {
 	@Override
 	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
 		// Load the texture for the square
-		square.loadGLTexture(gl, this.context, square.getDicom().getImages().get(0).createBitmap());
+		
+		Bitmap b = square.getDicom().getImages().get(0).createBitmap();
+		Bitmap bitmap = Bitmap.createScaledBitmap(b, 64, 128, false);
+		square.loadGLTexture(gl, this.context, bitmap);
 		/*Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher);
 		square.loadGLTexture(gl, this.context, bitmap);*/
 		
