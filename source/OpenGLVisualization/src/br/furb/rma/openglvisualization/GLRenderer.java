@@ -1,10 +1,13 @@
 package br.furb.rma.openglvisualization;
 
+import java.io.ByteArrayOutputStream;
+
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.opengl.GLSurfaceView.Renderer;
 import android.opengl.GLU;
 
@@ -55,14 +58,28 @@ public class GLRenderer implements Renderer {
 		// Load the texture for the square
 		
 		Bitmap b = square.getDicom().getImages().get(0).createBitmap();
-		Bitmap bitmap = Bitmap.createScaledBitmap(b, 64, 128, false);
-		square.loadGLTexture(gl, this.context, bitmap);
+		//b = BitmapFactory.decodeResource(context.getResources(), R.drawable.eaew);
+		int width = b.getWidth();
+		int height = b.getHeight();
+		int[] oi = new int[width * height];
+		b.getPixels(oi, 0, width, 0, 0, width, height);
+		
+		Bitmap bb = Bitmap.createBitmap(oi, width, height, Bitmap.Config.ALPHA_8);
+		
+		ByteArrayOutputStream stream = new ByteArrayOutputStream();
+		b.compress(Bitmap.CompressFormat.PNG, 100, stream);
+		byte[] byteArray = stream.toByteArray();
+		int size = byteArray.length;
+		
+		//Bitmap bitmap = Bitmap.createScaledBitmap(b, 72, 72, false);
+		square.loadGLTexture(gl, this.context, bb);
 		/*Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher);
 		square.loadGLTexture(gl, this.context, bitmap);*/
 		
 		gl.glEnable(GL10.GL_TEXTURE_2D);			//Enable Texture Mapping ( NEW )
 		gl.glShadeModel(GL10.GL_SMOOTH); 			//Enable Smooth Shading
-		gl.glClearColor(0.0f, 0.0f, 0.0f, 0.5f); 	//Black Background
+		//gl.glClearColor(0.0f, 0.0f, 0.0f, 0.5f); 	//Black Background
+		gl.glClearColor(1, 1, 1, 1); 	//White Background
 		gl.glClearDepthf(1.0f); 					//Depth Buffer Setup
 		gl.glEnable(GL10.GL_DEPTH_TEST); 			//Enables Depth Testing
 		gl.glDepthFunc(GL10.GL_LEQUAL); 			//The Type Of Depth Testing To Do

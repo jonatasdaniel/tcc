@@ -57,6 +57,8 @@ public class Square {
 		gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, vertices.length / 3);
 		gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);*/
 
+		gl.glEnable(GL10.GL_TEXTURE_2D);
+		
 		// bind the previously generated texture
 		gl.glBindTexture(GL10.GL_TEXTURE_2D, textures[0]);
 
