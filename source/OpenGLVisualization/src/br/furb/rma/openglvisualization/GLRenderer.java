@@ -1,15 +1,19 @@
 package br.furb.rma.openglvisualization;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.opengl.GLSurfaceView.Renderer;
 import android.opengl.GLU;
+import android.os.Environment;
 
 public class GLRenderer implements Renderer {
 	
@@ -64,12 +68,28 @@ public class GLRenderer implements Renderer {
 		int[] oi = new int[width * height];
 		b.getPixels(oi, 0, width, 0, 0, width, height);
 		
-		Bitmap bb = Bitmap.createBitmap(oi, width, height, Bitmap.Config.ALPHA_8);
 		
-		ByteArrayOutputStream stream = new ByteArrayOutputStream();
-		b.compress(Bitmap.CompressFormat.PNG, 100, stream);
-		byte[] byteArray = stream.toByteArray();
-		int size = byteArray.length;
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		b.compress(CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
+		byte[] bitmapdata = bos.toByteArray();
+		
+		File f = new File(Environment.getExternalStorageDirectory(), "foto.jpg");
+		
+		
+
+		try {
+			if (!f.exists()) {
+				f.createNewFile();
+			}
+			FileOutputStream out = new FileOutputStream(f);
+			b.compress(Bitmap.CompressFormat.JPEG, 90, out);
+			out.flush();
+			out.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}		
+		
+		Bitmap bb = Bitmap.createBitmap(oi, width, height, Bitmap.Config.ALPHA_8);
 		
 		//Bitmap bitmap = Bitmap.createScaledBitmap(b, 72, 72, false);
 		square.loadGLTexture(gl, this.context, bb);
