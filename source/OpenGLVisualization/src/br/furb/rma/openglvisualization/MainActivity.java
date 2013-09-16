@@ -3,17 +3,14 @@ package br.furb.rma.openglvisualization;
 import java.io.File;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
+import android.graphics.PixelFormat;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
-import android.os.Message;
 import android.view.GestureDetector;
 import android.widget.ImageView;
 import br.furb.rma.models.Dicom;
 import br.furb.rma.reader.DicomReader;
-import br.furb.rma.reader.DicomReaderListener;
 
 public class MainActivity extends Activity {
 
@@ -53,9 +50,13 @@ public class MainActivity extends Activity {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		surfaceView = (GLSurfaceView) findViewById(R.main.gl_surface_view);
-		surfaceView.setRenderer(new GLRenderer(new Square(dicom), MainActivity.this));
+		surfaceView.setZOrderOnTop(true);
+		surfaceView.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
+		surfaceView.getHolder().setFormat(PixelFormat.TRANSPARENT);
+		surfaceView.setRenderer(new GLRenderer(new Square(dicom),
+				MainActivity.this));
 		//imageView = (ImageView) findViewById(R.main.image_view);
 		
 		

@@ -3,6 +3,8 @@
     package="br.furb.rma.openglvisualization"
     android:versionCode="1"
     android:versionName="1.0" >
+    
+    <supports-screens android:anyDensity="true" />
 
     <uses-sdk
         android:minSdkVersion="7"

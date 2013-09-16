@@ -68,15 +68,8 @@ public class GLRenderer implements Renderer {
 		int[] oi = new int[width * height];
 		b.getPixels(oi, 0, width, 0, 0, width, height);
 		
-		
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		b.compress(CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
-		byte[] bitmapdata = bos.toByteArray();
-		
 		File f = new File(Environment.getExternalStorageDirectory(), "foto.jpg");
 		
-		
-
 		try {
 			if (!f.exists()) {
 				f.createNewFile();
@@ -89,17 +82,14 @@ public class GLRenderer implements Renderer {
 			e.printStackTrace();
 		}		
 		
-		Bitmap bb = Bitmap.createBitmap(oi, width, height, Bitmap.Config.ALPHA_8);
-		
-		//Bitmap bitmap = Bitmap.createScaledBitmap(b, 72, 72, false);
-		square.loadGLTexture(gl, this.context, bb);
+		square.loadGLTexture(gl, this.context, b);
 		/*Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher);
 		square.loadGLTexture(gl, this.context, bitmap);*/
 		
 		gl.glEnable(GL10.GL_TEXTURE_2D);			//Enable Texture Mapping ( NEW )
 		gl.glShadeModel(GL10.GL_SMOOTH); 			//Enable Smooth Shading
-		//gl.glClearColor(0.0f, 0.0f, 0.0f, 0.5f); 	//Black Background
-		gl.glClearColor(1, 1, 1, 1); 	//White Background
+		gl.glClearColor(0.0f, 0.0f, 0.0f, 0.5f); 	//Black Background
+		//gl.glClearColor(1, 1, 1, 1); 	//White Background
 		gl.glClearDepthf(1.0f); 					//Depth Buffer Setup
 		gl.glEnable(GL10.GL_DEPTH_TEST); 			//Enables Depth Testing
 		gl.glDepthFunc(GL10.GL_LEQUAL); 			//The Type Of Depth Testing To Do
