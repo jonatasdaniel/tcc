@@ -54,10 +54,11 @@ public class MainActivity extends Activity {
 		surfaceView = (GLSurfaceView) findViewById(R.main.gl_surface_view);
 		surfaceView.setZOrderOnTop(true);
 		surfaceView.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
-		surfaceView.getHolder().setFormat(PixelFormat.TRANSPARENT);
+		surfaceView.getHolder().setFormat(PixelFormat.RGB_888);
 		surfaceView.setRenderer(new GLRenderer(new Square(dicom),
 				MainActivity.this));
-		//imageView = (ImageView) findViewById(R.main.image_view);
+//		imageView = (ImageView) findViewById(R.main.image_view);
+//		imageView.setImageBitmap(dicom.getImages().get(0).createBitmap());
 		
 		
 //		reader.setListener(new DicomReaderListener() {

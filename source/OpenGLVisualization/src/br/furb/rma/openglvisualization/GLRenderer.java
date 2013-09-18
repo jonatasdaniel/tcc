@@ -62,7 +62,9 @@ public class GLRenderer implements Renderer {
 		// Load the texture for the square
 		
 		Bitmap b = square.getDicom().getImages().get(0).createBitmap();
-		//b = BitmapFactory.decodeResource(context.getResources(), R.drawable.eaew);
+		Bitmap bb = BitmapFactory.decodeResource(context.getResources(), R.drawable.eaew);
+		Bitmap.Config configb = b.getConfig();
+		Bitmap.Config configbb = bb.getConfig();
 		int width = b.getWidth();
 		int height = b.getHeight();
 		int[] oi = new int[width * height];
