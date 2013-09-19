@@ -61,7 +61,8 @@ public class GLRenderer implements Renderer {
 	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
 		// Load the texture for the square
 		
-		Bitmap b = square.getDicom().getImages().get(0).createBitmap();
+		//Bitmap b = square.getDicom().getImages().get(0).createBitmap();
+		Bitmap b = square.getDicom().getImages().get(0).createIntBitmap();
 		Bitmap bb = BitmapFactory.decodeResource(context.getResources(), R.drawable.eaew);
 		Bitmap.Config configb = b.getConfig();
 		Bitmap.Config configbb = bb.getConfig();

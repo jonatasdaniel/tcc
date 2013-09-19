@@ -58,7 +58,7 @@ public class MainActivity extends Activity {
 		surfaceView.setRenderer(new GLRenderer(new Square(dicom),
 				MainActivity.this));
 //		imageView = (ImageView) findViewById(R.main.image_view);
-//		imageView.setImageBitmap(dicom.getImages().get(0).createBitmap());
+//		imageView.setImageBitmap(dicom.getImages().get(0).createIntBitmap());
 		
 		
 //		reader.setListener(new DicomReaderListener() {

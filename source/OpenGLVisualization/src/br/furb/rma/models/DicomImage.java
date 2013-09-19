@@ -12,6 +12,7 @@ public class DicomImage implements Serializable {
 
 	private File file;
 	private byte[] dataSet;
+	private int[] pixelData;
 	private int bitsAllocated;
 	private int pixelRepresentation;
 	private int columns;
@@ -89,5 +90,20 @@ public class DicomImage implements Serializable {
 	public void setFile(File file) {
 		this.file = file;
 	}
+
+	public int[] getPixelData() {
+		return pixelData;
+	}
+
+	public void setPixelData(int[] pixelData) {
+		this.pixelData = pixelData;
+	}
+
+	public Bitmap createIntBitmap() {
+		Bitmap bmp = Bitmap.createBitmap(pixelData, columns, rows, Bitmap.Config.ARGB_8888);
+		return bmp;
+	}
+	
+	
 
 }
