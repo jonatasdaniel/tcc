@@ -7,10 +7,13 @@ import java.io.FileOutputStream;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
+import br.furb.rma.models.DicomImage;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.opengl.GLSurfaceView.Renderer;
 import android.opengl.GLU;
 import android.os.Environment;
@@ -61,8 +64,27 @@ public class GLRenderer implements Renderer {
 	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
 		// Load the texture for the square
 		
+		DicomImage image = square.getDicom().getImages().get(0);
+		int[] pixels = image.getPixelData();
+		
+		int linha = 0;
+		int coluna = 0;
+		for (int i = 0; i < pixels.length; i++) {
+			linha = i / 512;
+			coluna = i - (linha * 512);
+			
+			if(linha > 0 && linha < 60) {
+				//pixels[i] = Color.TRANSPARENT;
+			}
+			if(coluna > 0 && coluna < 60) {
+				//pixels[i] = Color.TRANSPARENT;
+			}
+		}
+		
+		int size = pixels.length;
+		
 		//Bitmap b = square.getDicom().getImages().get(0).createBitmap();
-		Bitmap b = square.getDicom().getImages().get(0).createIntBitmap();
+		Bitmap b = image.createIntBitmap();
 		Bitmap bb = BitmapFactory.decodeResource(context.getResources(), R.drawable.eaew);
 		Bitmap.Config configb = b.getConfig();
 		Bitmap.Config configbb = bb.getConfig();
@@ -71,28 +93,14 @@ public class GLRenderer implements Renderer {
 		int[] oi = new int[width * height];
 		b.getPixels(oi, 0, width, 0, 0, width, height);
 		
-		File f = new File(Environment.getExternalStorageDirectory(), "foto.jpg");
-		
-		try {
-			if (!f.exists()) {
-				f.createNewFile();
-			}
-			FileOutputStream out = new FileOutputStream(f);
-			b.compress(Bitmap.CompressFormat.JPEG, 90, out);
-			out.flush();
-			out.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}		
-		
 		square.loadGLTexture(gl, this.context, b);
 		/*Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher);
 		square.loadGLTexture(gl, this.context, bitmap);*/
 		
 		gl.glEnable(GL10.GL_TEXTURE_2D);			//Enable Texture Mapping ( NEW )
 		gl.glShadeModel(GL10.GL_SMOOTH); 			//Enable Smooth Shading
-		gl.glClearColor(0.0f, 0.0f, 0.0f, 0.5f); 	//Black Background
-		//gl.glClearColor(1, 1, 1, 1); 	//White Background
+		//gl.glClearColor(0.0f, 0.0f, 0.0f, 0.5f); 	//Black Background
+		gl.glClearColor(1, 1, 1, 1); 	//White Background
 		gl.glClearDepthf(1.0f); 					//Depth Buffer Setup
 		gl.glEnable(GL10.GL_DEPTH_TEST); 			//Enables Depth Testing
 		gl.glDepthFunc(GL10.GL_LEQUAL); 			//The Type Of Depth Testing To Do

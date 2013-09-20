@@ -36,7 +36,8 @@ public class DicomImageReader {
 		image.setBigEndian(dicomObj.bigEndian());
 		byte[] dataSet = readImageDataSet(dicomObj, image.getBitsAllocated());
 		boolean invert = dicomObj.get(Tag.PhotometricInterpretation).toString().toUpperCase().endsWith("[MONOCHROME1]") ? true : false;
-		int[] pixelData = convertToIntPixelData(dataSet, image.getBitsAllocated(), image.getColumns(), image.getRows(), invert);
+		byte[] pixels = dicomObj.get(Tag.PixelData).getBytes();
+		int[] pixelData = convertToIntPixelData(pixels, image.getBitsAllocated(), image.getColumns(), image.getRows(), invert);
 		image.setPixelData(pixelData);
 		image.setDataSet(dataSet);
 		image.setFile(file);

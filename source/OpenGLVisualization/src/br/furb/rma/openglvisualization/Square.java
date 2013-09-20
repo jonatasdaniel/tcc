@@ -17,14 +17,7 @@ public class Square {
 	
 	private FloatBuffer vertexBuffer;
 	private int[] textures = new int[1];
-	
-	/*private float vertices[] = {
-		-1.0f, -1.0f,  0.0f,        // V1 - bottom left
-		-1.0f,  1.0f,  0.0f,        // V2 - top left
-		1.0f, -1.0f,  0.0f,        // V3 - bottom right
-		1.0f,  1.0f,  0.0f         // V4 - top right
-	};*/
-	
+
 	private float vertices[] = {
 			-1.0f, -1.0f,  0.0f,        // V1 - bottom left
 			-1.0f,  1.0f,  0.0f,        // V2 - top left
@@ -103,8 +96,6 @@ public class Square {
 		
 		// Use Android GLUtils to specify a two-dimensional texture image from our bitmap 
 		GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, bitmap, 0);
-		int ha = GLUtils.getType(bitmap);
-		System.out.println(ha);
 		
 		// Clean up
 		bitmap.recycle();
