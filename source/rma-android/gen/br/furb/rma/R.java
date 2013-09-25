@@ -67,4 +67,7 @@ public final class R {
         public static final int text_view=0x7f060005;
         public static final int text_view_bold=0x7f060006;
     }
+    public static final class viewer {
+        public static final int gl_surface_view=0x7f0b0000;
+    }
 }

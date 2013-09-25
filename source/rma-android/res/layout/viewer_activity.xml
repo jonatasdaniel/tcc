@@ -13,7 +13,7 @@
         
         <ToggleButton android:textOn="3D" android:textOff="3D" style="@style/image_button"/>
         
-        <ImageButton android:src="@drawable/ic_menu_info_details" style="@style/image_button" android:onClick="dicomDetailsClick"/>
+        <!-- <ImageButton android:src="@drawable/ic_menu_info_details" style="@style/image_button" android:onClick="dicomDetailsClick"/> -->
         
     </LinearLayout>
     
@@ -26,6 +26,11 @@
     
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
         android:orientation="horizontal">
+        
+        <android.opengl.GLSurfaceView android:layout_height="match_parent" android:layout_width="match_parent"
+	    android:id="@+viewer/gl_surface_view">
+	    
+	</android.opengl.GLSurfaceView>
         
     </LinearLayout>
     

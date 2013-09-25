@@ -3,18 +3,26 @@ package br.furb.rma.models;
 import java.io.File;
 import java.io.Serializable;
 
+import android.graphics.Bitmap;
+
 public class DicomImage implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	private File file;
 	private byte[] dataSet;
+	private int[] pixelData;
 	private int bitsAllocated;
 	private int pixelRepresentation;
 	private int columns;
 	private int rows;
 	private String imageType;
 	private boolean bigEndian;
+	
+	public Bitmap createBitmap() {
+		Bitmap bmp = Bitmap.createBitmap(pixelData, columns, rows, Bitmap.Config.ARGB_8888);
+		return bmp;
+	}
 
 	public byte[] getDataSet() {
 		return dataSet;
@@ -80,4 +88,11 @@ public class DicomImage implements Serializable {
 		this.file = file;
 	}
 
+	public int[] getPixelData() {
+		return pixelData;
+	}
+
+	public void setPixelData(int[] pixelData) {
+		this.pixelData = pixelData;
+	}
 }

@@ -33,6 +33,10 @@ public class DicomImageReader {
 		image.setImageType(dicomObj.getString(Tag.ImageType));
 		image.setBigEndian(dicomObj.bigEndian());
 		byte[] dataSet = readImageDataSet(dicomObj, image.getBitsAllocated());
+		boolean invert = dicomObj.get(Tag.PhotometricInterpretation).toString().toUpperCase().endsWith("[MONOCHROME1]") ? true : false;
+		byte[] pixels = dicomObj.get(Tag.PixelData).getBytes();
+		int[] pixelData = convertToIntPixelData(pixels, image.getBitsAllocated(), image.getColumns(), image.getRows(), invert);
+		image.setPixelData(pixelData);
 		image.setDataSet(dataSet);
 		image.setFile(file);
 		
@@ -44,6 +48,7 @@ public class DicomImageReader {
 	private byte[] readImageDataSet(DicomObject dicomObject, int bitsAllocated) {
 		DicomElement element = dicomObject.get(Tag.PixelData);
 		byte[] bytes = element.getBytes();
+		
 		short[] shortArray = null;
 		try {
 			Method method = getReadMethod(bitsAllocated);
@@ -53,6 +58,100 @@ public class DicomImageReader {
 		}
 		
 		return shortToBytes(shortArray, dicomObject);
+	}
+
+	public int[] convertToIntPixelData(byte bytePixels[], int bitsAllocated,
+			int width, int height, boolean invert) {
+		int outputPixels[] = null;
+		// TODO show Memory Error Dialog
+		// actually we do not accept byte data exceeding 4MB
+		if (width * height * 4 > 4 * 1024 * 1024)
+			return outputPixels;
+		if (bytePixels == null || width < 1 || height < 1)
+			return outputPixels;
+		outputPixels = new int[width * height];
+		int pixelGrayLevel = 0;
+		int pixelGrayLevel2 = 0;
+		int max = 0;
+		int min = 65530;
+		for (int i = 0; i < bytePixels.length; i++) {
+			if (bitsAllocated == 16) {
+				int intPixelLevel = (bytePixels[i + 1] & 0xff) << 8
+						| (bytePixels[i] & 0xff);
+				if (intPixelLevel > max)
+					max = intPixelLevel;
+				if (intPixelLevel < min)
+					min = intPixelLevel;
+				i++;
+			} else if (bitsAllocated == 12) {
+				int intPixelLevel = (bytePixels[i + 2] & 0xff) << 8
+						| (bytePixels[i + 1] & 0xf0);
+				int intPixelLevel2 = (bytePixels[i + 1] & 0x0f) << 8
+						| (bytePixels[i] & 0xff);
+				if (intPixelLevel > max)
+					max = intPixelLevel;
+				if (intPixelLevel < min)
+					min = intPixelLevel;
+				if (intPixelLevel2 > max)
+					max = intPixelLevel2;
+				if (intPixelLevel2 < min)
+					min = intPixelLevel2;
+				i += 2;
+			}
+		}
+		int windowWidth = max - min;
+		int windowOffset = min;
+		for (int i = 0, j = 0; i < bytePixels.length; i++) {
+			if (bitsAllocated == 16) {
+				int intPixelLevel = (bytePixels[i + 1] & 0xff) << 8
+						| (bytePixels[i] & 0xff);
+
+				pixelGrayLevel = (256 * (intPixelLevel - windowOffset) / windowWidth);
+				pixelGrayLevel = (pixelGrayLevel > 255) ? 255
+						: ((pixelGrayLevel < 0) ? 0 : pixelGrayLevel);
+				if (invert)
+					pixelGrayLevel = 255 - pixelGrayLevel;
+				i++;
+				outputPixels[j++] = (0xFF << 24) | // alpha
+						(pixelGrayLevel << 16) | // red
+						(pixelGrayLevel << 8) | // green
+						pixelGrayLevel; // blue
+			} else if (bitsAllocated == 12) {
+				int intPixelLevel = (bytePixels[i + 2] & 0xff) << 8
+						| (bytePixels[i + 1] & 0xf0);
+				int intPixelLevel2 = (bytePixels[i + 1] & 0x0f) << 8
+						| (bytePixels[i] & 0xff);
+				pixelGrayLevel = 128 * (intPixelLevel - windowOffset)
+						/ windowWidth;
+				pixelGrayLevel = (pixelGrayLevel > 255) ? 255
+						: ((pixelGrayLevel < 0) ? 0 : pixelGrayLevel);
+				pixelGrayLevel2 = 128 * (intPixelLevel2 - windowOffset)
+						/ windowWidth;
+				pixelGrayLevel2 = (pixelGrayLevel2 > 255) ? 255
+						: ((pixelGrayLevel2 < 0) ? 0 : pixelGrayLevel2);
+
+				i += 2;
+
+				outputPixels[j++] = (0xFF << 24) | // alpha
+						(pixelGrayLevel2 << 16) | // red
+						(pixelGrayLevel2 << 8) | // green
+						pixelGrayLevel2; // blue
+
+				outputPixels[j++] = (0xFF << 24) | // alpha
+						(pixelGrayLevel << 16) | // red
+						(pixelGrayLevel << 8) | // green
+						pixelGrayLevel; // blue
+			} else {
+				pixelGrayLevel = bytePixels[i] & 0xff;// > 0 ? bytePixels[i] :
+														// 255 - bytePixels[i];
+
+				outputPixels[j++] = (0xFF << 24) | // alpha
+						(pixelGrayLevel << 16) | // red
+						(pixelGrayLevel << 8) | // green
+						pixelGrayLevel; // blue
+			}
+		}
+		return outputPixels;
 	}
 	
 	private byte[] shortToBytes(short[] shortArray, DicomObject dicomObject) {

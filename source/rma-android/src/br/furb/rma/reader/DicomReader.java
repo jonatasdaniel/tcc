@@ -18,10 +18,27 @@ import br.furb.rma.models.DicomStudy;
 public class DicomReader {
 
 	private File file;
-
+	private DicomReaderListener listener;
+	private boolean lazy;
+	private int maxImages;
+	
 	public DicomReader(File file) {
 		super();
 		this.file = file;
+	}
+	
+	public DicomReader lazy(boolean lazy) {
+		this.lazy = lazy;
+		return this;
+	}
+	
+	public DicomReader maxImages(int max) {
+		this.maxImages = max;
+		return this;
+	}
+	
+	public void setListener(DicomReaderListener listener) {
+		this.listener = listener;
 	}
 	
 	public Dicom read() throws IOException {
@@ -30,7 +47,9 @@ public class DicomReader {
 		DicomDirReader reader = new DicomDirReader(file);
 		dicom.setPatient(readPatient(reader));
 		dicom.setStudy(readStudy(reader));
-		dicom.setImages(readImages(reader));
+		if(!lazy) {
+			dicom.setImages(readImages(reader));
+		}
 		
 		return dicom;
 	}
@@ -42,9 +61,19 @@ public class DicomReader {
 		File[] files = dicomDir.listFiles();
 		Arrays.sort(files);
 		
+		int count = 0;
+		int size = files.length;
+		
 		if(files != null) {
 			for (File file : files) {
+				count++;
+				if(count == maxImages) {
+					break;
+				}
 				DicomImageReader imageReader = new DicomImageReader(file);
+				if(listener != null) {
+					listener.onChange("Lendo imagem " + count + " de " + size);
+				}
 				DicomImage image = imageReader.read();
 				images.add(image);
 			}
@@ -54,6 +83,9 @@ public class DicomReader {
 	}
 
 	private DicomPatient readPatient(DicomDirReader reader) throws IOException {
+		if(listener != null) {
+			listener.onChange("Lendo paciente");
+		}
 		DicomPatient patient = new DicomPatient();
 		
 		DicomObject dicomObject = reader.findFirstRootRecord();
@@ -64,6 +96,9 @@ public class DicomReader {
 	}
 	
 	private DicomStudy readStudy(DicomDirReader reader) throws IOException {
+		if(listener != null) {
+			listener.onChange("Lendo study");
+		}
 		DicomStudy study = new DicomStudy();
 		
 		return study;
