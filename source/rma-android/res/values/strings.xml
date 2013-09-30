@@ -5,8 +5,9 @@
     <string name="activity_dicom_files_title">Selecione um arquivo</string>
     <string name="action_settings">Settings</string>
     <string name="dicom_details_title">Informações</string>
-    
     <string name="dicom.patient.name">Nome do paciente</string>
     <string name="dicom.patient.gender">Gênero</string>
+    <string name="title_activity_flat_viewer">FlatViewerActivity</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>

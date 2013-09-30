@@ -17,6 +17,8 @@ import br.furb.rma.models.DicomStudy;
 
 public class DicomReader {
 
+	private static List<Dicom> stack;
+	
 	private File file;
 	private DicomReaderListener listener;
 	private boolean lazy;
@@ -50,6 +52,8 @@ public class DicomReader {
 		if(!lazy) {
 			dicom.setImages(readImages(reader));
 		}
+		
+		stack.add(dicom);
 		
 		return dicom;
 	}
@@ -102,6 +106,14 @@ public class DicomReader {
 		DicomStudy study = new DicomStudy();
 		
 		return study;
+	}
+	
+	public static Dicom getLastDicomReaded() {
+		if(!stack.isEmpty()) {
+			return stack.get(stack.size()-1);
+		} else {
+			return null;
+		}
 	}
 
 }

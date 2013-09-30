@@ -7,11 +7,12 @@
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
         android:orientation="horizontal">
         
-        <ToggleButton android:textOn="3D" android:textOff="3D" style="@style/image_button"/>
+        <ToggleButton android:textOn="Axial" android:textOff="Axial" style="@style/image_button"/>
         
-        <ToggleButton android:textOn="3D" android:textOff="3D" style="@style/image_button"/>
+        <ToggleButton android:textOn="Coronal" android:textOff="Coronal" style="@style/image_button"/>
         
-        <ToggleButton android:textOn="3D" android:textOff="3D" style="@style/image_button"/>
+        <ToggleButton android:textOn="Outro" android:textOff="Outro" style="@style/image_button"/>
+        <ToggleButton android:textOn="2D" android:textOff="2D" style="@style/image_button" android:onClick="flatViewerClick"/>
         
         <!-- <ImageButton android:src="@drawable/ic_menu_info_details" style="@style/image_button" android:onClick="dicomDetailsClick"/> -->
         

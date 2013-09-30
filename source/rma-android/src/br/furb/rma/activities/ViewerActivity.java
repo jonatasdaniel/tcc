@@ -9,6 +9,7 @@ import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
+import br.furb.rma.FlatViewerActivity;
 import br.furb.rma.R;
 import br.furb.rma.models.Dicom;
 import br.furb.rma.models.DicomPatient;
@@ -41,6 +42,11 @@ public class ViewerActivity extends Activity {
 		surfaceView.getHolder().setFormat(PixelFormat.RGB_888);
 		surfaceView.setRenderer(new ViewerRenderer(new Square(dicom),
 				ViewerActivity.this));
+	}
+	
+	public void flatViewerClick(View view) {
+		Intent intent = new Intent(this, FlatViewerActivity.class);
+		startActivity(intent);
 	}
 	
 	public void dicomDetailsClick(View view) {
