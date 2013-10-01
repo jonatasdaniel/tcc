@@ -26,6 +26,7 @@ public class DicomReader {
 	
 	public DicomReader(File file) {
 		super();
+		stack = new ArrayList<Dicom>();
 		this.file = file;
 	}
 	
@@ -70,8 +71,7 @@ public class DicomReader {
 		
 		if(files != null) {
 			for (File file : files) {
-				count++;
-				if(count == maxImages) {
+				if(count++ == maxImages) {
 					break;
 				}
 				DicomImageReader imageReader = new DicomImageReader(file);

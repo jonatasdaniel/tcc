@@ -3,6 +3,10 @@
     style="@style/activity"
     android:orientation="vertical"
     tools:context=".MainActivity" >
+    
+    <TextView style="@style/text_view" android:id="@+main/text_view"/>
+    
+    <Button style="@style/button" android:onClick="btnClick" android:text="Entrar"/>
 
 
 </LinearLayout>

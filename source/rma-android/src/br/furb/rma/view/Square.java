@@ -13,7 +13,9 @@ import br.furb.rma.models.Dicom;
 
 public class Square {
 
-private Dicom dicom;
+	private Dicom dicom;
+	private GL10 gl;
+	private Context context;
 	
 	private FloatBuffer vertexBuffer;
 	private int[] textures = new int[1];
@@ -80,7 +82,7 @@ private Dicom dicom;
 		gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
 		gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
 	}
-
+	
 	public void loadGLTexture(GL10 gl, Context context, Bitmap bitmap) {
 		// generate one texture pointer
 		gl.glGenTextures(1, textures, 0);
