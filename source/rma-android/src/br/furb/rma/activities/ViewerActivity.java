@@ -36,8 +36,11 @@ public class ViewerActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.viewer_activity);
 		
+		String path = getIntent().getStringExtra("path");
+		
 		String dirName = Environment.getExternalStorageDirectory().getAbsolutePath() + "/joelho_dalton/DICOMDIR";
-		final DicomReader reader = new DicomReader(new File(dirName)).maxImages(100);
+		//String dirName = path + "/joelho_dalton/DICOMDIR";
+		final DicomReader reader = new DicomReader(new File(dirName)).maxImages(35);
 		
 //		reader.setListener(new DicomReaderListener() {
 //			
@@ -98,8 +101,7 @@ public class ViewerActivity extends Activity {
 	public void dicomDetailsClick(View view) {
 		Intent intent = new Intent(this, DicomDetailsActivity.class);
 		Bundle extras = new Bundle();
-		DicomPatient patient = new DicomPatient();
-		patient.setName("Jonatas Daniel Hermann");
+		DicomPatient patient = dicom.getPatient();
 		extras.putSerializable("patient", patient);
 		extras.putSerializable("study", new DicomStudy());
 		intent.putExtras(extras);

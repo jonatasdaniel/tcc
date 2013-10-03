@@ -2,9 +2,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/activity"
     android:orientation="vertical"
+    
     tools:context=".FlatViewerActivity" >
 
-    <TextView style="@style/text_view" android:id="@+flat_viewer/description"/>
+    <TextView style="@style/text_view" android:id="@+flat_viewer/description" android:textColor="#ffffff"/>
     <SeekBar android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+flat_viewer/seek_bar"/>
 
     <ImageView android:layout_height="match_parent" android:layout_width="match_parent"

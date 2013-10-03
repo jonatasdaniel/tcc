@@ -57,23 +57,7 @@ public class ViewerRenderer implements Renderer {
 		// Load the texture for the square
 		
 		DicomImage image = square.getDicom().getImages().get(0);
-		int[] pixels = image.getPixelData();
-		
-		int linha = 0;
-		int coluna = 0;
-		for (int i = 0; i < pixels.length; i++) {
-			linha = i / 512;
-			coluna = i - (linha * 512);
-			
-			if(linha > 0 && linha < 60) {
-				//pixels[i] = Color.TRANSPARENT;
-			}
-			if(coluna > 0 && coluna < 60) {
-				//pixels[i] = Color.TRANSPARENT;
-			}
-		}
-		
-		Bitmap b = image.createBitmap();
+		Bitmap b = image.getBitmap();
 		
 		square.loadGLTexture(gl, this.context, b);
 		

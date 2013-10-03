@@ -100,7 +100,7 @@ public class Square {
 		GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, bitmap, 0);
 		
 		// Clean up
-		bitmap.recycle();
+		//bitmap.recycle();
 	}
 	
 	public Dicom getDicom() {

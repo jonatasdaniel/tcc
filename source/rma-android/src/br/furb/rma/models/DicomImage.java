@@ -4,6 +4,10 @@ import java.io.File;
 import java.io.Serializable;
 
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
+import android.graphics.Paint;
 
 public class DicomImage implements Serializable {
 
@@ -12,16 +16,45 @@ public class DicomImage implements Serializable {
 	private File file;
 	private byte[] dataSet;
 	private int[] pixelData;
+	private Bitmap bitmap;
 	private int bitsAllocated;
 	private int pixelRepresentation;
 	private int columns;
 	private int rows;
 	private String imageType;
 	private boolean bigEndian;
+
+	public Bitmap createBitmap(int[] pixelData) {
+		Bitmap bmp = Bitmap.createBitmap(pixelData, columns, rows,
+				Bitmap.Config.ARGB_8888);
+		//Bitmap novo = toGrayscale(bmp);
+		Bitmap novo = bmp;
+		return novo;
+	}
 	
-	public Bitmap createBitmap() {
-		Bitmap bmp = Bitmap.createBitmap(pixelData, columns, rows, Bitmap.Config.ARGB_8888);
-		return bmp;
+	public Bitmap toGrayscale(Bitmap bmpOriginal)
+    {        
+        int width, height;
+        height = bmpOriginal.getHeight();
+        width = bmpOriginal.getWidth();    
+
+        Bitmap bmpGrayscale = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
+        Canvas c = new Canvas(bmpGrayscale);
+        Paint paint = new Paint();
+        ColorMatrix cm = new ColorMatrix();
+        cm.setSaturation(0);
+        ColorMatrixColorFilter f = new ColorMatrixColorFilter(cm);
+        paint.setColorFilter(f);
+        c.drawBitmap(bmpOriginal, 0, 0, paint);
+        return bmpGrayscale;
+    }
+
+	public Bitmap getBitmap() {
+		return bitmap;
+	}
+
+	public void setBitmap(Bitmap bitmap) {
+		this.bitmap = bitmap;
 	}
 
 	public byte[] getDataSet() {

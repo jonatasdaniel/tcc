@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/activity"
     android:orientation="vertical"
+    android:background="#ffffff"
     tools:context=".ViewerActivity" >
     
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"

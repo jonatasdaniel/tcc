@@ -9,11 +9,17 @@ import org.dcm4che2.data.DicomObject;
 import org.dcm4che2.data.Tag;
 import org.dcm4che2.io.DicomInputStream;
 
+import android.graphics.Color;
+import br.furb.rma.LUTable;
 import br.furb.rma.models.DicomImage;
 
 public class DicomImageReader {
 
+	private static final int LIMIAR = -16777200;
+	private static final int BRIGHTNESS = (255 / 100) * 55;
+	private static final int CONTRAST = (255 / 100) * 63;
 	private File file;
+	private boolean limiarEnabled = true;
 
 	public DicomImageReader(File file) {
 		super();
@@ -33,18 +39,33 @@ public class DicomImageReader {
 		image.setImageType(dicomObj.getString(Tag.ImageType));
 		image.setBigEndian(dicomObj.bigEndian());
 		byte[] dataSet = readImageDataSet(dicomObj, image.getBitsAllocated());
-		boolean invert = dicomObj.get(Tag.PhotometricInterpretation).toString().toUpperCase().endsWith("[MONOCHROME1]") ? true : false;
-		byte[] pixels = dicomObj.get(Tag.PixelData).getBytes();
-		int[] pixelData = convertToIntPixelData(pixels, image.getBitsAllocated(), image.getColumns(), image.getRows(), invert);
-		image.setPixelData(pixelData);
-		image.setDataSet(dataSet);
+		//boolean invert = dicomObj.get(Tag.PhotometricInterpretation).toString().toUpperCase().endsWith("[MONOCHROME1]") ? true : false;
+		//byte[] pixels = dicomObj.get(Tag.PixelData).getBytes();
+		//int[] pixelData = convertToIntPixelData(pixels, image.getBitsAllocated(), image.getColumns(), image.getRows(), invert);
+		int[] pixelData = toIntArray(dataSet);
+		//pixelData = setBrightnessAndContrast(pixelData, BRIGHTNESS, CONTRAST);
+		//image.setPixelData(pixelData);
+		//image.setDataSet(dataSet);
+		image.setBitmap(image.createBitmap(pixelData));
 		image.setFile(file);
 		
 		inputStream.close();
 		
+		pixelData = null;
+		//pixels = null;
+		System.gc();
+		
 		return image;
 	}
 	
+	private int[] toIntArray(byte[] dataSet) {
+		int[] array = new int[dataSet.length];
+		for (int i = 0; i < dataSet.length; i++) {
+			array[i] = (int) dataSet[i];
+		}
+		return array;
+	}
+
 	private byte[] readImageDataSet(DicomObject dicomObject, int bitsAllocated) {
 		DicomElement element = dicomObject.get(Tag.PixelData);
 		byte[] bytes = element.getBytes();
@@ -57,7 +78,14 @@ public class DicomImageReader {
 			return null;
 		}
 		
-		return shortToBytes(shortArray, dicomObject);
+		byte[] transformed = shortToBytes(shortArray, dicomObject);
+		for (int i = 0; i < transformed.length; i++) {
+			int bah = (int) transformed[i];
+			if(bah > 50)
+				System.out.println("opa");
+			
+		}
+		return transformed;
 	}
 
 	public int[] convertToIntPixelData(byte bytePixels[], int bitsAllocated,
@@ -101,6 +129,13 @@ public class DicomImageReader {
 		}
 		int windowWidth = max - min;
 		int windowOffset = min;
+		
+		LUTable lut = new LUTable();
+
+		double contrastVal = Math.pow(CONTRAST / 127., 2);
+		lut.setContrast(contrastVal);
+		lut.setBrightness(256 - BRIGHTNESS);
+		
 		for (int i = 0, j = 0; i < bytePixels.length; i++) {
 			if (bitsAllocated == 16) {
 				int intPixelLevel = (bytePixels[i + 1] & 0xff) << 8
@@ -112,10 +147,32 @@ public class DicomImageReader {
 				if (invert)
 					pixelGrayLevel = 255 - pixelGrayLevel;
 				i++;
-				outputPixels[j++] = (0xFF << 24) | // alpha
+//				outputPixels[j++] = limiar((0xFF << 24) | // alpha
+//						(pixelGrayLevel << 16) | // red
+//						(pixelGrayLevel << 8) | // green
+//						pixelGrayLevel/* blue */);
+				
+				outputPixels[j] = limiar((0xFF << 24) | // alpha
 						(pixelGrayLevel << 16) | // red
 						(pixelGrayLevel << 8) | // green
-						pixelGrayLevel; // blue
+						pixelGrayLevel/* blue */);
+	
+				/* aplica brilho e contraste */
+				int gray = outputPixels[j] & 0xffffffff;
+
+				int red = (gray >> 16) & 0xff;
+				int green = (gray >> 8) & 0xff;
+				int blue = gray & 0xff;
+
+				red = lut.getValue(red);
+				green = lut.getValue(green);
+				blue = lut.getValue(blue);
+
+				//pixelData[i] = (0xFF << 24) | (red << 16) | (green << 8) | blue;
+				outputPixels[j] = limiar((0xFF << 24) | (red << 16) | (green << 8) | blue);
+				
+				j++;
+				
 			} else if (bitsAllocated == 12) {
 				int intPixelLevel = (bytePixels[i + 2] & 0xff) << 8
 						| (bytePixels[i + 1] & 0xf0);
@@ -132,28 +189,35 @@ public class DicomImageReader {
 
 				i += 2;
 
-				outputPixels[j++] = (0xFF << 24) | // alpha
+				outputPixels[j++] = limiar((0xFF << 24) | // alpha
 						(pixelGrayLevel2 << 16) | // red
 						(pixelGrayLevel2 << 8) | // green
-						pixelGrayLevel2; // blue
+						pixelGrayLevel2/* blue */);
 
-				outputPixels[j++] = (0xFF << 24) | // alpha
+				outputPixels[j++] = limiar((0xFF << 24) | // alpha
 						(pixelGrayLevel << 16) | // red
 						(pixelGrayLevel << 8) | // green
-						pixelGrayLevel; // blue
+						pixelGrayLevel/* blue */); 
 			} else {
 				pixelGrayLevel = bytePixels[i] & 0xff;// > 0 ? bytePixels[i] :
 														// 255 - bytePixels[i];
 
-				outputPixels[j++] = (0xFF << 24) | // alpha
+				outputPixels[j++] = limiar((0xFF << 24) | // alpha
 						(pixelGrayLevel << 16) | // red
 						(pixelGrayLevel << 8) | // green
-						pixelGrayLevel; // blue
+						pixelGrayLevel/* blue */); 
 			}
 		}
 		return outputPixels;
 	}
 	
+	private int limiar(int pixel) {
+		if(limiarEnabled && pixel < LIMIAR) {
+			return Color.TRANSPARENT;
+		}
+		return pixel;
+	}
+
 	private byte[] shortToBytes(short[] shortArray, DicomObject dicomObject) {
 		if(shortArray != null) {
 			int width = dicomObject.getInt(Tag.Rows);

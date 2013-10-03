@@ -55,6 +55,7 @@ public final class R {
         public static final int viewer_activity=0x7f030006;
     }
     public static final class main {
+        public static final int edittext=0x7f080001;
         public static final int text_view=0x7f080000;
     }
     public static final class menu {
@@ -74,15 +75,16 @@ public final class R {
         public static final int AppBaseTheme=0x7f060000;
         public static final int AppTheme=0x7f060001;
         public static final int activity=0x7f060002;
-        public static final int button=0x7f060007;
-        public static final int image_button=0x7f060008;
-        public static final int item=0x7f060009;
-        public static final int item_horizontal=0x7f06000a;
-        public static final int item_vertical=0x7f06000b;
+        public static final int button=0x7f060008;
+        public static final int edit_text=0x7f060006;
+        public static final int image_button=0x7f060009;
+        public static final int item=0x7f06000a;
+        public static final int item_horizontal=0x7f06000b;
+        public static final int item_vertical=0x7f06000c;
         public static final int list_view=0x7f060003;
         public static final int list_view_fill=0x7f060004;
         public static final int text_view=0x7f060005;
-        public static final int text_view_bold=0x7f060006;
+        public static final int text_view_bold=0x7f060007;
     }
     public static final class viewer {
         public static final int btn_2d=0x7f0e0003;

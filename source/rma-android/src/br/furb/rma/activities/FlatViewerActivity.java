@@ -58,7 +58,7 @@ public class FlatViewerActivity extends Activity {
 
 	private void setImage(int index) {
 		DicomImage image = dicom.getImages().get(index);
-		imageView.setImageBitmap(image.createBitmap());
+		imageView.setImageBitmap(image.getBitmap());
 		StringBuilder builder = new StringBuilder();
 		builder.append("Mostrando ").append(index+1).append(" de ").append(dicom.getImages().size());
 		tvDescription.setText(builder.toString());
