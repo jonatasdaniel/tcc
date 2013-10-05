@@ -18,7 +18,8 @@ public class Square {
 	private Context context;
 	
 	private FloatBuffer vertexBuffer;
-	private int[] textures = new int[1];
+	//private int[] textures = new int[1];
+	private int[] textures = new int[3];
 
 	private float vertices[] = {
 			-1.0f, -1.0f,  0.0f,        // V1 - bottom left
@@ -98,6 +99,29 @@ public class Square {
 		
 		// Use Android GLUtils to specify a two-dimensional texture image from our bitmap 
 		GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, bitmap, 0);
+		
+		// Clean up
+		//bitmap.recycle();
+	}
+	
+	public void loadGLTextureNew(GL10 gl, Context context, Bitmap bitmap) {
+		for (int i = 0; i < textures.length; i++) {
+			// generate one texture pointer
+			gl.glGenTextures(1, textures, 0);
+			// ...and bind it to our array
+			gl.glBindTexture(GL10.GL_TEXTURE_2D, textures[i]);
+			
+			// create nearest filtered texture
+			gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_NEAREST);
+			gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);
+			
+			gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_S, GL10.GL_REPEAT);
+			gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_T, GL10.GL_REPEAT);
+			
+			// Use Android GLUtils to specify a two-dimensional texture image from our bitmap
+			bitmap = dicom.getImages().get(i).getBitmap();
+			GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, bitmap, 0);
+		}
 		
 		// Clean up
 		//bitmap.recycle();

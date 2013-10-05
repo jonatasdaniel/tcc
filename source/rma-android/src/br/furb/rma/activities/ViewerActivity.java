@@ -12,8 +12,10 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.SeekBar;
 import android.widget.ToggleButton;
 import br.furb.rma.R;
+import br.furb.rma.models.Camera;
 import br.furb.rma.models.Dicom;
 import br.furb.rma.models.DicomPatient;
 import br.furb.rma.models.DicomStudy;
@@ -28,8 +30,10 @@ public class ViewerActivity extends Activity {
 	private ToggleButton btnSagital;
 	private ToggleButton btnCoronal;
 	private ToggleButton btn2D;
+	private SeekBar seekBar;
 	
 	private Dicom dicom;
+	private ViewerRenderer renderer;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -85,12 +89,17 @@ public class ViewerActivity extends Activity {
 			});
 		}
 		
+		seekBar = (SeekBar) findViewById(R.viewer.seekbar);
+		seekBar.setOnSeekBarChangeListener(seekBarListener);
+		
 		surfaceView = (GLSurfaceView) findViewById(R.viewer.gl_surface_view);
 		surfaceView.setZOrderOnTop(true);
 		surfaceView.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
 		surfaceView.getHolder().setFormat(PixelFormat.RGB_888);
-		surfaceView.setRenderer(new ViewerRenderer(new Square(dicom),
-				ViewerActivity.this));
+		
+		renderer = new ViewerRenderer(new Square(dicom),
+				ViewerActivity.this);
+		surfaceView.setRenderer(renderer);
 	}
 
 	public void flatViewerClick(View view) {
@@ -107,5 +116,26 @@ public class ViewerActivity extends Activity {
 		intent.putExtras(extras);
 		startActivity(intent);
 	}
+	
+	private SeekBar.OnSeekBarChangeListener seekBarListener = new SeekBar.OnSeekBarChangeListener() {
+		
+		@Override
+		public void onStopTrackingTouch(SeekBar seekBar) {
+			Camera camera = renderer.getCamera();
+			camera.setEyeZ(seekBar.getProgress());
+			renderer.setCamera(camera);
+		}
+		
+		@Override
+		public void onStartTrackingTouch(SeekBar seekBar) {
+			
+		}
+		
+		@Override
+		public void onProgressChanged(SeekBar seekBar, int progress,
+				boolean fromUser) {
+			
+		}
+	};
 
 }
