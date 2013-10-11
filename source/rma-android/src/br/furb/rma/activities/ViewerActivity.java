@@ -11,9 +11,8 @@ import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
-import android.widget.CompoundButton;
+import android.widget.Button;
 import android.widget.SeekBar;
-import android.widget.ToggleButton;
 import br.furb.rma.R;
 import br.furb.rma.models.Camera;
 import br.furb.rma.models.Dicom;
@@ -25,11 +24,11 @@ import br.furb.rma.view.Square;
 public class ViewerActivity extends Activity {
 
 	private GLSurfaceView surfaceView;
-	private List<ToggleButton> toggleControls;
-	private ToggleButton btnAxial;
-	private ToggleButton btnSagital;
-	private ToggleButton btnCoronal;
-	private ToggleButton btn2D;
+	private List<Button> buttons;
+	private Button btnAxial;
+	private Button btnSagital;
+	private Button btnCoronal;
+	private Button btn2D;
 	private SeekBar seekBar;
 	
 	private Dicom dicom;
@@ -39,8 +38,6 @@ public class ViewerActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.viewer_activity);
-		
-		String path = getIntent().getStringExtra("path");
 		
 		String dirName = Environment.getExternalStorageDirectory().getAbsolutePath() + "/joelho_dalton/DICOMDIR";
 		//String dirName = path + "/joelho_dalton/DICOMDIR";
@@ -63,27 +60,31 @@ public class ViewerActivity extends Activity {
 			e.printStackTrace();
 		}
 		
-		toggleControls = new ArrayList<ToggleButton>();
-		toggleControls.add(btnAxial = (ToggleButton) findViewById(R.viewer.btn_axial));
-		toggleControls.add(btnSagital = (ToggleButton) findViewById(R.viewer.btn_sagital));
-		toggleControls.add(btnCoronal = (ToggleButton) findViewById(R.viewer.btn_coronal));
-		toggleControls.add(btn2D = (ToggleButton) findViewById(R.viewer.btn_2d));
+		buttons = new ArrayList<Button>();
+		buttons.add(btnAxial = (Button) findViewById(R.viewer.btn_axial));
+		buttons.add(btnSagital = (Button) findViewById(R.viewer.btn_sagital));
+		buttons.add(btnCoronal = (Button) findViewById(R.viewer.btn_coronal));
+		buttons.add(btn2D = (Button) findViewById(R.viewer.btn_2d));
 		
-		for (ToggleButton btn : toggleControls) {
-			btn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+		for (final Button btn : buttons) {
+			btn.setOnClickListener(new View.OnClickListener() {
 				
 				@Override
-				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-					if(isChecked) {
-						for (ToggleButton toggle : toggleControls) {
-							if(buttonView != toggle) {
-								toggle.setOnCheckedChangeListener(null);
-								toggle.setChecked(false);
-								toggle.setOnCheckedChangeListener(this);
-							}
+				public void onClick(View v) {
+					for (final Button button : buttons) {
+						if(v != button) {
+							button.setOnClickListener(null);
+							button.setEnabled(true);
+							button.setOnClickListener(this);
+						} else {
+							button.setOnClickListener(null);
+							button.setEnabled(false);
+							button.setOnClickListener(this);
 						}
-					} else {
-						toggleControls.get(0).setChecked(true);
+					}
+					
+					if(v == btn2D) {
+						flatViewerClick(v);
 					}
 				}
 			});

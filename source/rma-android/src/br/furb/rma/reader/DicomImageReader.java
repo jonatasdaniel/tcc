@@ -9,7 +9,6 @@ import org.dcm4che2.data.DicomObject;
 import org.dcm4che2.data.Tag;
 import org.dcm4che2.io.DicomInputStream;
 
-import android.graphics.Color;
 import br.furb.rma.LUTable;
 import br.furb.rma.models.DicomImage;
 
@@ -20,44 +19,17 @@ public class DicomImageReader {
 	private static final int CONTRAST = (255 / 100) * 63;
 	private File file;
 	private boolean limiarEnabled = true;
+	private boolean bBoxEnabled = false;
+	
+	private int maxX, minX, maxY, minY;
 
 	public DicomImageReader(File file) {
 		super();
 		this.file = file;
-	}
-	
-	public DicomImage readOld() throws IOException {
-		DicomInputStream inputStream = new DicomInputStream(file);
-		DicomObject dicomObj = inputStream.readDicomObject();
-		
-		DicomImage image = new DicomImage();
-		
-		image.setBitsAllocated(dicomObj.getInt(Tag.BitsAllocated));
-		image.setPixelRepresentation(dicomObj.getInt(Tag.PixelRepresentation)); // 1 - com sinal
-		image.setColumns(dicomObj.getInt(Tag.Columns));
-		image.setRows(dicomObj.getInt(Tag.Rows));
-		image.setImageType(dicomObj.getString(Tag.ImageType));
-		image.setBigEndian(dicomObj.bigEndian());
-		byte[] dataSet = readImageDataSet(dicomObj, image.getBitsAllocated());
-		int size = dataSet.length;
-		boolean invert = dicomObj.get(Tag.PhotometricInterpretation).toString().toUpperCase().endsWith("[MONOCHROME1]") ? true : false;
-		byte[] pixels = dicomObj.get(Tag.PixelData).getBytes();
-		//int[] pixelData = convertToIntPixelData(pixels, image.getBitsAllocated(), image.getColumns(), image.getRows(), invert);
-		int[] pixelData = toIntArray(dataSet);
-		size = pixelData.length;
-		//pixelData = setBrightnessAndContrast(pixelData, BRIGHTNESS, CONTRAST);
-		//image.setPixelData(pixelData);
-		//image.setDataSet(dataSet);
-		image.setBitmap(image.createBitmap(pixelData));
-		image.setFile(file);
-		
-		inputStream.close();
-		
-		pixelData = null;
-		//pixels = null;
-		System.gc();
-		
-		return image;
+		maxX = 0;
+		minX = 0;
+		maxY = 0;
+		minY = 0;
 	}
 	
 	public DicomImage read() throws IOException {
@@ -73,7 +45,10 @@ public class DicomImageReader {
 		image.setImageType(dicomObj.getString(Tag.ImageType));
 		image.setBigEndian(dicomObj.bigEndian());
 		byte[] dataSet = readImageDataSet(dicomObj, image.getBitsAllocated());		
-		int[] pixelData = toIntArray(dataSet);
+		int[] pixelData = toIntArray(image, dataSet);
+		if(bBoxEnabled) {
+			pixelData = crop(pixelData);
+		}
 		image.setBitmap(image.createBitmap(pixelData));
 		image.setFile(file);
 		
@@ -87,12 +62,39 @@ public class DicomImageReader {
 		return image;
 	}
 	
-	private int[] toIntArray(byte[] dataSet) {
+	private int[] crop(int[] pixelData) {
+		int columns = maxX - minX;
+		int rows = maxY - minY;
+		int[] pixels = new int[rows * columns];
+		return pixels;
+	}
+
+	private int[] toIntArray(DicomImage image, byte[] dataSet) {
 		int[] array = new int[dataSet.length];
 		int value = 0;
+		int limiar = 0;
+		int x = 0;
+		int y = 0;
 		for (int i = 0; i < dataSet.length; i++) {
+			x = i - (y * image.getColumns());
+			y = i / image.getColumns();
 			value = (int) dataSet[i];
-			array[i] += limiar(value) << 24;
+			limiar = limiar(value);
+			if(bBoxEnabled && limiar == 0) {
+				if(x < minX) {
+					minX = x;
+				}
+				if(x > maxX) {
+					maxX = x;
+				}
+				if(y < minY) {
+					minY = y;
+				}
+				if(y > maxY) {
+					maxY = y;
+				}
+			}
+			array[i] += limiar << 24;
 			array[i] += value << 16;
 			array[i] += value << 8;
 			array[i] += value;

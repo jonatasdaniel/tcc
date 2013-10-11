@@ -55,9 +55,9 @@ public class ViewerRenderer implements Renderer {
 		GLU.gluPerspective(gl, 45.0f, (float) width / (float) height, 0.1f,
 				100.0f);
 		
-		GLU.gluLookAt(gl, camera.getEyeX(), camera.getEyeY(), camera.getEyeZ(), 
-				camera.getCenterX(), camera.getCenterY(), camera.getCenterZ(),
-				camera.getUpX(), camera.getUpY(), camera.getUpZ());
+//		GLU.gluLookAt(gl, camera.getEyeX(), camera.getEyeY(), camera.getEyeZ(), 
+//				camera.getCenterX(), camera.getCenterY(), camera.getCenterZ(),
+//				camera.getUpX(), camera.getUpY(), camera.getUpZ());
 		
 		gl.glMatrixMode(GL10.GL_MODELVIEW); // Select The Modelview Matrix
 		gl.glLoadIdentity();
