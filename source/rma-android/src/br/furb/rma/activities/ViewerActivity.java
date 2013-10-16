@@ -6,6 +6,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
@@ -16,9 +17,11 @@ import android.widget.SeekBar;
 import br.furb.rma.R;
 import br.furb.rma.models.Camera;
 import br.furb.rma.models.Dicom;
+import br.furb.rma.models.DicomImage;
 import br.furb.rma.models.DicomPatient;
 import br.furb.rma.models.DicomStudy;
 import br.furb.rma.reader.DicomReader;
+import br.furb.rma.view.PhotoCube;
 import br.furb.rma.view.Square;
 
 public class ViewerActivity extends Activity {
@@ -40,8 +43,7 @@ public class ViewerActivity extends Activity {
 		setContentView(R.layout.viewer_activity);
 		
 		String dirName = Environment.getExternalStorageDirectory().getAbsolutePath() + "/joelho_dalton/DICOMDIR";
-		//String dirName = path + "/joelho_dalton/DICOMDIR";
-		final DicomReader reader = new DicomReader(new File(dirName)).maxImages(35);
+		final DicomReader reader = new DicomReader(new File(dirName));
 		
 //		reader.setListener(new DicomReaderListener() {
 //			
@@ -55,7 +57,7 @@ public class ViewerActivity extends Activity {
 //		});
 		
 		try {
-			dicom = reader.read();
+			dicom = reader.maxImages(30).read();
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -98,8 +100,15 @@ public class ViewerActivity extends Activity {
 		surfaceView.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
 		surfaceView.getHolder().setFormat(PixelFormat.RGB_888);
 		
-		renderer = new ViewerRenderer(new Square(dicom),
-				ViewerActivity.this);
+		List<Bitmap> bitmaps = new ArrayList<Bitmap>();
+		for (DicomImage image : dicom.getImages()) {
+			bitmaps.add(image.getBitmap());
+		}
+		
+		PhotoCube cube = new PhotoCube(this, dicom, bitmaps);
+		Square square = new Square(dicom, bitmaps);
+		
+		renderer = new ViewerRenderer(square, cube, ViewerActivity.this);
 		surfaceView.setRenderer(renderer);
 	}
 

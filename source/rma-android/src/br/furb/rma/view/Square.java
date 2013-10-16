@@ -3,6 +3,7 @@ package br.furb.rma.view;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import java.util.List;
 
 import javax.microedition.khronos.opengles.GL10;
 
@@ -19,7 +20,9 @@ public class Square {
 	
 	private FloatBuffer vertexBuffer;
 	//private int[] textures = new int[1];
-	private int[] textures = new int[3];
+	private int[] textures;
+	
+	private List<Bitmap> bitmaps;
 
 	private float vertices[] = {
 			-1.0f, -1.0f,  0.0f,        // V1 - bottom left
@@ -37,8 +40,11 @@ public class Square {
 		1.0f, 0.0f		// bottom right	(V3)
 	};
 	
-	public Square(Dicom dicom) {
+	public Square(Dicom dicom, List<Bitmap> bitmaps) {
 		this.dicom = dicom;
+		
+		textures = new int[dicom.getImages().size()];
+		this.bitmaps = bitmaps;
 		
 		ByteBuffer byteBuffer = ByteBuffer.allocateDirect(vertices.length * 4); 
 		byteBuffer.order(ByteOrder.nativeOrder());
@@ -104,10 +110,13 @@ public class Square {
 		//bitmap.recycle();
 	}
 	
-	public void loadGLTextureNew(GL10 gl, Context context, Bitmap bitmap) {
+	public void loadGLTextureNew(GL10 gl, Context context) {
+		Bitmap bitmap = null;
+		gl.glGenTextures(textures.length, textures, 0);
+		
 		for (int i = 0; i < textures.length; i++) {
 			// generate one texture pointer
-			gl.glGenTextures(1, textures, 0);
+			
 			// ...and bind it to our array
 			gl.glBindTexture(GL10.GL_TEXTURE_2D, textures[i]);
 			
@@ -119,8 +128,9 @@ public class Square {
 			gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_T, GL10.GL_REPEAT);
 			
 			// Use Android GLUtils to specify a two-dimensional texture image from our bitmap
-			bitmap = dicom.getImages().get(i).getBitmap();
+			bitmap = bitmaps.get(i);
 			GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, bitmap, 0);
+			gl.glBindTexture(GL10.GL_TEXTURE_2D, 0);
 		}
 		
 		// Clean up

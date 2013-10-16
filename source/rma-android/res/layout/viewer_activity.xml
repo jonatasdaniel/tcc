@@ -9,13 +9,13 @@
         
         
         
-        <Button android:text="Axial" style="@style/image_button" android:layout_weight="25" android:id="@+viewer/btn_axial"/>
+        <Button android:text="Axial" style="@style/fill_button" android:layout_weight="25" android:id="@+viewer/btn_axial"/>
         
-        <Button android:text="Sagital" style="@style/image_button" android:layout_weight="25" android:id="@+viewer/btn_sagital"/>
+        <Button android:text="Sagital" style="@style/fill_button" android:layout_weight="25" android:id="@+viewer/btn_sagital"/>
         
-        <Button android:text="Coronal" style="@style/image_button" android:layout_weight="25" android:id="@+viewer/btn_coronal"/>
+        <Button android:text="Coronal" style="@style/fill_button" android:layout_weight="25" android:id="@+viewer/btn_coronal"/>
         
-        <Button android:text="2D" style="@style/image_button" android:layout_weight="25" android:id="@+viewer/btn_2d"/>
+        <Button android:text="2D" style="@style/fill_button" android:layout_weight="25" android:id="@+viewer/btn_2d"/>
         
         <!-- <ToggleButton android:textOn="2D" android:textOff="2D" style="@style/image_button" android:onClick="flatViewerClick" android:layout_weight="25" android:id="@+viewer/btn_2d"/> -->
         

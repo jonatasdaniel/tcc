@@ -22,6 +22,7 @@ public class DicomImageReader {
 	private boolean bBoxEnabled = false;
 	
 	private int maxX, minX, maxY, minY;
+	private DicomImage image;
 
 	public DicomImageReader(File file) {
 		super();
@@ -36,7 +37,7 @@ public class DicomImageReader {
 		DicomInputStream inputStream = new DicomInputStream(file);
 		DicomObject dicomObj = inputStream.readDicomObject();
 		
-		DicomImage image = new DicomImage();
+		image = new DicomImage();
 		
 		image.setBitsAllocated(dicomObj.getInt(Tag.BitsAllocated));
 		image.setPixelRepresentation(dicomObj.getInt(Tag.PixelRepresentation)); // 1 - com sinal
@@ -44,8 +45,8 @@ public class DicomImageReader {
 		image.setRows(dicomObj.getInt(Tag.Rows));
 		image.setImageType(dicomObj.getString(Tag.ImageType));
 		image.setBigEndian(dicomObj.bigEndian());
-		byte[] dataSet = readImageDataSet(dicomObj, image.getBitsAllocated());		
-		int[] pixelData = toIntArray(image, dataSet);
+		byte[] dataSet = readImageDataSet(dicomObj, image.getBitsAllocated());
+		int[] pixelData = toIntArray(dataSet);
 		if(bBoxEnabled) {
 			pixelData = crop(pixelData);
 		}
@@ -65,11 +66,27 @@ public class DicomImageReader {
 	private int[] crop(int[] pixelData) {
 		int columns = maxX - minX;
 		int rows = maxY - minY;
+		int x, xOriginal, yOriginal;
+		int y = 0;
 		int[] pixels = new int[rows * columns];
+		for (int i = 0; i < pixels.length; i++) {
+			x = i - (y * image.getColumns());
+			y = i / image.getColumns();
+			xOriginal = x + minX;
+			yOriginal = y + minY;
+			pixels[i] = getPixelAt(pixelData, xOriginal, yOriginal);
+		}
 		return pixels;
 	}
+	
+	private int getPixelAt(int[] pixels, int x, int y) {
+		int index = x * image.getColumns();
+		index += y;
+		
+		return pixels[index];
+	}
 
-	private int[] toIntArray(DicomImage image, byte[] dataSet) {
+	private int[] toIntArray(byte[] dataSet) {
 		int[] array = new int[dataSet.length];
 		int value = 0;
 		int limiar = 0;
@@ -80,7 +97,7 @@ public class DicomImageReader {
 			y = i / image.getColumns();
 			value = (int) dataSet[i];
 			limiar = limiar(value);
-			if(bBoxEnabled && limiar == 0) {
+			if(bBoxEnabled && limiar != 255) {
 				if(x < minX) {
 					minX = x;
 				}
@@ -115,9 +132,6 @@ public class DicomImageReader {
 		}
 		
 		byte[] transformed = shortToBytes(shortArray, dicomObject);
-//		for (int i = 0; i < transformed.length; i++) {
-//			int bah = (int) transformed[i];
-//		}
 		return transformed;
 		
 	}

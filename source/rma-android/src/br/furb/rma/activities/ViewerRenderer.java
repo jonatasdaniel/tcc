@@ -9,16 +9,19 @@ import android.opengl.GLSurfaceView.Renderer;
 import android.opengl.GLU;
 import br.furb.rma.models.Camera;
 import br.furb.rma.models.DicomImage;
+import br.furb.rma.view.PhotoCube;
 import br.furb.rma.view.Square;
 
 public class ViewerRenderer implements Renderer {
 
 	private Square square;
+	private PhotoCube cube;
 	private Context context;
 	private Camera camera;
 
-	public ViewerRenderer(Square square, Context context) {
+	public ViewerRenderer(Square square, PhotoCube cube, Context context) {
 		this.square = square;
+		this.cube = cube;
 		this.context = context;
 
 		camera = new Camera();
@@ -38,7 +41,11 @@ public class ViewerRenderer implements Renderer {
 		// Drawing
 		gl.glTranslatef(0.0f, 0.0f, -5.0f);     // move 5 units INTO the screen
 												// is the same as moving the camera 5 units away
-		square.draw(gl);                        // Draw the triangle
+		if(square != null) {
+			square.draw(gl);                        // Draw the triangle
+		} else if(cube != null) {
+			cube.draw(gl);
+		}
 	}
 
 	@Override
@@ -66,11 +73,13 @@ public class ViewerRenderer implements Renderer {
 	@Override
 	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
 		// Load the texture for the square
-
-		DicomImage image = square.getDicom().getImages().get(0);
-		Bitmap b = image.getBitmap();
-
-		square.loadGLTexture(gl, this.context, b);
+		
+		//square.loadGLTexture(gl, this.context, b);
+		if(square != null) {
+			square.loadGLTextureNew(gl, this.context);
+		} else {
+			cube.loadTexture(gl);
+		}
 
 		gl.glEnable(GL10.GL_TEXTURE_2D); // Enable Texture Mapping ( NEW )
 		gl.glShadeModel(GL10.GL_SMOOTH); // Enable Smooth Shading

@@ -43,6 +43,10 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
     
+    <style name="fill_button" parent="button">
+        <item name="android:layout_width">match_parent</item>
+    </style>
+    
     <style name="image_button" parent="button">
         
     </style>

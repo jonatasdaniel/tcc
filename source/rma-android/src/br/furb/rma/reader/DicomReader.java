@@ -71,6 +71,9 @@ public class DicomReader {
 		
 		if(files != null) {
 			for (File file : files) {
+				if(count == 0) {
+					continue;
+				}
 				if(count++ == maxImages) {
 					break;
 				}
