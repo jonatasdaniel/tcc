@@ -17,7 +17,6 @@
     <style name="list_view">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:background">#ffffff</item>
     </style>
     
     <style name="list_view_fill" parent="list_view">

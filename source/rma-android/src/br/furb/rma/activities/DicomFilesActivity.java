@@ -2,8 +2,11 @@ package br.furb.rma.activities;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -52,55 +55,25 @@ public class DicomFilesActivity extends Activity {
 
 			@Override
 			public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
-				loadFiles = false;
+				Intent it = new Intent(DicomFilesActivity.this, ViewerActivity.class);
+				Bundle extras = new Bundle();
+				Dicom dicom = (Dicom) adapter.getItemAtPosition(position);
+				extras.putString("dir", dicom.getFile().getAbsolutePath());
+				it.putExtras(extras);
+				startActivity(it);
 			}
 		});
 	}
 
 	private void loadFiles() {
-		loadFiles = true;
-		
-		final File sdcard = Environment.getExternalStorageDirectory();
-		final String[] extensions = {"dcm"};
-		final FileFilter filter = new FileFilter() {
-			
-			@Override
-			public boolean accept(File pathname) {
-				if(extensions.length > 0) {
-					for (String extension : extensions) {
-						if(pathname.getName().endsWith(".".concat(extension))) {
-							return true;
-						}
-					}
-					return false;
-				} else {
-					return true;
-				}
-			}
-		};
+		List<Dicom> files = new ArrayList<Dicom>();
+		files.add(new Dicom(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/joelho_dalton")));
 		
 		adapter = new DicomFileAdapter(this);
+		for (Dicom dicom : files) {
+			adapter.addItem(dicom);
+		}
 		listView.setAdapter(adapter);
-		
-		new Thread(new Runnable() {
-			
-			@Override
-			public void run() {
-				File[] files = sdcard.listFiles(filter);
-				for (File f : files) {
-					if(!loadFiles) {
-						break;
-					}
-					/*Dicom dicomFile = new Dicom(f.getName(), f);
-					Message msg = new Message();
-					msg.what = ADD_ITEM;
-					msg.obj = dicomFile;
-					handler.sendMessage(msg);*/
-				}
-				
-				loadFiles = false;
-			}
-		}).start();
 	}
 
 }

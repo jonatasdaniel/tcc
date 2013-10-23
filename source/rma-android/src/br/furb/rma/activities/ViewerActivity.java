@@ -21,11 +21,12 @@ import br.furb.rma.models.DicomImage;
 import br.furb.rma.models.DicomPatient;
 import br.furb.rma.models.DicomStudy;
 import br.furb.rma.reader.DicomReader;
-import br.furb.rma.view.PhotoCube;
 import br.furb.rma.view.Square;
 
 public class ViewerActivity extends Activity {
 
+	private final static int FLAT_VIEWER = 0;
+	
 	private GLSurfaceView surfaceView;
 	private List<Button> buttons;
 	private Button btnAxial;
@@ -42,6 +43,7 @@ public class ViewerActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.viewer_activity);
 		
+		//String dirName = getIntent().getExtras().getString("dir") + "/DICOMDIR";
 		String dirName = Environment.getExternalStorageDirectory().getAbsolutePath() + "/joelho_dalton/DICOMDIR";
 		final DicomReader reader = new DicomReader(new File(dirName));
 		
@@ -105,16 +107,15 @@ public class ViewerActivity extends Activity {
 			bitmaps.add(image.getBitmap());
 		}
 		
-		PhotoCube cube = new PhotoCube(this, dicom, bitmaps);
 		Square square = new Square(dicom, bitmaps);
 		
-		renderer = new ViewerRenderer(square, cube, ViewerActivity.this);
+		renderer = new ViewerRenderer(square, ViewerActivity.this);
 		surfaceView.setRenderer(renderer);
 	}
 
 	public void flatViewerClick(View view) {
 		Intent intent = new Intent(this, FlatViewerActivity.class);
-		startActivity(intent);
+		startActivityForResult(intent, FLAT_VIEWER);
 	}
 	
 	public void dicomDetailsClick(View view) {
@@ -145,6 +146,12 @@ public class ViewerActivity extends Activity {
 		public void onProgressChanged(SeekBar seekBar, int progress,
 				boolean fromUser) {
 			
+		}
+	};
+	
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if(requestCode == FLAT_VIEWER) {
+			btn2D.setEnabled(true);
 		}
 	};
 

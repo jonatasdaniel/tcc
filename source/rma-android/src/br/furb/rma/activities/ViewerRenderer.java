@@ -4,30 +4,22 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.opengl.GLSurfaceView.Renderer;
 import android.opengl.GLU;
 import br.furb.rma.models.Camera;
-import br.furb.rma.models.DicomImage;
-import br.furb.rma.view.PhotoCube;
 import br.furb.rma.view.Square;
 
 public class ViewerRenderer implements Renderer {
 
 	private Square square;
-	private PhotoCube cube;
 	private Context context;
 	private Camera camera;
 
-	public ViewerRenderer(Square square, PhotoCube cube, Context context) {
+	public ViewerRenderer(Square square, Context context) {
 		this.square = square;
-		this.cube = cube;
 		this.context = context;
 
 		camera = new Camera();
-		camera.setEyeX(5);
-		camera.setEyeY(5);
-		camera.setEyeZ(5);
 	}
 
 	@Override
@@ -41,11 +33,9 @@ public class ViewerRenderer implements Renderer {
 		// Drawing
 		gl.glTranslatef(0.0f, 0.0f, -5.0f);     // move 5 units INTO the screen
 												// is the same as moving the camera 5 units away
-		if(square != null) {
-			square.draw(gl);                        // Draw the triangle
-		} else if(cube != null) {
-			cube.draw(gl);
-		}
+		
+		
+		square.draw(gl);                        // Draw the triangle
 	}
 
 	@Override
@@ -75,16 +65,12 @@ public class ViewerRenderer implements Renderer {
 		// Load the texture for the square
 		
 		//square.loadGLTexture(gl, this.context, b);
-		if(square != null) {
-			square.loadGLTextureNew(gl, this.context);
-		} else {
-			cube.loadTexture(gl);
-		}
+		square.loadGLTextureNew(gl, this.context);
 
 		gl.glEnable(GL10.GL_TEXTURE_2D); // Enable Texture Mapping ( NEW )
 		gl.glShadeModel(GL10.GL_SMOOTH); // Enable Smooth Shading
 		gl.glClearColor(0.0f, 0.0f, 0.0f, 0.5f); // Black Background
-		// gl.glClearColor(1, 1, 1, 1); //White Background
+		//gl.glClearColor(1, 1, 1, 1); //White Background
 		gl.glClearDepthf(1.0f); // Depth Buffer Setup
 		gl.glEnable(GL10.GL_DEPTH_TEST); // Enables Depth Testing
 		gl.glDepthFunc(GL10.GL_LEQUAL); // The Type Of Depth Testing To Do

@@ -5,7 +5,7 @@
     android:orientation="vertical" >
     
     <TextView style="@style/text_view" android:id="@+dicom_file/name" android:paddingTop="15dip" android:paddingBottom="15dip"
-        android:paddingLeft="15dip"/>
+        android:paddingLeft="15dip" android:textColor="#ffffff"/>
     
 
 </LinearLayout>

@@ -60,30 +60,41 @@ public class Square {
 	}
 	
 	public void draw(GL10 gl) {
+		gl.glMatrixMode(GL10.GL_MODELVIEW);
+		
 		/*gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
 		gl.glColor4f(0.0f, 1.0f, 0.0f, 0.5f);
 		gl.glVertexPointer(3, GL10.GL_FLOAT, 0, vertexBuffer);
 		gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, vertices.length / 3);
 		gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);*/
 
+		float y = -0.01f;
+		float inc = y;
+		
 		gl.glEnable(GL10.GL_TEXTURE_2D);
 		
-		// bind the previously generated texture
-		gl.glBindTexture(GL10.GL_TEXTURE_2D, textures[0]);
+		for (int i = 0; i < textures.length; i++) {
+			gl.glTranslatef(0.0f, y, 0.0f);
+			
+			// bind the previously generated texture
+			gl.glBindTexture(GL10.GL_TEXTURE_2D, textures[i]);
 
-		// Point to our buffers
-		gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
-		gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
+			// Point to our buffers
+			gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
+			gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
 
-		// Set the face rotation
-		gl.glFrontFace(GL10.GL_CW);
+			// Set the face rotation
+			gl.glFrontFace(GL10.GL_CW);
 
-		// Point to our vertex buffer
-		gl.glVertexPointer(3, GL10.GL_FLOAT, 0, vertexBuffer);
-		gl.glTexCoordPointer(2, GL10.GL_FLOAT, 0, textureBuffer);
+			// Point to our vertex buffer
+			gl.glVertexPointer(3, GL10.GL_FLOAT, 0, vertexBuffer);
+			gl.glTexCoordPointer(2, GL10.GL_FLOAT, 0, textureBuffer);
 
-		// Draw the vertices as triangle strip
-		gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, vertices.length / 3);
+			// Draw the vertices as triangle strip
+			gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, vertices.length / 3);
+			
+			y += inc;
+		}
 
 		// Disable the client state before leaving
 		gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
@@ -113,9 +124,12 @@ public class Square {
 	public void loadGLTextureNew(GL10 gl, Context context) {
 		Bitmap bitmap = null;
 		gl.glGenTextures(textures.length, textures, 0);
+		float y = -0.1f;
 		
 		for (int i = 0; i < textures.length; i++) {
 			// generate one texture pointer
+			
+			//gl.glTranslatef(0.0f, y, -5.0f);
 			
 			// ...and bind it to our array
 			gl.glBindTexture(GL10.GL_TEXTURE_2D, textures[i]);
@@ -131,6 +145,8 @@ public class Square {
 			bitmap = bitmaps.get(i);
 			GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, bitmap, 0);
 			gl.glBindTexture(GL10.GL_TEXTURE_2D, 0);
+			
+			y += -0.1f;
 		}
 		
 		// Clean up
