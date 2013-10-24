@@ -45,6 +45,7 @@ public class ViewerActivity extends Activity {
 		
 		//String dirName = getIntent().getExtras().getString("dir") + "/DICOMDIR";
 		String dirName = Environment.getExternalStorageDirectory().getAbsolutePath() + "/joelho_dalton/DICOMDIR";
+		//String dirName = Environment.getExternalStorageDirectory().getAbsolutePath() + "/joelho_jonny/dicomdir";
 		final DicomReader reader = new DicomReader(new File(dirName));
 		
 //		reader.setListener(new DicomReaderListener() {
