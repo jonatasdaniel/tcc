@@ -6,6 +6,8 @@ import javax.microedition.khronos.opengles.GL10;
 import android.content.Context;
 import android.opengl.GLSurfaceView.Renderer;
 import android.opengl.GLU;
+import android.opengl.Matrix;
+import android.os.SystemClock;
 import br.furb.rma.models.Camera;
 import br.furb.rma.view.Square;
 
@@ -14,12 +16,15 @@ public class ViewerRenderer implements Renderer {
 	private Square square;
 	private Context context;
 	private Camera camera;
-
+	
+	private boolean cameraChanged = true;
+	
 	public ViewerRenderer(Square square, Context context) {
 		this.square = square;
 		this.context = context;
 
 		camera = new Camera();
+		camera.setEyeX(-0.2f);
 	}
 
 	@Override
@@ -31,11 +36,18 @@ public class ViewerRenderer implements Renderer {
 		gl.glLoadIdentity();
 
 		// Drawing
-		gl.glTranslatef(0.0f, 0.0f, -5.0f);     // move 5 units INTO the screen
-												// is the same as moving the camera 5 units away
+		// move 5 units INTO the screen, is the same as moving the camera 5 units away
+		gl.glTranslatef(0.0f, 0.0f, -5.0f);
 		
+		if(cameraChanged) {
+			GLU.gluLookAt(gl, camera.getEyeX(), camera.getEyeY(), camera.getEyeZ(), 
+					camera.getCenterX(), camera.getCenterY(), camera.getCenterZ(),
+					camera.getUpX(), camera.getUpY(), camera.getUpZ());
+			
+		}
 		
-		square.draw(gl);                        // Draw the triangle
+		// Draw the triangle
+		square.draw(gl);                        
 	}
 
 	@Override
@@ -52,10 +64,6 @@ public class ViewerRenderer implements Renderer {
 		GLU.gluPerspective(gl, 45.0f, (float) width / (float) height, 0.1f,
 				100.0f);
 		
-//		GLU.gluLookAt(gl, camera.getEyeX(), camera.getEyeY(), camera.getEyeZ(), 
-//				camera.getCenterX(), camera.getCenterY(), camera.getCenterZ(),
-//				camera.getUpX(), camera.getUpY(), camera.getUpZ());
-		
 		gl.glMatrixMode(GL10.GL_MODELVIEW); // Select The Modelview Matrix
 		gl.glLoadIdentity();
 	}
@@ -65,12 +73,11 @@ public class ViewerRenderer implements Renderer {
 		// Load the texture for the square
 		
 		//square.loadGLTexture(gl, this.context, b);
-		square.loadGLTextureNew(gl, this.context);
+		square.loadGLTextures(gl, this.context);
 
 		gl.glEnable(GL10.GL_TEXTURE_2D); // Enable Texture Mapping ( NEW )
 		gl.glShadeModel(GL10.GL_SMOOTH); // Enable Smooth Shading
 		gl.glClearColor(0.0f, 0.0f, 0.0f, 0.5f); // Black Background
-		//gl.glClearColor(1, 1, 1, 1); //White Background
 		gl.glClearDepthf(1.0f); // Depth Buffer Setup
 		gl.glEnable(GL10.GL_DEPTH_TEST); // Enables Depth Testing
 		gl.glDepthFunc(GL10.GL_LEQUAL); // The Type Of Depth Testing To Do
@@ -85,6 +92,6 @@ public class ViewerRenderer implements Renderer {
 
 	public void setCamera(Camera camera) {
 		this.camera = camera;
+		cameraChanged = true;
 	}
-
 }

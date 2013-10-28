@@ -134,7 +134,9 @@ public class ViewerActivity extends Activity {
 		@Override
 		public void onStopTrackingTouch(SeekBar seekBar) {
 			Camera camera = renderer.getCamera();
-			camera.setEyeZ(seekBar.getProgress());
+			int progress = seekBar.getProgress();
+			Float eyeY = Float.parseFloat("-0." + progress);
+			camera.setEyeY(eyeY);
 			renderer.setCamera(camera);
 		}
 		

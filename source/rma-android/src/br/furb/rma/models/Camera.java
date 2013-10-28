@@ -2,85 +2,85 @@ package br.furb.rma.models;
 
 public class Camera {
 
-	private Integer eyeX = 0;
-	private Integer eyeY = 0;
-	private Integer eyeZ = 0;
-	private Integer centerX = 0;
-	private Integer centerY = 0;
-	private Integer centerZ = 0;
-	private Integer upX = 0;
-	private Integer upY = 1;
-	private Integer upZ = 0;
+	private Float eyeX = 0f;
+	private Float eyeY = 0f;
+	private Float eyeZ = 0f;
+	private Float centerX = 0f;
+	private Float centerY = 0f;
+	private Float centerZ = 0f;
+	private Float upX = 0f;
+	private Float upY = 1f;
+	private Float upZ = 0f;
 	
-	public Integer getEyeX() {
+	public Float getEyeX() {
 		return eyeX;
 	}
 
-	public void setEyeX(Integer eyeX) {
+	public void setEyeX(Float eyeX) {
 		this.eyeX = eyeX;
 	}
 
-	public Integer getEyeY() {
+	public Float getEyeY() {
 		return eyeY;
 	}
 
-	public void setEyeY(Integer eyeY) {
+	public void setEyeY(Float eyeY) {
 		this.eyeY = eyeY;
 	}
 
-	public Integer getEyeZ() {
+	public Float getEyeZ() {
 		return eyeZ;
 	}
 
-	public void setEyeZ(Integer eyeZ) {
+	public void setEyeZ(Float eyeZ) {
 		this.eyeZ = eyeZ;
 	}
 
-	public Integer getCenterX() {
+	public Float getCenterX() {
 		return centerX;
 	}
 
-	public void setCenterX(Integer centerX) {
+	public void setCenterX(Float centerX) {
 		this.centerX = centerX;
 	}
 
-	public Integer getCenterY() {
+	public Float getCenterY() {
 		return centerY;
 	}
 
-	public void setCenterY(Integer centerY) {
+	public void setCenterY(Float centerY) {
 		this.centerY = centerY;
 	}
 
-	public Integer getCenterZ() {
+	public Float getCenterZ() {
 		return centerZ;
 	}
 
-	public void setCenterZ(Integer centerZ) {
+	public void setCenterZ(Float centerZ) {
 		this.centerZ = centerZ;
 	}
 
-	public Integer getUpX() {
+	public Float getUpX() {
 		return upX;
 	}
 
-	public void setUpX(Integer upX) {
+	public void setUpX(Float upX) {
 		this.upX = upX;
 	}
 
-	public Integer getUpY() {
+	public Float getUpY() {
 		return upY;
 	}
 
-	public void setUpY(Integer upY) {
+	public void setUpY(Float upY) {
 		this.upY = upY;
 	}
 
-	public Integer getUpZ() {
+	public Float getUpZ() {
 		return upZ;
 	}
 
-	public void setUpZ(Integer upZ) {
+	public void setUpZ(Float upZ) {
 		this.upZ = upZ;
 	}
 

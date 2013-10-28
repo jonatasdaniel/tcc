@@ -72,7 +72,7 @@ public class Square {
 		gl.glVertexPointer(3, GL10.GL_FLOAT, 0, vertexBuffer);
 		gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, vertices.length / 3);
 		gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);*/
-
+		
 		float z = -0.001f;
 		
 		gl.glEnable(GL10.GL_TEXTURE_2D);
@@ -112,31 +112,9 @@ public class Square {
 		gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
 	}
 	
-	public void loadGLTexture(GL10 gl, Context context, Bitmap bitmap) {
-		// generate one texture pointer
-		gl.glGenTextures(1, textures, 0);
-		// ...and bind it to our array
-		gl.glBindTexture(GL10.GL_TEXTURE_2D, textures[0]);
-		
-		// create nearest filtered texture
-		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_NEAREST);
-		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);
-		
-		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_S, GL10.GL_REPEAT);
-		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_T, GL10.GL_REPEAT);
-		
-		// Use Android GLUtils to specify a two-dimensional texture image from our bitmap 
-		GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, bitmap, 0);
-		
-		// Clean up
-		//bitmap.recycle();
-	}
-	
-	public void loadGLTextureNew(GL10 gl, Context context) {
+	public void loadGLTextures(GL10 gl, Context context) {
 		Bitmap bitmap = null;
 		gl.glGenTextures(textures.length, textures, 0);
-		float y = -0.8f;
-		float z = -0.1f;
 		
 		for (int i = 0; i < textures.length; i++) {
 			// generate one texture pointer
@@ -163,6 +141,10 @@ public class Square {
 	
 	public Dicom getDicom() {
 		return dicom;
+	}
+
+	public void rotate(int progress) {
+		
 	}
 	
 }
