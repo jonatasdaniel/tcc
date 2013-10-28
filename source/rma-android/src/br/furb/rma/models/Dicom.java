@@ -8,6 +8,8 @@ public class Dicom {
 	private String name;
 	private File file;
 
+	private double spacingBetweenSlices;
+
 	private DicomPatient patient;
 	private DicomStudy study;
 
@@ -57,6 +59,14 @@ public class Dicom {
 
 	public void setImages(List<DicomImage> images) {
 		this.images = images;
+	}
+
+	public double getSpacingBetweenSlices() {
+		return spacingBetweenSlices;
+	}
+
+	public void setSpacingBetweenSlices(double spacingBetweenSlices) {
+		this.spacingBetweenSlices = spacingBetweenSlices;
 	}
 
 }

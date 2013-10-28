@@ -23,6 +23,7 @@ public class DicomReader {
 	private DicomReaderListener listener;
 	private boolean lazy;
 	private int maxImages;
+	private Dicom dicom;
 	
 	public DicomReader(File file) {
 		super();
@@ -45,7 +46,7 @@ public class DicomReader {
 	}
 	
 	public Dicom read() throws IOException {
-		Dicom dicom = new Dicom(file);
+		dicom = new Dicom(file);
 		
 		DicomDirReader reader = new DicomDirReader(file);
 		dicom.setPatient(readPatient(reader));
@@ -74,7 +75,7 @@ public class DicomReader {
 				if(count++ == maxImages) {
 					break;
 				}
-				DicomImageReader imageReader = new DicomImageReader(file);
+				DicomImageReader imageReader = new DicomImageReader(dicom, file);
 				if(listener != null) {
 					listener.onChange("Lendo imagem " + count + " de " + size);
 				}

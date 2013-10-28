@@ -73,9 +73,13 @@ public class Square {
 		gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, vertices.length / 3);
 		gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);*/
 
-		float z = -0.01f;
+		float z = -0.001f;
 		
 		gl.glEnable(GL10.GL_TEXTURE_2D);
+		
+		gl.glDepthMask(false);
+		gl.glEnable(GL10.GL_BLEND);
+		gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 		
 		for (int i = 0; i < textures.length; i++) {
 			gl.glTranslatef(0.0f, 0.0f, z);
@@ -94,18 +98,14 @@ public class Square {
 			gl.glVertexPointer(3, GL10.GL_FLOAT, 0, vertexBuffer);
 			gl.glTexCoordPointer(2, GL10.GL_FLOAT, 0, textureBuffer);
 
-			gl.glDepthMask(false);
-			gl.glEnable(GL10.GL_BLEND);
-			gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
-			
 			// Draw the vertices as triangle strip
 			gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, vertices.length / 3);
 			
-			gl.glDisable(GL10.GL_BLEND);
-			gl.glDepthMask(true);
-			
 			//y += inc;
 		}
+		
+		gl.glDisable(GL10.GL_BLEND);
+		gl.glDepthMask(true);
 
 		// Disable the client state before leaving
 		gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);

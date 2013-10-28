@@ -10,6 +10,7 @@ import org.dcm4che2.data.Tag;
 import org.dcm4che2.io.DicomInputStream;
 
 import br.furb.rma.LUTable;
+import br.furb.rma.models.Dicom;
 import br.furb.rma.models.DicomImage;
 
 public class DicomImageReader {
@@ -22,10 +23,12 @@ public class DicomImageReader {
 	private boolean bBoxEnabled = false;
 	
 	private int maxX, minX, maxY, minY;
+	private Dicom dicom;
 	private DicomImage image;
 
-	public DicomImageReader(File file) {
+	public DicomImageReader(Dicom dicom, File file) {
 		super();
+		this.dicom = dicom;
 		this.file = file;
 		maxX = 0;
 		minX = 0;
@@ -38,7 +41,8 @@ public class DicomImageReader {
 		DicomObject dicomObj = inputStream.readDicomObject();
 		
 		image = new DicomImage();
-		
+		double spacingBetweenSlices = dicomObj.getDouble(Tag.SpacingBetweenSlices);
+		dicom.setSpacingBetweenSlices(spacingBetweenSlices);
 		image.setBitsAllocated(dicomObj.getInt(Tag.BitsAllocated));
 		image.setPixelRepresentation(dicomObj.getInt(Tag.PixelRepresentation)); // 1 - com sinal
 		image.setColumns(dicomObj.getInt(Tag.Columns));
