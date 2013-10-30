@@ -35,6 +35,11 @@ public class ViewerActivity extends Activity {
 	private Button btn2D;
 	private SeekBar seekBar;
 	
+	private float angulo = 90;
+	private float raio = 3;
+	
+	private Camera camera;
+	
 	private Dicom dicom;
 	private ViewerRenderer renderer;
 	
@@ -42,6 +47,10 @@ public class ViewerActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.viewer_activity);
+		
+		camera = new Camera();
+		camera.setEyeX(retornaX(angulo, raio));
+		camera.setEyeZ(retornaZ(angulo, raio));
 		
 		//String dirName = getIntent().getExtras().getString("dir") + "/DICOMDIR";
 		String dirName = Environment.getExternalStorageDirectory().getAbsolutePath() + "/joelho_dalton/DICOMDIR";
@@ -60,7 +69,7 @@ public class ViewerActivity extends Activity {
 //		});
 		
 		try {
-			dicom = reader.maxImages(30).read();
+			dicom = reader.maxImages(10).read();
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -76,26 +85,30 @@ public class ViewerActivity extends Activity {
 				
 				@Override
 				public void onClick(View v) {
-					for (final Button button : buttons) {
-						if(v != button) {
-							button.setOnClickListener(null);
-							button.setEnabled(true);
-							button.setOnClickListener(this);
-						} else {
-							button.setOnClickListener(null);
-							button.setEnabled(false);
-							button.setOnClickListener(this);
-						}
-					}
+//					for (final Button button : buttons) {
+//						if(v != button) {
+//							button.setOnClickListener(null);
+//							button.setEnabled(true);
+//							button.setOnClickListener(this);
+//						} else {
+//							button.setOnClickListener(null);
+//							button.setEnabled(false);
+//							button.setOnClickListener(this);
+//						}
+//					}
 					
 					if(v == btn2D) {
 						flatViewerClick(v);
+					} else if(v == btnSagital) {
+						sagitalClick(v);
 					}
 				}
 			});
 		}
 		
 		seekBar = (SeekBar) findViewById(R.viewer.seekbar);
+		seekBar.setMax(360);
+		seekBar.setProgress(90);
 		seekBar.setOnSeekBarChangeListener(seekBarListener);
 		
 		surfaceView = (GLSurfaceView) findViewById(R.viewer.gl_surface_view);
@@ -110,7 +123,7 @@ public class ViewerActivity extends Activity {
 		
 		Square square = new Square(dicom, bitmaps);
 		
-		renderer = new ViewerRenderer(square, ViewerActivity.this);
+		renderer = new ViewerRenderer(square, ViewerActivity.this, camera);
 		surfaceView.setRenderer(renderer);
 	}
 
@@ -129,14 +142,32 @@ public class ViewerActivity extends Activity {
 		startActivity(intent);
 	}
 	
+	public void sagitalClick(View view) {
+		angulo += 15;
+		
+		camera.setEyeX(retornaX(angulo, raio));
+		camera.setEyeZ(retornaZ(angulo, raio));
+		renderer.setCamera(camera);
+	}
+
+	public float retornaX(float angulo, float raio) {
+		return (float) (raio * Math.cos(Math.PI * angulo / 180.0));
+	}
+
+	public float retornaZ(float angulo, float raio) {
+		return (float) (raio * Math.sin(Math.PI * angulo / 180.0));
+	}
+	
 	private SeekBar.OnSeekBarChangeListener seekBarListener = new SeekBar.OnSeekBarChangeListener() {
 		
 		@Override
 		public void onStopTrackingTouch(SeekBar seekBar) {
 			Camera camera = renderer.getCamera();
 			int progress = seekBar.getProgress();
-			Float eyeY = Float.parseFloat("-0." + progress);
-			camera.setEyeY(eyeY);
+			angulo = progress;
+			
+			camera.setEyeX(retornaX(angulo, raio));
+			camera.setEyeZ(retornaZ(angulo, raio));
 			renderer.setCamera(camera);
 		}
 		

@@ -73,7 +73,7 @@ public class Square {
 		gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, vertices.length / 3);
 		gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);*/
 		
-		float z = -0.001f;
+		float z = 0.0078125f;
 		
 		gl.glEnable(GL10.GL_TEXTURE_2D);
 		
