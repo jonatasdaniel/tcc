@@ -6,6 +6,7 @@ import javax.microedition.khronos.opengles.GL10;
 import android.content.Context;
 import android.opengl.GLSurfaceView.Renderer;
 import android.opengl.GLU;
+import android.util.Log;
 import br.furb.rma.models.Camera;
 import br.furb.rma.view.Square;
 
@@ -38,10 +39,14 @@ public class ViewerRenderer implements Renderer {
 			GLU.gluLookAt(gl, camera.getEyeX(), camera.getEyeY(), camera.getEyeZ(), 
 					camera.getCenterX(), camera.getCenterY(), camera.getCenterZ(),
 					camera.getUpX(), camera.getUpY(), camera.getUpZ());
+			
+			//cameraChanged = false;
+			
+			Log.d("rma", "camera changed");
 		}
 		
 		// Draw the triangle
-		square.draw(gl);                        
+		square.draw(gl);
 	}
 
 	@Override

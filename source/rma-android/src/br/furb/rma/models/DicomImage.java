@@ -27,9 +27,7 @@ public class DicomImage implements Serializable {
 	public Bitmap createBitmap(int[] pixelData) {
 		Bitmap bmp = Bitmap.createBitmap(pixelData, columns, rows,
 				Bitmap.Config.ARGB_8888);
-		//Bitmap novo = toGrayscale(bmp);
-		Bitmap novo = bmp;
-		return novo;
+		return bmp;
 	}
 	
 	public Bitmap toGrayscale(Bitmap bmpOriginal)
@@ -50,6 +48,9 @@ public class DicomImage implements Serializable {
     }
 
 	public Bitmap getBitmap() {
+		if(pixelData != null && bitmap == null) {
+			bitmap = createBitmap(getPixelData());
+		}
 		return bitmap;
 	}
 

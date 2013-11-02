@@ -14,6 +14,7 @@ import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import br.furb.rma.R;
 import br.furb.rma.models.Camera;
 import br.furb.rma.models.Dicom;
@@ -33,9 +34,10 @@ public class ViewerActivity extends Activity {
 	private Button btnSagital;
 	private Button btnCoronal;
 	private Button btn2D;
+	private TextView tvAngle;
 	private SeekBar seekBar;
 	
-	private float angulo = 90;
+	private float angulo = 120;
 	private float raio = 3;
 	
 	private Camera camera;
@@ -69,7 +71,7 @@ public class ViewerActivity extends Activity {
 //		});
 		
 		try {
-			dicom = reader.maxImages(10).read();
+			dicom = reader.maxImages(25).read();
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -106,9 +108,12 @@ public class ViewerActivity extends Activity {
 			});
 		}
 		
+		tvAngle = (TextView) findViewById(R.viewer.angle);
+		tvAngle.setText(angulo + "º");
+		
 		seekBar = (SeekBar) findViewById(R.viewer.seekbar);
 		seekBar.setMax(360);
-		seekBar.setProgress(90);
+		seekBar.setProgress((int) angulo);
 		seekBar.setOnSeekBarChangeListener(seekBarListener);
 		
 		surfaceView = (GLSurfaceView) findViewById(R.viewer.gl_surface_view);
@@ -169,6 +174,7 @@ public class ViewerActivity extends Activity {
 			camera.setEyeX(retornaX(angulo, raio));
 			camera.setEyeZ(retornaZ(angulo, raio));
 			renderer.setCamera(camera);
+			tvAngle.setText(angulo + "º");
 		}
 		
 		@Override

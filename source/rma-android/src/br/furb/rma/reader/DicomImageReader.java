@@ -2,22 +2,18 @@ package br.furb.rma.reader;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Method;
 
 import org.dcm4che2.data.DicomElement;
 import org.dcm4che2.data.DicomObject;
 import org.dcm4che2.data.Tag;
 import org.dcm4che2.io.DicomInputStream;
 
-import br.furb.rma.LUTable;
 import br.furb.rma.models.Dicom;
 import br.furb.rma.models.DicomImage;
 
 public class DicomImageReader {
 
 	private static final int LIMIAR = 50;
-	private static final int BRIGHTNESS = (255 / 100) * 55;
-	private static final int CONTRAST = (255 / 100) * 63;
 	private File file;
 	private boolean limiarEnabled = true;
 	private boolean bBoxEnabled = false;
@@ -51,18 +47,21 @@ public class DicomImageReader {
 		image.setBigEndian(dicomObj.bigEndian());
 		byte[] dataSet = readImageDataSet(dicomObj, image.getBitsAllocated());
 		int[] pixelData = toIntArray(dataSet);
+//		int[] pixelData = readImageDataSet(dicomObj, image.getBitsAllocated());
 		if(bBoxEnabled) {
 			pixelData = crop(pixelData);
 		}
+		//image.setPixelData(pixelData);
 		image.setBitmap(image.createBitmap(pixelData));
-		image.setFile(file);
+		//image.setFile(file);
 		
 		inputStream.close();
 		
 		pixelData = null;
-		dataSet = null;
+		dicomObj = null;
+		//dataSet = null;
 		//pixels = null;
-		System.gc();
+		//System.gc();
 		
 		return image;
 	}
@@ -128,139 +127,15 @@ public class DicomImageReader {
 		byte[] bytes = element.getBytes();
 		
 		short[] shortArray = null;
-		try {
-			Method method = getReadMethod(bitsAllocated);
-			shortArray = (short[]) method.invoke(this, bytes);
-		} catch(Exception e) {
-			return null;
+//		int[] transformed = null;
+		if(bitsAllocated == 16) {
+			shortArray = read16BitsImage(bytes);
+//			transformed = read16BitsImageNew(bytes, dicomObject);
 		}
 		
 		byte[] transformed = shortToBytes(shortArray, dicomObject);
 		return transformed;
 		
-	}
-
-	public int[] convertToIntPixelData(byte bytePixels[], int bitsAllocated,
-			int width, int height, boolean invert) {
-		int outputPixels[] = null;
-		// TODO show Memory Error Dialog
-		// actually we do not accept byte data exceeding 4MB
-		if (width * height * 4 > 4 * 1024 * 1024)
-			return outputPixels;
-		if (bytePixels == null || width < 1 || height < 1)
-			return outputPixels;
-		outputPixels = new int[width * height];
-		int pixelGrayLevel = 0;
-		int pixelGrayLevel2 = 0;
-		int max = 0;
-		int min = 65530;
-		for (int i = 0; i < bytePixels.length; i++) {
-			if (bitsAllocated == 16) {
-				int intPixelLevel = (bytePixels[i + 1] & 0xff) << 8
-						| (bytePixels[i] & 0xff);
-				if (intPixelLevel > max)
-					max = intPixelLevel;
-				if (intPixelLevel < min)
-					min = intPixelLevel;
-				i++;
-			} else if (bitsAllocated == 12) {
-				int intPixelLevel = (bytePixels[i + 2] & 0xff) << 8
-						| (bytePixels[i + 1] & 0xf0);
-				int intPixelLevel2 = (bytePixels[i + 1] & 0x0f) << 8
-						| (bytePixels[i] & 0xff);
-				if (intPixelLevel > max)
-					max = intPixelLevel;
-				if (intPixelLevel < min)
-					min = intPixelLevel;
-				if (intPixelLevel2 > max)
-					max = intPixelLevel2;
-				if (intPixelLevel2 < min)
-					min = intPixelLevel2;
-				i += 2;
-			}
-		}
-		int windowWidth = max - min;
-		int windowOffset = min;
-		
-		LUTable lut = new LUTable();
-
-		double contrastVal = Math.pow(CONTRAST / 127., 2);
-		lut.setContrast(contrastVal);
-		lut.setBrightness(256 - BRIGHTNESS);
-		
-		for (int i = 0, j = 0; i < bytePixels.length; i++) {
-			if (bitsAllocated == 16) {
-				int intPixelLevel = (bytePixels[i + 1] & 0xff) << 8
-						| (bytePixels[i] & 0xff);
-
-				pixelGrayLevel = (256 * (intPixelLevel - windowOffset) / windowWidth);
-				pixelGrayLevel = (pixelGrayLevel > 255) ? 255
-						: ((pixelGrayLevel < 0) ? 0 : pixelGrayLevel);
-				if (invert)
-					pixelGrayLevel = 255 - pixelGrayLevel;
-				i++;
-//				outputPixels[j++] = limiar((0xFF << 24) | // alpha
-//						(pixelGrayLevel << 16) | // red
-//						(pixelGrayLevel << 8) | // green
-//						pixelGrayLevel/* blue */);
-				
-				outputPixels[j] = limiar((0xFF << 24) | // alpha
-						(pixelGrayLevel << 16) | // red
-						(pixelGrayLevel << 8) | // green
-						pixelGrayLevel/* blue */);
-				
-				/* aplica brilho e contraste */
-				/*int gray = outputPixels[j] & 0xffffffff;
-
-				int red = (gray >> 16) & 0xff;
-				int green = (gray >> 8) & 0xff;
-				int blue = gray & 0xff;
-
-				//red = lut.getValue(red);
-				//green = lut.getValue(green);
-				//blue = lut.getValue(blue);
-
-				//pixelData[i] = (0xFF << 24) | (red << 16) | (green << 8) | blue;
-				outputPixels[j] = limiar((0xFF << 24) | (red << 16) | (green << 8) | blue);*/
-				
-				j++;
-				
-			} else if (bitsAllocated == 12) {
-				int intPixelLevel = (bytePixels[i + 2] & 0xff) << 8
-						| (bytePixels[i + 1] & 0xf0);
-				int intPixelLevel2 = (bytePixels[i + 1] & 0x0f) << 8
-						| (bytePixels[i] & 0xff);
-				pixelGrayLevel = 128 * (intPixelLevel - windowOffset)
-						/ windowWidth;
-				pixelGrayLevel = (pixelGrayLevel > 255) ? 255
-						: ((pixelGrayLevel < 0) ? 0 : pixelGrayLevel);
-				pixelGrayLevel2 = 128 * (intPixelLevel2 - windowOffset)
-						/ windowWidth;
-				pixelGrayLevel2 = (pixelGrayLevel2 > 255) ? 255
-						: ((pixelGrayLevel2 < 0) ? 0 : pixelGrayLevel2);
-
-				i += 2;
-
-				outputPixels[j++] = limiar((0xFF << 24) | // alpha
-						(pixelGrayLevel2 << 16) | // red
-						(pixelGrayLevel2 << 8) | // green
-						pixelGrayLevel2/* blue */);
-
-				outputPixels[j++] = limiar((0xFF << 24) | // alpha
-						(pixelGrayLevel << 16) | // red
-						(pixelGrayLevel << 8) | // green
-						pixelGrayLevel/* blue */); 
-			} else {
-				pixelGrayLevel = bytePixels[i] & 0xff;// > 0 ? bytePixels[i] :
-														// 255 - bytePixels[i];
-
-				outputPixels[j++] = limiar((0xFF << 24) | // alpha
-						(pixelGrayLevel << 16) | // red
-						(pixelGrayLevel << 8) | // green
-						pixelGrayLevel/* blue */); 
-			}
-		}
-		return outputPixels;
 	}
 	
 	private int limiar(int pixel) {
@@ -306,23 +181,87 @@ public class DicomImageReader {
 			return null;
 		}
 	}
-
-	private Method getReadMethod(int bitsAllocated) throws SecurityException, NoSuchMethodException {
-		StringBuilder methodName = new StringBuilder();
-		methodName.append("read").append(bitsAllocated).append("BitsImage");
-		Method method = getClass().getDeclaredMethod(methodName.toString(), byte[].class);
-		return method;
-	}
-
-	@SuppressWarnings("unused")
+	
 	private short[] read16BitsImage(byte[] pixels) {
 		int totBytes = pixels.length;
 		short[] shortArray = new short[totBytes / 2];
 
-		for (int i = 0; i < shortArray.length; i++)
+		for (int i = 0; i < shortArray.length; i++) {
 			shortArray[i] = (short) (((pixels[2 * i + 1] & 0xFF) << 8) | (pixels[2 * i] & 0xFF));
+		}
 		
 		return shortArray;
+	}
+	
+	private int[] read16BitsImageNew(byte[] pixels, DicomObject dicomObject) {
+		int totBytes = pixels.length;
+		short[] shortArray = new short[totBytes / 2];
+		
+		int width = dicomObject.getInt(Tag.Rows);
+		int height = dicomObject.getInt(Tag.Columns);
+		int size = width * height;
+		//byte[] pixels8 = new byte[size];
+		int[] intArray = new int[size];
+
+		//findMinAndMax(input, width, height);
+		
+		double minimum = dicomObject.getDouble(Tag.WindowCenter) - dicomObject.getDouble(Tag.WindowWidth) / 2;
+		double maximum = dicomObject.getDouble(Tag.WindowCenter) + dicomObject.getDouble(Tag.WindowWidth) / 2;
+		if (minimum < 0.0)
+			minimum = 0.0;
+		if (maximum > 65535.0)
+			maximum = 65535.0;
+		int min = (int) minimum;
+		int max = (int) maximum;
+		
+		int[] array = new int[shortArray.length];
+		int value = 0;
+		int limiar = 0;
+		int x = 0;
+		int y = 0;
+		short shortValue = 0;
+		//int intValue;
+		
+		double scale = 256.0 / (max - min + 1);
+		for (int i = 0; i < size; i++) {
+			//shortArray[i] = (short) (((pixels[2 * i + 1] & 0xFF) << 8) | (pixels[2 * i] & 0xFF));
+			shortValue = (short) (((pixels[2 * i + 1] & 0xFF) << 8) | (pixels[2 * i] & 0xFF));
+			
+			//value = (shortArray[i] & 0xffff) - min;
+			value = (shortValue & 0xffff) - min;
+			if (value < 0)
+				value = 0;
+			value = (int) (value * scale + 0.5);
+			if (value > 255)
+				value = 255;
+			//pixels8[i] = (byte) value;
+			
+			x = i - (y * image.getColumns());
+			y = i / image.getColumns();
+			//intValue = (int) pixels8[i];
+			limiar = limiar(value);
+			if(bBoxEnabled && limiar != 255) {
+				if(x < minX) {
+					minX = x;
+				}
+				if(x > maxX) {
+					maxX = x;
+				}
+				if(y < minY) {
+					minY = y;
+				}
+				if(y > maxY) {
+					maxY = y;
+				}
+			}
+			array[i] += limiar << 24;
+			array[i] += value << 16;
+			array[i] += value << 8;
+			array[i] += value;
+		}
+		
+		shortArray = null;
+		return intArray;
 	}
 
 }

@@ -12,6 +12,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.opengl.GLUtils;
 import br.furb.rma.models.Dicom;
+import br.furb.rma.models.DicomImage;
 
 public class Square {
 
