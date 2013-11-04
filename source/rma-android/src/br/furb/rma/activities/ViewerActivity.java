@@ -71,7 +71,7 @@ public class ViewerActivity extends Activity {
 //		});
 		
 		try {
-			dicom = reader.maxImages(25).read();
+			dicom = reader.maxImages(5).read();
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
