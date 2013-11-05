@@ -37,7 +37,7 @@ public class ViewerActivity extends Activity {
 	private TextView tvAngle;
 	private SeekBar seekBar;
 	
-	private float angulo = 120;
+	private float angulo = 160;
 	private float raio = 3;
 	
 	private Camera camera;
@@ -71,7 +71,7 @@ public class ViewerActivity extends Activity {
 //		});
 		
 		try {
-			dicom = reader.maxImages(5).read();
+			dicom = reader.maxImages(25).read();
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -167,14 +167,14 @@ public class ViewerActivity extends Activity {
 		
 		@Override
 		public void onStopTrackingTouch(SeekBar seekBar) {
-			Camera camera = renderer.getCamera();
-			int progress = seekBar.getProgress();
-			angulo = progress;
-			
-			camera.setEyeX(retornaX(angulo, raio));
-			camera.setEyeZ(retornaZ(angulo, raio));
-			renderer.setCamera(camera);
-			tvAngle.setText(angulo + "º");
+//			Camera camera = renderer.getCamera();
+//			int progress = seekBar.getProgress();
+//			angulo = progress;
+//			
+//			camera.setEyeX(retornaX(angulo, raio));
+//			camera.setEyeZ(retornaZ(angulo, raio));
+//			renderer.setCamera(camera);
+//			tvAngle.setText(angulo + "º");
 		}
 		
 		@Override
@@ -185,7 +185,13 @@ public class ViewerActivity extends Activity {
 		@Override
 		public void onProgressChanged(SeekBar seekBar, int progress,
 				boolean fromUser) {
+			Camera camera = renderer.getCamera();
+			angulo = progress;
 			
+			camera.setEyeX(retornaX(angulo, raio));
+			camera.setEyeZ(retornaZ(angulo, raio));
+			renderer.setCamera(camera);
+			tvAngle.setText(angulo + "º");
 		}
 	};
 	

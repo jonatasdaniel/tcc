@@ -40,8 +40,7 @@ public class ViewerRenderer implements Renderer {
 					camera.getUpX(), camera.getUpY(), camera.getUpZ());
 		}
 		
-		// Draw the triangle
-		square.draw(gl);    
+		square.draw(gl);
 	}
 
 	@Override
