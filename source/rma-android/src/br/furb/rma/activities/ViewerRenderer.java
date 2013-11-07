@@ -1,9 +1,15 @@
 package br.furb.rma.activities;
 
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.FloatBuffer;
+import java.util.List;
+
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.opengl.GLSurfaceView.Renderer;
 import android.opengl.GLU;
 import br.furb.rma.models.Camera;
@@ -15,35 +21,67 @@ public class ViewerRenderer implements Renderer {
 	private Context context;
 	private Camera camera;
 	
+	private float vertices[] = {
+			-1.0f, -1.0f,  0.0f,        // V1 - bottom left
+			-1.0f,  1.0f,  0.0f,        // V2 - top left
+			1.0f, -1.0f,  0.0f,        // V3 - bottom right
+			1.0f,  1.0f,  0.0f         // V4 - top right
+		};
+	
+	private FloatBuffer textureBuffer;	// buffer holding the texture coordinates
+	private float texture[] = {    		
+		// Mapping coordinates for the vertices
+		0.0f, 1.0f,		// top left		(V2)
+		0.0f, 0.0f,		// bottom left	(V1)
+		1.0f, 1.0f,		// top right	(V4)
+		1.0f, 0.0f		// bottom right	(V3)
+	};
+	
+	private FloatBuffer vertexBuffer;
+	
+	
+	
 	private boolean cameraChanged = true;
 	
-	public ViewerRenderer(Square square, Context context, Camera camera) {
+	public ViewerRenderer(Square square, Context context, Camera camera, List<Bitmap> bitmaps) {
 		this.square = square;
 		this.context = context;
 
 		this.camera = camera;
-	}
+				
+		ByteBuffer byteBuffer = ByteBuffer.allocateDirect(vertices.length * 4); 
+		byteBuffer.order(ByteOrder.nativeOrder());
+		vertexBuffer = byteBuffer.asFloatBuffer();
+		vertexBuffer.put(vertices);
+		vertexBuffer.position(0);
 
-	@Override
+		byteBuffer = ByteBuffer.allocateDirect(texture.length * 4);
+		byteBuffer.order(ByteOrder.nativeOrder());
+		textureBuffer = byteBuffer.asFloatBuffer();
+		textureBuffer.put(texture);
+		textureBuffer.position(0);
+	}
+	
 	public void onDrawFrame(GL10 gl) {
-		gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-		gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		gl.glClear(GL10.GL_DEPTH_BUFFER_BIT);
-		gl.glClear(GL10.GL_STENCIL_BUFFER_BIT);
+		//gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
 		
 		// Reset the Modelview Matrix
 		gl.glLoadIdentity();
 		
 		if(cameraChanged) {
+			//square.drawBackground(gl);
+			
 			GLU.gluLookAt(gl, camera.getEyeX(), camera.getEyeY(), camera.getEyeZ(), 
 					camera.getCenterX(), camera.getCenterY(), camera.getCenterZ(),
 					camera.getUpX(), camera.getUpY(), camera.getUpZ());
+			
+			//cameraChanged = false;
 		}
 		
 		square.draw(gl);
 	}
-
-	@Override
+	
 	public void onSurfaceChanged(GL10 gl, int width, int height) {
 		if (height == 0) {
 			height = 1;
@@ -59,11 +97,10 @@ public class ViewerRenderer implements Renderer {
 		gl.glMatrixMode(GL10.GL_MODELVIEW); // Select The Modelview Matrix
 		gl.glLoadIdentity();
 	}
-	
-	@Override
+
 	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
 		square.loadGLTextures(gl, this.context);
-
+		
 		gl.glEnable(GL10.GL_TEXTURE_2D); // Enable Texture Mapping ( NEW )
 		gl.glShadeModel(GL10.GL_SMOOTH); // Enable Smooth Shading
 		gl.glClearColor(0.0f, 0.0f, 0.0f, 0.5f); // Black Background

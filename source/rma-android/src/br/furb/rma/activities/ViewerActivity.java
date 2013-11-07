@@ -37,7 +37,7 @@ public class ViewerActivity extends Activity {
 	private TextView tvAngle;
 	private SeekBar seekBar;
 	
-	private float angulo = 160;
+	private float angulo = 120;
 	private float raio = 3;
 	
 	private Camera camera;
@@ -71,7 +71,7 @@ public class ViewerActivity extends Activity {
 //		});
 		
 		try {
-			dicom = reader.maxImages(25).read();
+			dicom = reader.maxImages(5).read();
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -128,7 +128,7 @@ public class ViewerActivity extends Activity {
 		
 		Square square = new Square(dicom, bitmaps);
 		
-		renderer = new ViewerRenderer(square, ViewerActivity.this, camera);
+		renderer = new ViewerRenderer(square, ViewerActivity.this, camera, bitmaps);
 		surfaceView.setRenderer(renderer);
 	}
 
