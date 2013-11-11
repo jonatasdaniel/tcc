@@ -19,8 +19,6 @@ import br.furb.rma.R;
 import br.furb.rma.models.Camera;
 import br.furb.rma.models.Dicom;
 import br.furb.rma.models.DicomImage;
-import br.furb.rma.models.DicomPatient;
-import br.furb.rma.models.DicomStudy;
 import br.furb.rma.reader.DicomReader;
 import br.furb.rma.view.Square;
 
@@ -135,16 +133,6 @@ public class ViewerActivity extends Activity {
 	public void flatViewerClick(View view) {
 		Intent intent = new Intent(this, FlatViewerActivity.class);
 		startActivityForResult(intent, FLAT_VIEWER);
-	}
-	
-	public void dicomDetailsClick(View view) {
-		Intent intent = new Intent(this, DicomDetailsActivity.class);
-		Bundle extras = new Bundle();
-		DicomPatient patient = dicom.getPatient();
-		extras.putSerializable("patient", patient);
-		extras.putSerializable("study", new DicomStudy());
-		intent.putExtras(extras);
-		startActivity(intent);
 	}
 	
 	public void sagitalClick(View view) {

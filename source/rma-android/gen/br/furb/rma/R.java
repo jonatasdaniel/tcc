@@ -10,15 +10,8 @@ package br.furb.rma;
 public final class R {
     public static final class attr {
     }
-    public static final class dicom {
-        public static final int key=0x7f090000;
-        public static final int value=0x7f090001;
-    }
-    public static final class dicom_details {
-        public static final int list=0x7f080000;
-    }
     public static final class dicom_file {
-        public static final int name=0x7f0a0000;
+        public static final int name=0x7f080000;
     }
     public static final class dimen {
         /**  Default screen margins, per the Android Design guidelines. 
@@ -35,24 +28,22 @@ public final class R {
         public static final int ic_menu_info_details=0x7f020001;
     }
     public static final class files {
-        public static final int list=0x7f0b0000;
+        public static final int list=0x7f090000;
     }
     public static final class flat_viewer {
-        public static final int description=0x7f0c0000;
-        public static final int image_view=0x7f0c0002;
-        public static final int seek_bar=0x7f0c0001;
+        public static final int description=0x7f0a0000;
+        public static final int image_view=0x7f0a0002;
+        public static final int seek_bar=0x7f0a0001;
     }
     public static final class id {
-        public static final int action_settings=0x7f0e0000;
+        public static final int action_settings=0x7f0c0000;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
-        public static final int dicom_details_activity=0x7f030001;
-        public static final int dicom_details_item=0x7f030002;
-        public static final int dicom_file_item=0x7f030003;
-        public static final int dicom_files_activity=0x7f030004;
-        public static final int flat_viewer_activity=0x7f030005;
-        public static final int viewer_activity=0x7f030006;
+        public static final int dicom_file_item=0x7f030001;
+        public static final int dicom_files_activity=0x7f030002;
+        public static final int flat_viewer_activity=0x7f030003;
+        public static final int viewer_activity=0x7f030004;
     }
     public static final class menu {
         public static final int flat_viewer=0x7f070000;
@@ -84,12 +75,12 @@ public final class R {
         public static final int text_view_bold=0x7f060007;
     }
     public static final class viewer {
-        public static final int angle=0x7f0d0005;
-        public static final int btn_2d=0x7f0d0003;
-        public static final int btn_axial=0x7f0d0000;
-        public static final int btn_coronal=0x7f0d0002;
-        public static final int btn_sagital=0x7f0d0001;
-        public static final int gl_surface_view=0x7f0d0006;
-        public static final int seekbar=0x7f0d0004;
+        public static final int angle=0x7f0b0005;
+        public static final int btn_2d=0x7f0b0003;
+        public static final int btn_axial=0x7f0b0000;
+        public static final int btn_coronal=0x7f0b0002;
+        public static final int btn_sagital=0x7f0b0001;
+        public static final int gl_surface_view=0x7f0b0006;
+        public static final int seekbar=0x7f0b0004;
     }
 }
