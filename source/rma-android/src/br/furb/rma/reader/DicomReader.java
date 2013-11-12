@@ -13,7 +13,6 @@ import org.dcm4che2.media.DicomDirReader;
 import br.furb.rma.models.Dicom;
 import br.furb.rma.models.DicomImage;
 import br.furb.rma.models.DicomPatient;
-import br.furb.rma.models.DicomStudy;
 
 public class DicomReader {
 
@@ -50,9 +49,8 @@ public class DicomReader {
 		
 		DicomDirReader reader = new DicomDirReader(file);
 		dicom.setPatient(readPatient(reader));
-		dicom.setStudy(readStudy(reader));
 		if(!lazy) {
-			dicom.setImages(readImages(reader));
+			dicom.setImages(readImages());
 		}
 		
 		stack.add(dicom);
@@ -60,7 +58,7 @@ public class DicomReader {
 		return dicom;
 	}
 	
-	private List<DicomImage> readImages(DicomDirReader reader) throws IOException {
+	private List<DicomImage> readImages() throws IOException {
 		List<DicomImage> images = new ArrayList<DicomImage>();
 		
 		File dicomDir = new File(file.getParentFile().getAbsolutePath() + "/DICOM");
@@ -98,15 +96,6 @@ public class DicomReader {
 		patient.setGender(dicomObject.getString(Tag.PatientSex));
 		
 		return patient;
-	}
-	
-	private DicomStudy readStudy(DicomDirReader reader) throws IOException {
-		if(listener != null) {
-			listener.onChange("Lendo study");
-		}
-		DicomStudy study = new DicomStudy();
-		
-		return study;
 	}
 	
 	public static Dicom getLastDicomReaded() {

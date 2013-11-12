@@ -3,13 +3,10 @@ package br.furb.rma.activities;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
-import java.util.List;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-import android.content.Context;
-import android.graphics.Bitmap;
 import android.opengl.GLSurfaceView.Renderer;
 import android.opengl.GLU;
 import br.furb.rma.models.Camera;
@@ -18,7 +15,6 @@ import br.furb.rma.view.Square;
 public class ViewerRenderer implements Renderer {
 
 	private Square square;
-	private Context context;
 	private Camera camera;
 	
 	private float vertices[] = {
@@ -39,13 +35,10 @@ public class ViewerRenderer implements Renderer {
 	
 	private FloatBuffer vertexBuffer;
 	
-	
-	
 	private boolean cameraChanged = true;
 	
-	public ViewerRenderer(Square square, Context context, Camera camera, List<Bitmap> bitmaps) {
+	public ViewerRenderer(Square square, Camera camera) {
 		this.square = square;
-		this.context = context;
 
 		this.camera = camera;
 				
@@ -99,7 +92,7 @@ public class ViewerRenderer implements Renderer {
 	}
 
 	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-		square.loadGLTextures(gl, this.context);
+		square.loadGLTextures(gl);
 		
 		gl.glEnable(GL10.GL_TEXTURE_2D); // Enable Texture Mapping ( NEW )
 		gl.glShadeModel(GL10.GL_SMOOTH); // Enable Smooth Shading

@@ -75,12 +75,9 @@ public final class R {
         public static final int text_view_bold=0x7f060007;
     }
     public static final class viewer {
-        public static final int angle=0x7f0b0005;
-        public static final int btn_2d=0x7f0b0003;
-        public static final int btn_axial=0x7f0b0000;
-        public static final int btn_coronal=0x7f0b0002;
-        public static final int btn_sagital=0x7f0b0001;
-        public static final int gl_surface_view=0x7f0b0006;
-        public static final int seekbar=0x7f0b0004;
+        public static final int angle=0x7f0b0002;
+        public static final int btn_2d=0x7f0b0000;
+        public static final int gl_surface_view=0x7f0b0003;
+        public static final int seekbar=0x7f0b0001;
     }
 }

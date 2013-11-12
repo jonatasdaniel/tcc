@@ -1,7 +1,6 @@
 package br.furb.rma.activities;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,8 +8,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
-import android.os.Message;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -20,12 +17,8 @@ import br.furb.rma.models.Dicom;
 
 public class DicomFilesActivity extends Activity {
 
-	public final static int ADD_ITEM = 0;
-	
 	private ListView listView;
 	private DicomFileAdapter adapter;
-	private boolean loadFiles = false;
-	private Handler handler;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,17 +33,6 @@ public class DicomFilesActivity extends Activity {
 	}
 
 	private void init() {
-		handler = new Handler() {
-			@Override
-			public void handleMessage(Message msg) {
-				super.handleMessage(msg);
-				
-				if(msg.what == ADD_ITEM) {
-					adapter.addItem((Dicom) msg.obj);
-				}
-			}
-		};
-		
 		listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 			@Override

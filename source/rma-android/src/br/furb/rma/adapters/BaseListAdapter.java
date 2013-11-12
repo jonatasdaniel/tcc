@@ -33,10 +33,6 @@ public abstract class BaseListAdapter<T> extends BaseAdapter {
 		notifyDataSetChanged();
 	}
 	
-	public Context getContext() {
-		return context;
-	}
-	
 	public LayoutInflater getLayoutInflater() {
 		if(inflater == null) {
 			inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

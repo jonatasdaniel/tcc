@@ -27,16 +27,12 @@ public class ViewerActivity extends Activity {
 	private final static int FLAT_VIEWER = 0;
 	
 	private GLSurfaceView surfaceView;
-	private List<Button> buttons;
-	private Button btnAxial;
-	private Button btnSagital;
-	private Button btnCoronal;
 	private Button btn2D;
 	private TextView tvAngle;
 	private SeekBar seekBar;
 	
-	private float angulo = 120;
-	private float raio = 3;
+	private float angle = 120;
+	private float radius = 3;
 	
 	private Camera camera;
 	
@@ -49,8 +45,8 @@ public class ViewerActivity extends Activity {
 		setContentView(R.layout.viewer_activity);
 		
 		camera = new Camera();
-		camera.setEyeX(retornaX(angulo, raio));
-		camera.setEyeZ(retornaZ(angulo, raio));
+		camera.setEyeX(retornaX(angle, radius));
+		camera.setEyeZ(retornaZ(angle, radius));
 		
 		//String dirName = getIntent().getExtras().getString("dir") + "/DICOMDIR";
 		String dirName = Environment.getExternalStorageDirectory().getAbsolutePath() + "/joelho_dalton/DICOMDIR";
@@ -74,44 +70,21 @@ public class ViewerActivity extends Activity {
 			e.printStackTrace();
 		}
 		
-		buttons = new ArrayList<Button>();
-		buttons.add(btnAxial = (Button) findViewById(R.viewer.btn_axial));
-		buttons.add(btnSagital = (Button) findViewById(R.viewer.btn_sagital));
-		buttons.add(btnCoronal = (Button) findViewById(R.viewer.btn_coronal));
-		buttons.add(btn2D = (Button) findViewById(R.viewer.btn_2d));
-		
-		for (final Button btn : buttons) {
-			btn.setOnClickListener(new View.OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-//					for (final Button button : buttons) {
-//						if(v != button) {
-//							button.setOnClickListener(null);
-//							button.setEnabled(true);
-//							button.setOnClickListener(this);
-//						} else {
-//							button.setOnClickListener(null);
-//							button.setEnabled(false);
-//							button.setOnClickListener(this);
-//						}
-//					}
-					
-					if(v == btn2D) {
-						flatViewerClick(v);
-					} else if(v == btnSagital) {
-						sagitalClick(v);
-					}
-				}
-			});
-		}
+		btn2D = (Button) findViewById(R.viewer.btn_2d);
+		btn2D.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				flatViewerClick(v);
+			}
+		});
 		
 		tvAngle = (TextView) findViewById(R.viewer.angle);
-		tvAngle.setText(angulo + "º");
+		tvAngle.setText(angle + "º");
 		
 		seekBar = (SeekBar) findViewById(R.viewer.seekbar);
 		seekBar.setMax(360);
-		seekBar.setProgress((int) angulo);
+		seekBar.setProgress((int) angle);
 		seekBar.setOnSeekBarChangeListener(seekBarListener);
 		
 		surfaceView = (GLSurfaceView) findViewById(R.viewer.gl_surface_view);
@@ -124,9 +97,9 @@ public class ViewerActivity extends Activity {
 			bitmaps.add(image.getBitmap());
 		}
 		
-		Square square = new Square(dicom, bitmaps);
+		Square square = new Square(bitmaps);
 		
-		renderer = new ViewerRenderer(square, ViewerActivity.this, camera, bitmaps);
+		renderer = new ViewerRenderer(square, camera);
 		surfaceView.setRenderer(renderer);
 	}
 
@@ -135,34 +108,26 @@ public class ViewerActivity extends Activity {
 		startActivityForResult(intent, FLAT_VIEWER);
 	}
 	
-	public void sagitalClick(View view) {
-		angulo += 15;
-		
-		camera.setEyeX(retornaX(angulo, raio));
-		camera.setEyeZ(retornaZ(angulo, raio));
-		renderer.setCamera(camera);
+	public float retornaX(float angle, float radius) {
+		return (float) (radius * Math.cos(Math.PI * angle / 180.0));
 	}
 
-	public float retornaX(float angulo, float raio) {
-		return (float) (raio * Math.cos(Math.PI * angulo / 180.0));
-	}
-
-	public float retornaZ(float angulo, float raio) {
-		return (float) (raio * Math.sin(Math.PI * angulo / 180.0));
+	public float retornaZ(float angle, float radius) {
+		return (float) (radius * Math.sin(Math.PI * angle / 180.0));
 	}
 	
 	private SeekBar.OnSeekBarChangeListener seekBarListener = new SeekBar.OnSeekBarChangeListener() {
 		
 		@Override
 		public void onStopTrackingTouch(SeekBar seekBar) {
-//			Camera camera = renderer.getCamera();
-//			int progress = seekBar.getProgress();
-//			angulo = progress;
-//			
-//			camera.setEyeX(retornaX(angulo, raio));
-//			camera.setEyeZ(retornaZ(angulo, raio));
-//			renderer.setCamera(camera);
-//			tvAngle.setText(angulo + "º");
+			Camera camera = renderer.getCamera();
+			int progress = seekBar.getProgress();
+			angle = progress;
+			
+			camera.setEyeX(retornaX(angle, radius));
+			camera.setEyeZ(retornaZ(angle, radius));
+			renderer.setCamera(camera);
+			tvAngle.setText(angle + "º");
 		}
 		
 		@Override
@@ -173,13 +138,7 @@ public class ViewerActivity extends Activity {
 		@Override
 		public void onProgressChanged(SeekBar seekBar, int progress,
 				boolean fromUser) {
-			Camera camera = renderer.getCamera();
-			angulo = progress;
 			
-			camera.setEyeX(retornaX(angulo, raio));
-			camera.setEyeZ(retornaZ(angulo, raio));
-			renderer.setCamera(camera);
-			tvAngle.setText(angulo + "º");
 		}
 	};
 	

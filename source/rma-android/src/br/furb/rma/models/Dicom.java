@@ -11,7 +11,6 @@ public class Dicom {
 	private double spacingBetweenSlices;
 
 	private DicomPatient patient;
-	private DicomStudy study;
 
 	private List<DicomImage> images;
 
@@ -43,14 +42,6 @@ public class Dicom {
 
 	public void setPatient(DicomPatient patient) {
 		this.patient = patient;
-	}
-
-	public DicomStudy getStudy() {
-		return study;
-	}
-
-	public void setStudy(DicomStudy study) {
-		this.study = study;
 	}
 
 	public List<DicomImage> getImages() {

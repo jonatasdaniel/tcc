@@ -8,28 +8,11 @@ import java.util.List;
 
 import javax.microedition.khronos.opengles.GL10;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.opengl.GLUtils;
-import android.util.Log;
-import br.furb.rma.models.Dicom;
-import br.furb.rma.models.DicomImage;
 
 public class Square {
 
-	private Dicom dicom;
-	private GL10 gl;
-	private Context context;
-	
-	private FloatBuffer vertexBufferBackground;
-	
-	private float verticesBackground[] = { 
-			-1.0f, -1.0f, 0.0f, //Bottom Left
-			1.0f, -1.0f, 0.0f, 	//Bottom Right
-			-1.0f, 1.0f, 0.0f, 	//Top Left
-			1.0f, 1.0f, 0.0f 	//Top Right
-	};
-	
 	private FloatBuffer vertexBuffer;
 	//private int[] textures = new int[1];
 	private int[] textures;
@@ -63,12 +46,8 @@ public class Square {
 	};
 	private ByteBuffer indexBuffer;
 	
-	public Square(Dicom dicom, List<Bitmap> bitmaps) {
-		this.dicom = dicom;
-		
-		initBackground();
-		
-		textures = new int[dicom.getImages().size()];
+	public Square(List<Bitmap> bitmaps) {		
+		textures = new int[bitmaps.size()];
 		this.bitmaps = new ArrayList<Bitmap>();
 		//usado para pintar da ultima imagem para a primeira
 		for (int i = 0; i < bitmaps.size(); i++) {
@@ -90,14 +69,6 @@ public class Square {
 		indexBuffer = ByteBuffer.allocateDirect(indices.length);
 		indexBuffer.put(indices);
 		indexBuffer.position(0);
-	}
-		
-	private void initBackground() {
-		ByteBuffer byteBuf = ByteBuffer.allocateDirect(verticesBackground.length * 4);
-		byteBuf.order(ByteOrder.nativeOrder());
-		vertexBufferBackground = byteBuf.asFloatBuffer();
-		vertexBufferBackground.put(verticesBackground);
-		vertexBufferBackground.position(0);
 	}
 
 	public void draw(GL10 gl) {
@@ -149,11 +120,11 @@ public class Square {
 		gl.glDisable(GL10.GL_TEXTURE_2D);
 
 		// Disable the client state before leaving
-//		gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
-//		gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
+		gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
+		gl.glDisableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
 	}
 	
-	public void loadGLTextures(GL10 gl, Context context) {
+	public void loadGLTextures(GL10 gl) {
 		Bitmap bitmap = null;
 		gl.glGenTextures(textures.length, textures, 0);
 		
@@ -178,31 +149,6 @@ public class Square {
 		
 		// Clean up
 		//bitmap.recycle();
-	}
-	
-	public Dicom getDicom() {
-		return dicom;
-	}
-
-	public void rotate(int progress) {
-		
-	}
-
-	public void drawBackground(GL10 gl) {
-		// Set the face rotation
-		gl.glFrontFace(GL10.GL_CW);
-
-		// Point to our vertex buffer
-		gl.glVertexPointer(3, GL10.GL_FLOAT, 0, vertexBufferBackground);
-
-		// Enable vertex buffer
-		gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
-
-		// Draw the vertices as triangle strip
-		gl.glDrawArrays(GL10.GL_TRIANGLE_STRIP, 0, verticesBackground.length / 3);
-
-		// Disable the client state before leaving
-		gl.glDisableClientState(GL10.GL_VERTEX_ARRAY);
 	}
 	
 }
