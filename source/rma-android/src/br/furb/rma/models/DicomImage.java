@@ -12,12 +12,17 @@ public class DicomImage implements Serializable {
 	private File file;
 	private byte[] dataSet;
 	private int[] pixelData;
+	private int[][] matrix;
 	private Bitmap bitmap;
 	private int bitsAllocated;
 	private int pixelRepresentation;
 	private int columns;
 	private int rows;
 	private String imageType;
+	private int minX;
+	private int maxX;
+	private int minY;
+	private int maxY;
 	private boolean bigEndian;
 
 	public Bitmap createBitmap(int[] pixelData) {
@@ -29,6 +34,7 @@ public class DicomImage implements Serializable {
 	public Bitmap getBitmap() {
 		if (pixelData != null && bitmap == null) {
 			bitmap = createBitmap(getPixelData());
+			pixelData = null;
 		}
 		return bitmap;
 	}
@@ -108,4 +114,78 @@ public class DicomImage implements Serializable {
 	public void setPixelData(int[] pixelData) {
 		this.pixelData = pixelData;
 	}
+
+	public int[][] getMatrix() {
+		return matrix;
+	}
+
+	public void setMatrix(int[][] matrix) {
+		this.matrix = matrix;
+	}
+
+	public int getMinX() {
+		return minX;
+	}
+
+	public void setMinX(int minX) {
+		this.minX = minX;
+	}
+
+	public int getMaxX() {
+		return maxX;
+	}
+
+	public void setMaxX(int maxX) {
+		this.maxX = maxX;
+	}
+
+	public int getMinY() {
+		return minY;
+	}
+
+	public void setMinY(int minY) {
+		this.minY = minY;
+	}
+
+	public int getMaxY() {
+		return maxY;
+	}
+
+	public void setMaxY(int maxY) {
+		this.maxY = maxY;
+	}
+	
+	public void release() {
+		dataSet = null;
+		matrix = null;
+	}
+
+	public void applyBoundingBox(int minX, int maxX, int minY, int maxY) {
+		int columns = maxX - minX + 1;
+		int rows = maxY - minY + 1;
+		setColumns(columns);
+		setRows(rows);
+		int x, xOriginal, yOriginal;
+		int y = 0;
+		int[] pixels = new int[rows * columns];
+		int[][] newMatrix = new int[columns][rows];
+		
+		int count = 0;
+		for (int i = 0; i < newMatrix.length; i++) {
+			for (int j = 0; j < newMatrix[i].length; j++) {
+				y = count / columns;
+				x = count - (y * columns);
+				xOriginal = x + minX;
+				yOriginal = y + minY;
+				
+				newMatrix[i][j] = matrix[xOriginal][yOriginal];
+				pixels[count] = newMatrix[i][j]; 
+				count++;
+			}
+		}
+		
+		pixelData = pixels;
+	}
+	
+	
 }

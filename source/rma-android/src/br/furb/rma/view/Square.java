@@ -150,5 +150,9 @@ public class Square {
 		// Clean up
 		//bitmap.recycle();
 	}
+
+	public int[] getTextures() {
+		return textures;
+	}
 	
 }

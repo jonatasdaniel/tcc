@@ -82,6 +82,30 @@ public class DicomReader {
 			}
 		}
 		
+		int minX = Integer.MAX_VALUE;
+		int minY = Integer.MAX_VALUE;
+		int maxX = 0;
+		int maxY = 0;
+		for (DicomImage image : images) {
+			if(image.getMinX() < minX) {
+				minX = image.getMinX();
+			}
+			if(image.getMinY() < minY) {
+				minY = image.getMinY();
+			}
+			if(image.getMaxX() > maxX) {
+				maxX = image.getMaxX();
+			}
+			if(image.getMaxY() > maxY) {
+				maxY = image.getMaxY();
+			}
+		}
+		
+		for (DicomImage image : images) {
+			image.applyBoundingBox(minX, maxX, minY, maxY);
+			image.release();
+		}
+		
 		return images;
 	}
 
