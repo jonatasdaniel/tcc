@@ -2,8 +2,6 @@ package br.furb.rma.reader;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.dcm4che2.data.DicomElement;
 import org.dcm4che2.data.DicomObject;
@@ -262,7 +260,7 @@ public class DicomImageReader {
 		return array;
 	}
 
-	private byte[] readImageDataSet(DicomObject dicomObject, int bitsAllocated) {
+	private void readImageDataSet(DicomObject dicomObject, int bitsAllocated) {
 		DicomElement element = dicomObject.get(Tag.PixelData);
 		byte[] bytes = element.getBytes();
 		
@@ -276,9 +274,7 @@ public class DicomImageReader {
 		//byte[] transformed = shortToBytes(shortArray, dicomObject);
 		//return transformed;
 		bytes = null;
-		element = null;
-		return null;
-		
+		element = null;		
 	}
 	
 	private int limiar(int pixel) {

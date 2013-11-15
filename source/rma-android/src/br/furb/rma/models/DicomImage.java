@@ -10,7 +10,6 @@ public class DicomImage implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private File file;
-	private byte[] dataSet;
 	private int[] pixelData;
 	private int[][] matrix;
 	private Bitmap bitmap;
@@ -41,14 +40,6 @@ public class DicomImage implements Serializable {
 
 	public void setBitmap(Bitmap bitmap) {
 		this.bitmap = bitmap;
-	}
-
-	public byte[] getDataSet() {
-		return dataSet;
-	}
-
-	public void setDataSet(byte[] dataSet) {
-		this.dataSet = dataSet;
 	}
 
 	public int getBitsAllocated() {
@@ -156,7 +147,6 @@ public class DicomImage implements Serializable {
 	}
 	
 	public void release() {
-		dataSet = null;
 		matrix = null;
 	}
 
