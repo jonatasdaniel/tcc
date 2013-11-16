@@ -39,6 +39,8 @@ public class ViewerActivity extends Activity {
 	private Dicom dicom;
 	private ViewerRenderer renderer;
 	
+	private int oldProgress;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -87,6 +89,8 @@ public class ViewerActivity extends Activity {
 		seekBar.setProgress((int) angle);
 		seekBar.setOnSeekBarChangeListener(seekBarListener);
 		
+		oldProgress = seekBar.getProgress();
+		
 		surfaceView = (GLSurfaceView) findViewById(R.viewer.gl_surface_view);
 		surfaceView.setZOrderOnTop(true);
 		surfaceView.setEGLConfigChooser(8, 8, 8, 8, 16, 0);
@@ -120,14 +124,14 @@ public class ViewerActivity extends Activity {
 		
 		@Override
 		public void onStopTrackingTouch(SeekBar seekBar) {
-			Camera camera = renderer.getCamera();
-			int progress = seekBar.getProgress();
-			angle = progress;
-			
-			camera.setEyeX(retornaX(angle, radius));
-			camera.setEyeZ(retornaZ(angle, radius));
-			renderer.setCamera(camera);
-			tvAngle.setText(angle + "º");
+//			Camera camera = renderer.getCamera();
+//			int progress = seekBar.getProgress();
+//			angle = progress;
+//			
+//			camera.setEyeX(retornaX(angle, radius));
+//			camera.setEyeZ(retornaZ(angle, radius));
+//			renderer.setCamera(camera);
+//			tvAngle.setText(angle + "º");
 		}
 		
 		@Override
@@ -138,7 +142,13 @@ public class ViewerActivity extends Activity {
 		@Override
 		public void onProgressChanged(SeekBar seekBar, int progress,
 				boolean fromUser) {
+			if(progress > oldProgress) {
+				camera.setEyeX(camera.getEyeX() + 1);
+			} else {
+				camera.setEyeX(camera.getEyeX() - 1);
+			}
 			
+			oldProgress = progress;
 		}
 	};
 	
