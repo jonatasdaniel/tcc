@@ -46,8 +46,7 @@ public class FlatViewerActivity extends Activity {
 			}
 			
 			@Override
-			public void onProgressChanged(SeekBar seekBar, int progress,
-					boolean fromUser) {
+			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 				setImage(progress);
 			}
 		});

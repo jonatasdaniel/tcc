@@ -10,12 +10,14 @@ import javax.microedition.khronos.opengles.GL10;
 import android.opengl.GLSurfaceView.Renderer;
 import android.opengl.GLU;
 import br.furb.rma.models.Camera;
+import br.furb.rma.models.Dicom;
 import br.furb.rma.view.Square;
 
 public class ViewerRenderer implements Renderer {
 
 	private Square square;
 	private Camera camera;
+	private Dicom dicom;
 	
 	private float vertices[] = {
 			-1.0f, -1.0f,  0.0f,        // V1 - bottom left
@@ -37,9 +39,9 @@ public class ViewerRenderer implements Renderer {
 	
 	private boolean cameraChanged = true;
 	
-	public ViewerRenderer(Square square, Camera camera) {
+	public ViewerRenderer(Square square, Dicom dicom, Camera camera) {
 		this.square = square;
-
+		this.dicom = dicom;
 		this.camera = camera;
 				
 		ByteBuffer byteBuffer = ByteBuffer.allocateDirect(vertices.length * 4); 
@@ -92,7 +94,7 @@ public class ViewerRenderer implements Renderer {
 	}
 
 	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-		square.loadGLTextures(gl);
+		square.loadGLTextures(gl, dicom.getSpacingBetweenSlices());
 		
 		gl.glEnable(GL10.GL_TEXTURE_2D); // Enable Texture Mapping ( NEW )
 		gl.glShadeModel(GL10.GL_SMOOTH); // Enable Smooth Shading

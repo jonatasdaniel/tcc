@@ -38,14 +38,16 @@ public class DicomImageReader {
 		DicomObject dicomObj = inputStream.readDicomObject();
 		
 		image = new DicomImage();
-		double spacingBetweenSlices = dicomObj.getDouble(Tag.SpacingBetweenSlices);
-		dicom.setSpacingBetweenSlices(spacingBetweenSlices);
 		image.setBitsAllocated(dicomObj.getInt(Tag.BitsAllocated));
 		image.setPixelRepresentation(dicomObj.getInt(Tag.PixelRepresentation)); // 1 - com sinal
 		image.setColumns(dicomObj.getInt(Tag.Columns));
 		image.setRows(dicomObj.getInt(Tag.Rows));
 		image.setImageType(dicomObj.getString(Tag.ImageType));
 		image.setBigEndian(dicomObj.bigEndian());
+		
+		double spacingBetweenSlices = dicomObj.getDouble(Tag.SpacingBetweenSlices);
+		spacingBetweenSlices = 2 * spacingBetweenSlices / image.getColumns();
+		dicom.setSpacingBetweenSlices(spacingBetweenSlices);
 		
 		minX = image.getColumns();
 		minY = image.getRows();
