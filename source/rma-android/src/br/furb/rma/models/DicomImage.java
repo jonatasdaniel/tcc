@@ -26,6 +26,7 @@ public class DicomImage implements Serializable {
 
 	public Bitmap createBitmap(int[] pixelData) {
 		Bitmap bmp = Bitmap.createBitmap(pixelData, columns, rows, Bitmap.Config.ARGB_4444);
+		Runtime.getRuntime().gc();
 		return bmp;
 	}
 

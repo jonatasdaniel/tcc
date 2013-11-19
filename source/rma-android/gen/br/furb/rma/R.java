@@ -51,12 +51,13 @@ public final class R {
     public static final class string {
         public static final int action_settings=0x7f050002;
         public static final int activity_dicom_files_title=0x7f050001;
+        public static final int activity_flat_viewer_title=0x7f050007;
         public static final int app_name=0x7f050000;
         public static final int dicom_patient_gender=0x7f050005;
         public static final int dicom_patient_name=0x7f050004;
         public static final int dicom_details_title=0x7f050003;
-        public static final int hello_world=0x7f050007;
-        public static final int title_activity_flat_viewer=0x7f050006;
+        public static final int hello_world=0x7f050008;
+        public static final int viewer_activity_title=0x7f050006;
     }
     public static final class style {
         public static final int AppBaseTheme=0x7f060000;

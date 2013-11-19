@@ -50,6 +50,7 @@ public class DicomFilesActivity extends Activity {
 	private void loadFiles() {
 		List<Dicom> files = new ArrayList<Dicom>();
 		files.add(new Dicom(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/joelho_dalton")));
+		files.add(new Dicom(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/head")));
 		
 		adapter = new DicomFileAdapter(this);
 		for (Dicom dicom : files) {

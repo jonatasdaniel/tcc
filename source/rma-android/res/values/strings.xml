@@ -7,7 +7,8 @@
     <string name="dicom_details_title">Informações</string>
     <string name="dicom.patient.name">Nome do paciente</string>
     <string name="dicom.patient.gender">Gênero</string>
-    <string name="title_activity_flat_viewer">FlatViewerActivity</string>
+    <string name="viewer_activity_title">Visualização volumétrica</string>
+    <string name="activity_flat_viewer_title">Visualização em 2D</string>
     <string name="hello_world">Hello world!</string>
 
 </resources>

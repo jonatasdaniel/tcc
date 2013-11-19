@@ -31,7 +31,7 @@ public class ViewerActivity extends Activity {
 	private TextView tvAngle;
 	private SeekBar seekBar;
 	
-	private float angle = 185;
+	private float angle = 105;
 	private float radius = 3;
 	
 	private Camera camera;
@@ -48,9 +48,8 @@ public class ViewerActivity extends Activity {
 		camera.setEyeX(retornaX(angle, radius));
 		camera.setEyeZ(retornaZ(angle, radius));
 		
-		//String dirName = getIntent().getExtras().getString("dir") + "/DICOMDIR";
-		String dirName = Environment.getExternalStorageDirectory().getAbsolutePath() + "/joelho_dalton/DICOMDIR";
-		//String dirName = Environment.getExternalStorageDirectory().getAbsolutePath() + "/joelho_jonny/dicomdir";
+		String dirName = getIntent().getExtras().getString("dir") + "/DICOMDIR";
+		//String dirName = Environment.getExternalStorageDirectory().getAbsolutePath() + "/joelho_dalton/DICOMDIR";
 		final DicomReader reader = new DicomReader(new File(dirName));
 		
 //		reader.setListener(new DicomReaderListener() {
