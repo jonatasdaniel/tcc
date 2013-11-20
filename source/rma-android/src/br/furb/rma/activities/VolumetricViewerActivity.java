@@ -31,7 +31,7 @@ public class VolumetricViewerActivity extends Activity {
 	private TextView tvAngle;
 	private SeekBar seekBar;
 	
-	private float angle = 120;
+	private float angle = 105;
 	private float radius = 3;
 	
 	private Camera camera;
@@ -48,23 +48,8 @@ public class VolumetricViewerActivity extends Activity {
 		camera.setEyeX(retornaX(angle, radius));
 		camera.setEyeZ(retornaZ(angle, radius));
 		
-//		String dirName = getIntent().getExtras().getString("dir") + "/DICOMDIR";
-		String dirName = Environment.getExternalStorageDirectory().getAbsolutePath() + "/joelho_dalton/DICOMDIR";
-		final DicomReader reader = new DicomReader(new File(dirName));
-		
-//		reader.setListener(new DicomReaderListener() {
-//			
-//			@Override
-//			public void onChange(String status) {
-//				Message msg = new Message();
-//				msg.what = 1;
-//				msg.obj = status;
-//				handler.sendMessage(msg);
-//			}
-//		});
-		
 		try {
-			dicom = reader.maxImages(3).read();
+			dicom = DicomReader.getLastDicomReaded();
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -98,7 +83,7 @@ public class VolumetricViewerActivity extends Activity {
 		
 		Square square = new Square(bitmaps);
 		
-		renderer = new VolumetricViewerRenderer(square, camera);
+		renderer = new VolumetricViewerRenderer(square, dicom, camera);
 		surfaceView.setRenderer(renderer);
 	}
 

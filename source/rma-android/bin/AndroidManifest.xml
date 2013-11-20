@@ -34,6 +34,10 @@
             android:label="@string/viewer_activity_title" >
         </activity>
         <activity
+            android:name="br.furb.rma.activities.ViewerActivity"
+            android:label="@string/viewer_activity_title" >
+        </activity>
+        <activity
             android:name="br.furb.rma.activities.DicomDetailsActivity"
             android:label="@string/dicom_details_title" >
         </activity>
@@ -41,10 +45,7 @@
             android:name="br.furb.rma.activities.FlatViewerActivity"
             android:label="@string/activity_flat_viewer_title" >
         </activity>
-        <activity
-            android:name="br.furb.rma.ViewerActivity"
-            android:label="@string/title_activity_viewer" >
-        </activity>
+        
     </application>
 
 </manifest>

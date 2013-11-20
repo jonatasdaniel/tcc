@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import br.furb.rma.R;
-import br.furb.rma.ViewerActivity;
 
 public class MainActivity extends Activity {
 
@@ -13,8 +12,9 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		startActivity(new Intent(this, VolumetricViewerActivity.class));
-//		startActivity(new Intent(this, ViewerActivity.class));
+//		startActivity(new Intent(this, VolumetricViewerActivity.class));
+//		startActivity(new Intent(this, VolumetricViewerActivity.class));
+		startActivity(new Intent(this, ViewerActivity.class));
 	}
 
 }

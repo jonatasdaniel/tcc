@@ -17,6 +17,7 @@ public class VolumetricViewerRenderer implements Renderer {
 
 	private Square square;
 	private Camera camera;
+	private Dicom dicom;
 	
 	private float vertices[] = {
 			-1.0f, -1.0f,  0.0f,        // V1 - bottom left
@@ -38,9 +39,9 @@ public class VolumetricViewerRenderer implements Renderer {
 	
 	private boolean cameraChanged = true;
 	
-	public VolumetricViewerRenderer(Square square, Camera camera) {
+	public VolumetricViewerRenderer(Square square, Dicom dicom, Camera camera) {
 		this.square = square;
-
+		this.dicom = dicom;
 		this.camera = camera;
 				
 		ByteBuffer byteBuffer = ByteBuffer.allocateDirect(vertices.length * 4); 
@@ -93,7 +94,7 @@ public class VolumetricViewerRenderer implements Renderer {
 	}
 
 	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-		square.loadGLTextures(gl, 0);
+		square.loadGLTextures(gl);
 		
 		gl.glEnable(GL10.GL_TEXTURE_2D); // Enable Texture Mapping ( NEW )
 		gl.glShadeModel(GL10.GL_SMOOTH); // Enable Smooth Shading

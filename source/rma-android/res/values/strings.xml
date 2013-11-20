@@ -14,5 +14,6 @@
     <string name="sagital_title">Sagital</string>
     <string name="coronal_title">Coronal</string>
     <string name="axial_title">Axial</string>
+    <string name="volumetric_title">Volumétrica</string>
 
 </resources>
