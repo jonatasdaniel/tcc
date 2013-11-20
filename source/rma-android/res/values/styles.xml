@@ -63,5 +63,12 @@
     <style name="item_vertical" parent="item">    
         <item name="android:orientation">vertical</item>
     </style>
+    
+    <style name="seekbar_container">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingRight">5dip</item>
+        <item name="android:paddingLeft">5dip</item>
+    </style>
 
 </resources>

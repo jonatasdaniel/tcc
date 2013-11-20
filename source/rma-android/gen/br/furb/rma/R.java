@@ -10,8 +10,18 @@ package br.furb.rma;
 public final class R {
     public static final class attr {
     }
+    public static final class axial {
+        public static final int current_image=0x7f080000;
+        public static final int image_view=0x7f080002;
+        public static final int seek_bar=0x7f080001;
+    }
+    public static final class coronal {
+        public static final int current_image=0x7f090000;
+        public static final int image_view=0x7f090002;
+        public static final int seek_bar=0x7f090001;
+    }
     public static final class dicom_file {
-        public static final int name=0x7f080000;
+        public static final int name=0x7f0a0000;
     }
     public static final class dimen {
         /**  Default screen margins, per the Android Design guidelines. 
@@ -28,35 +38,49 @@ public final class R {
         public static final int ic_menu_info_details=0x7f020001;
     }
     public static final class files {
-        public static final int list=0x7f090000;
+        public static final int list=0x7f0b0000;
     }
     public static final class flat_viewer {
-        public static final int description=0x7f0a0000;
-        public static final int image_view=0x7f0a0002;
-        public static final int seek_bar=0x7f0a0001;
+        public static final int description=0x7f0c0000;
+        public static final int image_view=0x7f0c0002;
+        public static final int seek_bar=0x7f0c0001;
     }
     public static final class id {
-        public static final int action_settings=0x7f0c0000;
+        public static final int action_settings=0x7f0f0000;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
-        public static final int dicom_file_item=0x7f030001;
-        public static final int dicom_files_activity=0x7f030002;
-        public static final int flat_viewer_activity=0x7f030003;
-        public static final int viewer_activity=0x7f030004;
+        public static final int axial_container=0x7f030001;
+        public static final int coronal_container=0x7f030002;
+        public static final int dicom_file_item=0x7f030003;
+        public static final int dicom_files_activity=0x7f030004;
+        public static final int flat_viewer_activity=0x7f030005;
+        public static final int sagital_container=0x7f030006;
+        public static final int viewer_activity=0x7f030007;
+        public static final int volumetric_viewer_activity=0x7f030008;
     }
     public static final class menu {
         public static final int flat_viewer=0x7f070000;
+        public static final int viewer=0x7f070001;
+    }
+    public static final class sagital {
+        public static final int current_image=0x7f0d0000;
+        public static final int image_view=0x7f0d0002;
+        public static final int seek_bar=0x7f0d0001;
     }
     public static final class string {
         public static final int action_settings=0x7f050002;
         public static final int activity_dicom_files_title=0x7f050001;
         public static final int activity_flat_viewer_title=0x7f050007;
         public static final int app_name=0x7f050000;
+        public static final int axial_title=0x7f05000c;
+        public static final int coronal_title=0x7f05000b;
         public static final int dicom_patient_gender=0x7f050005;
         public static final int dicom_patient_name=0x7f050004;
         public static final int dicom_details_title=0x7f050003;
         public static final int hello_world=0x7f050008;
+        public static final int sagital_title=0x7f05000a;
+        public static final int title_activity_viewer=0x7f050009;
         public static final int viewer_activity_title=0x7f050006;
     }
     public static final class style {
@@ -72,13 +96,18 @@ public final class R {
         public static final int item_vertical=0x7f06000d;
         public static final int list_view=0x7f060003;
         public static final int list_view_fill=0x7f060004;
+        public static final int seekbar_container=0x7f06000e;
         public static final int text_view=0x7f060005;
         public static final int text_view_bold=0x7f060007;
     }
     public static final class viewer {
-        public static final int angle=0x7f0b0002;
-        public static final int btn_2d=0x7f0b0000;
-        public static final int gl_surface_view=0x7f0b0003;
-        public static final int seekbar=0x7f0b0001;
+        public static final int angle=0x7f0e0006;
+        public static final int axial_container=0x7f0e0002;
+        public static final int btn_2d=0x7f0e0004;
+        public static final int coronal_container=0x7f0e0001;
+        public static final int gl_surface_view=0x7f0e0007;
+        public static final int sagital_container=0x7f0e0000;
+        public static final int seekbar=0x7f0e0005;
+        public static final int volumetric_container=0x7f0e0003;
     }
 }

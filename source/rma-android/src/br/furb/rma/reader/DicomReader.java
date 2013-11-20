@@ -28,6 +28,7 @@ public class DicomReader {
 		super();
 		stack = new ArrayList<Dicom>();
 		this.file = file;
+		maxImages = -1;
 	}
 	
 	public DicomReader lazy(boolean lazy) {
@@ -103,7 +104,7 @@ public class DicomReader {
 		
 		for (DicomImage image : images) {
 			image.applyBoundingBox(minX, maxX, minY, maxY);
-			image.release();
+			//image.release();
 		}
 		
 		return images;
@@ -123,7 +124,7 @@ public class DicomReader {
 	}
 	
 	public static Dicom getLastDicomReaded() {
-		if(!stack.isEmpty()) {
+		if(stack != null && !stack.isEmpty()) {
 			return stack.get(stack.size()-1);
 		} else {
 			return null;

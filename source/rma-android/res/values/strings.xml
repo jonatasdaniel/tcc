@@ -10,5 +10,9 @@
     <string name="viewer_activity_title">Visualização volumétrica</string>
     <string name="activity_flat_viewer_title">Visualização em 2D</string>
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_viewer">ViewerActivity</string>
+    <string name="sagital_title">Sagital</string>
+    <string name="coronal_title">Coronal</string>
+    <string name="axial_title">Axial</string>
 
 </resources>

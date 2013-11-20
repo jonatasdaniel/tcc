@@ -2,39 +2,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/activity"
     android:orientation="vertical"
-    tools:context=".ViewerActivity" >
-    
-    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:orientation="horizontal" android:weightSum="100">
+    tools:context=".ViewerActivity" 
+    android:weightSum="100">
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="0dip"
+        android:layout_weight="50" android:orientation="horizontal" android:weightSum="100">
         
-        <Button android:text="2D" style="@style/fill_button" android:layout_weight="25" android:id="@+viewer/btn_2d"/>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent"
+        	android:layout_weight="50" android:orientation="vertical" android:id="@+viewer/sagital_container">
+        	
+    	</LinearLayout>
+    	
+        <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent"
+        	android:layout_weight="50" android:orientation="vertical" android:id="@+viewer/coronal_container">
         
-    </LinearLayout>
-    
-    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        
-        <SeekBar android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+viewer/seekbar"/>
-        
-    </LinearLayout>
-    
-    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        
-        <TextView style="@style/text_view_bold" android:id="@+viewer/angle" android:textColor="#ffffff"/>
+    	</LinearLayout>
         
     </LinearLayout>
     
-    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:orientation="horizontal">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="0dip"
+        android:layout_weight="50" android:orientation="horizontal" android:weightSum="100">
         
-        <android.opengl.GLSurfaceView android:layout_height="match_parent" android:layout_width="match_parent"
-	    android:id="@+viewer/gl_surface_view">
-	    
-	</android.opengl.GLSurfaceView>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent"
+        	android:layout_weight="50" android:orientation="vertical" android:id="@+viewer/axial_container">
+        
+    	</LinearLayout>
+    	
+        <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent"
+        	android:layout_weight="50" android:orientation="vertical" android:id="@+viewer/volumetric_container">
+        
+    	</LinearLayout>
         
     </LinearLayout>
-    
-    
 
 </LinearLayout>

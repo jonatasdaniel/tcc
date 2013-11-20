@@ -75,7 +75,7 @@ public class Square {
 	public void draw(GL10 gl) {
 		gl.glMatrixMode(GL10.GL_MODELVIEW);
 		
-		float z = (float) spacingBetweenSlices;
+		float z = 0.0078125f;
 		
 		gl.glEnable(GL10.GL_TEXTURE_2D);
 		
@@ -109,7 +109,7 @@ public class Square {
 	}
 	
 	public void loadGLTextures(GL10 gl, double spacingBetweenSlices) {
-		this.spacingBetweenSlices = spacingBetweenSlices;
+		//this.spacingBetweenSlices = spacingBetweenSlices;
 		Bitmap bitmap = null;
 		gl.glGenTextures(textures.length, textures, 0);
 		
