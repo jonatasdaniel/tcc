@@ -5,27 +5,6 @@
     tools:context=".VolumetricViewerActivity" >
     
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:orientation="horizontal" android:weightSum="100">
-        
-        <Button android:text="2D" style="@style/fill_button" android:layout_weight="25" android:id="@+viewer/btn_2d"/>
-        
-    </LinearLayout>
-    
-    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        
-        <SeekBar android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+viewer/seekbar"/>
-        
-    </LinearLayout>
-    
-    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        
-        <TextView style="@style/text_view_bold" android:id="@+viewer/angle" android:textColor="#ffffff"/>
-        
-    </LinearLayout>
-    
-    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
         android:orientation="horizontal">
         
         <android.opengl.GLSurfaceView android:layout_height="match_parent" android:layout_width="match_parent"

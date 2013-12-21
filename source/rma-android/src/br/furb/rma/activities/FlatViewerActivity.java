@@ -25,7 +25,7 @@ public class FlatViewerActivity extends Activity {
 		seekBar = (SeekBar) findViewById(R.flat_viewer.seek_bar);
 		
 		try {
-			dicom = DicomReader.getLastDicomReaded();
+			//dicom = DicomReader.getLastDicomReaded();
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

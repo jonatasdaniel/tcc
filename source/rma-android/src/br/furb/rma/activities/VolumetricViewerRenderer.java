@@ -58,21 +58,16 @@ public class VolumetricViewerRenderer implements Renderer {
 	}
 	
 	public void onDrawFrame(GL10 gl) {
-		//gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		gl.glClear(GL10.GL_COLOR_BUFFER_BIT | GL10.GL_DEPTH_BUFFER_BIT);
 		
-		// Reset the Modelview Matrix
 		gl.glLoadIdentity();
 		
-		if(cameraChanged) {
-			//square.drawBackground(gl);
+		
+		GLU.gluLookAt(gl, camera.getEyeX(), camera.getEyeY(), camera.getEyeZ(), 
+			camera.getCenterX(), camera.getCenterY(), camera.getCenterZ(),
+			camera.getUpX(), camera.getUpY(), camera.getUpZ());
 			
-			GLU.gluLookAt(gl, camera.getEyeX(), camera.getEyeY(), camera.getEyeZ(), 
-					camera.getCenterX(), camera.getCenterY(), camera.getCenterZ(),
-					camera.getUpX(), camera.getUpY(), camera.getUpZ());
-			
-			//cameraChanged = false;
-		}
 		
 		square.draw(gl);
 	}

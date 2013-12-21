@@ -81,18 +81,22 @@ public final class R {
     public static final class string {
         public static final int action_settings=0x7f050002;
         public static final int activity_dicom_files_title=0x7f050001;
-        public static final int activity_flat_viewer_title=0x7f050007;
         public static final int app_name=0x7f050000;
-        public static final int axial_title=0x7f05000c;
-        public static final int coronal_title=0x7f05000b;
+        public static final int axial_title=0x7f05000b;
+        public static final int coronal_title=0x7f05000a;
         public static final int dicom_patient_gender=0x7f050005;
         public static final int dicom_patient_name=0x7f050004;
         public static final int dicom_details_title=0x7f050003;
-        public static final int hello_world=0x7f050008;
-        public static final int sagital_title=0x7f05000a;
-        public static final int title_activity_viewer=0x7f050009;
+        public static final int hello_world=0x7f050007;
+        public static final int sagital_title=0x7f050009;
+        public static final int title_activity_viewer=0x7f050008;
         public static final int viewer_activity_title=0x7f050006;
-        public static final int volumetric_title=0x7f05000d;
+        public static final int volumetric_btn_abrir=0x7f050011;
+        public static final int volumetric_eye_x=0x7f05000e;
+        public static final int volumetric_eye_y=0x7f05000f;
+        public static final int volumetric_eye_z=0x7f050010;
+        public static final int volumetric_title=0x7f05000c;
+        public static final int volumetric_viewer_activity_title=0x7f05000d;
     }
     public static final class style {
         public static final int AppBaseTheme=0x7f060000;
@@ -112,17 +116,18 @@ public final class R {
         public static final int text_view_bold=0x7f060007;
     }
     public static final class viewer {
-        public static final int angle=0x7f100006;
         public static final int axial_container=0x7f100002;
-        public static final int btn_2d=0x7f100004;
         public static final int coronal_container=0x7f100001;
-        public static final int gl_surface_view=0x7f100007;
+        public static final int gl_surface_view=0x7f100004;
         public static final int sagital_container=0x7f100000;
-        public static final int seekbar=0x7f100005;
         public static final int volumetric_container=0x7f100003;
     }
     public static final class volumetric {
-        public static final int button=0x7f110001;
-        public static final int current_image=0x7f110000;
+        public static final int button=0x7f110003;
+        public static final int eye_x=0x7f110000;
+        public static final int eye_y=0x7f110001;
+        public static final int eye_z=0x7f110002;
+        public static final int image_number=0x7f110005;
+        public static final int patient_name=0x7f110004;
     }
 }

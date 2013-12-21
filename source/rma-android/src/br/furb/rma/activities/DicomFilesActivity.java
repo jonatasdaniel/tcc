@@ -37,7 +37,7 @@ public class DicomFilesActivity extends Activity {
 
 			@Override
 			public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
-				Intent it = new Intent(DicomFilesActivity.this, VolumetricViewerActivity.class);
+				Intent it = new Intent(DicomFilesActivity.this, ViewerActivity.class);
 				Bundle extras = new Bundle();
 				Dicom dicom = (Dicom) adapter.getItemAtPosition(position);
 				extras.putString("dir", dicom.getFile().getAbsolutePath());

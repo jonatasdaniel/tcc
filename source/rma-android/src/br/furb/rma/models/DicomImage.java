@@ -25,7 +25,7 @@ public class DicomImage implements Serializable {
 	private boolean bigEndian;
 
 	public Bitmap createBitmap(int[] pixelData) {
-		Bitmap bmp = Bitmap.createBitmap(pixelData, columns, rows, Bitmap.Config.ARGB_4444);
+		Bitmap bmp = Bitmap.createBitmap(pixelData, columns, rows, Bitmap.Config.ARGB_8888);
 		Runtime.getRuntime().gc();
 		return bmp;
 	}
@@ -33,7 +33,6 @@ public class DicomImage implements Serializable {
 	public Bitmap getBitmap() {
 		if (pixelData != null && bitmap == null) {
 			bitmap = createBitmap(getPixelData());
-			pixelData = null;
 		}
 		return bitmap;
 	}
@@ -153,26 +152,16 @@ public class DicomImage implements Serializable {
 	public void applyBoundingBox(int minX, int maxX, int minY, int maxY) {
 		int columns = maxX - minX + 1;
 		int rows = maxY - minY + 1;
+		columns = getColumns();
+		rows = getRows();
 		setColumns(columns);
 		setRows(rows);
 		int x, xOriginal, yOriginal;
 		int y = 0;
 		int[] pixels = new int[rows * columns];
-		//int[][] newMatrix = new int[columns][rows];
+		int[][] newMatrix = new int[columns][rows];
 		
 		int count = 0;
-//		for (int i = 0; i < newMatrix.length; i++) {
-//			for (int j = 0; j < newMatrix[i].length; j++) {
-//				y = count / columns;
-//				x = count - (y * columns);
-//				xOriginal = x + minX;
-//				yOriginal = y + minY;
-//				
-//				newMatrix[i][j] = matrix[xOriginal][yOriginal];
-//				pixels[count] = newMatrix[i][j]; 
-//				count++;
-//			}
-//		}
 		
 		for (int i = 0; i < columns; i++) {
 			for (int j = 0; j < rows; j++) {
@@ -182,11 +171,14 @@ public class DicomImage implements Serializable {
 				yOriginal = y + minY;
 				
 				//newMatrix[i][j] = matrix[xOriginal][yOriginal];
-				pixels[count] = matrix[xOriginal][yOriginal]; 
+				//pixels[count] = matrix[xOriginal][yOriginal]; 
+				newMatrix[i][j] = matrix[x][y];
+				pixels[count] = matrix[x][y];
 				count++;
 			}
 		}
 		
+		matrix = newMatrix;
 		pixelData = pixels;
 	}
 	

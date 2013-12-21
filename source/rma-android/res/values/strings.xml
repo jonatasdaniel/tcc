@@ -7,13 +7,17 @@
     <string name="dicom_details_title">Informações</string>
     <string name="dicom.patient.name">Nome do paciente</string>
     <string name="dicom.patient.gender">Gênero</string>
-    <string name="viewer_activity_title">Visualização volumétrica</string>
-    <string name="activity_flat_viewer_title">Visualização em 2D</string>
+    <string name="viewer_activity_title">Visualização em 2D</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_viewer">ViewerActivity</string>
     <string name="sagital_title">Sagital</string>
     <string name="coronal_title">Coronal</string>
     <string name="axial_title">Axial</string>
     <string name="volumetric_title">Volumétrica</string>
+    <string name="volumetric_viewer_activity_title">Visualização volumétrica</string>
+    <string name="volumetric_eye_x">Eye X</string>
+    <string name="volumetric_eye_y">Eye Y</string>
+    <string name="volumetric_eye_z">Eye Z</string>
+    <string name="volumetric_btn_abrir">Abrir visualização</string>
 
 </resources>

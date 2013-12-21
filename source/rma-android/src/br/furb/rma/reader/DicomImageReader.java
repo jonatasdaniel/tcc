@@ -167,15 +167,17 @@ public class DicomImageReader {
 			if (value > 255)
 				value = 255;
 			
-			y = i / image.getColumns();
-			x = i - (y * image.getColumns());
-			
 			limiar = limiar(value);
 			
 			matrix[x][y] += limiar << 24;
 			matrix[x][y] += value << 16;
 			matrix[x][y] += value << 8;
 			matrix[x][y] += value;
+			
+			if(++x == image.getColumns()) {
+				x = 0;
+				y++;
+			}
 		}
 	}
 

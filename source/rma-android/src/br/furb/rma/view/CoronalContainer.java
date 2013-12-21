@@ -1,5 +1,7 @@
 package br.furb.rma.view;
 
+import java.util.List;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.widget.ImageView;
@@ -21,32 +23,36 @@ public class CoronalContainer extends Container {
 		seekBar = (SeekBar) findViewById(R.coronal.seek_bar);
 		seekBar.setMax(dicom.getImages().get(0).getColumns()-1);
 		seekBar.setOnSeekBarChangeListener(seekBarListener());
+		seekBar.setProgress(seekBar.getMax() / 2);
 		imageView = (ImageView) findViewById(R.coronal.image_view);
 		tvCurrentImage = (TextView) findViewById(R.coronal.current_image);
 		
-		setImage(0);
+		setImage(seekBar.getProgress());
 	}
 	
 	private void setImage(int index) {
-		int x = 0;
-		int[][] foda = new int[getDicom().getImages().size()][getDicom().getImages().get(0).getColumns()];
-		for (DicomImage image : getDicom().getImages()) {
-			int[][] matrix = image.getMatrix();
-			foda[x++] = matrix[index];
-		}
+		List<DicomImage> images = getDicom().getImages();
 		
-		DicomImage image = new DicomImage();
-		image.setColumns(foda.length);
-		image.setRows(foda[0].length);
-		int[] pixelData = new int[image.getColumns() * image.getRows()];
+		final int CONST = 5;
+		int[] pixels = new int[getDicom().getImages().get(0).getRows() * getDicom().getImages().size() * CONST];
 		int count = 0;
-		for (int i = 0; i < foda.length; i++) {
-			for (int j = 0; j < foda[i].length; j++) {
-				pixelData[count++] = foda[i][j];
+		
+		int rows = getDicom().getImages().get(0).getMatrix().length;
+		for (int row = 0; row < rows; row++) {
+			for (int i = 0; i < images.size(); i++) {
+				DicomImage image = images.get(i);
+				int[][] matrix = image.getMatrix();
+				for (int j = 0; j < CONST; j++) {
+					pixels[count++] = matrix[row][index];
+				}
 			}
 		}
 		
-		Bitmap bitmap = image.createBitmap(pixelData);
+		DicomImage image = new DicomImage();
+		image.setColumns(getDicom().getImages().size() * CONST);
+		image.setRows(rows);
+		
+		Bitmap bitmap = image.createBitmap(pixels);
 		
 		imageView.setImageBitmap(bitmap);
 		
@@ -61,6 +67,7 @@ public class CoronalContainer extends Container {
 			@Override
 			public void onStopTrackingTouch(SeekBar seekBar) {
 				setImage(seekBar.getProgress());
+				getListener().onImageChanged(seekBar.getProgress());
 			}
 			
 			@Override

@@ -1,0 +1,9 @@
+- remover rodape - pagina 1
+- nome dos professores e titulacoes - pagina 3
+- fazer abstract - pagina 8
+- arrumar lista de ilustracoes - pagina 9
+- Archive para ARchive - pagina 10
+- retirar @@sigla - pagina 13
+- arrumar citacao - pagina 15
+- ano da fonte da imagem - pagina 16
+- ano da citacao - pagina 17

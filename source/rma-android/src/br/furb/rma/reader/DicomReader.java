@@ -46,6 +46,13 @@ public class DicomReader {
 	}
 	
 	public Dicom read() throws IOException {
+		if(!stack.isEmpty()) {
+			for (Dicom dicom : stack) {
+				if(dicom.getFile().getPath().equals(file.getPath())) {
+					return dicom;
+				}
+			}
+		}
 		dicom = new Dicom(file);
 		
 		DicomDirReader reader = new DicomDirReader(file);
@@ -110,6 +117,8 @@ public class DicomReader {
 		return images;
 	}
 
+	
+	
 	private DicomPatient readPatient(DicomDirReader reader) throws IOException {
 		if(listener != null) {
 			listener.onChange("Lendo paciente");
@@ -122,13 +131,11 @@ public class DicomReader {
 		
 		return patient;
 	}
-	
-	public static Dicom getLastDicomReaded() {
-		if(stack != null && !stack.isEmpty()) {
-			return stack.get(stack.size()-1);
-		} else {
-			return null;
-		}
-	}
 
+	public static Dicom getLastDicomReaded() {
+		if(!stack.isEmpty()) {
+			return stack.get(stack.size()-1);
+		}
+		return null;
+	}
 }

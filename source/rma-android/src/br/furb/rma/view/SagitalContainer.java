@@ -19,10 +19,11 @@ public class SagitalContainer extends Container {
 		seekBar = (SeekBar) findViewById(R.sagital.seek_bar);
 		seekBar.setMax(dicom.getImages().size()-1);
 		seekBar.setOnSeekBarChangeListener(seekBarListener());
+		seekBar.setProgress(seekBar.getMax() / 2);
 		imageView = (ImageView) findViewById(R.sagital.image_view);
 		tvCurrentImage = (TextView) findViewById(R.sagital.current_image);
 		
-		setImage(0);
+		setImage(seekBar.getProgress());
 	}
 	
 	private void setImage(int index) {
@@ -39,6 +40,7 @@ public class SagitalContainer extends Container {
 			@Override
 			public void onStopTrackingTouch(SeekBar seekBar) {
 				setImage(seekBar.getProgress());
+				getListener().onImageChanged(seekBar.getProgress());
 			}
 			
 			@Override
